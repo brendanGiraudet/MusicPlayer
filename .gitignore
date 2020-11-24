@@ -1,0 +1,13 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/MusicPlayer/MusicPlayer.FunctionalTest/bin
+/MusicPlayer/MusicPlayer.FunctionalTest/obj
+/MusicPlayer/MusicPlayer.UnitTest/bin
+/MusicPlayer/MusicPlayer.UnitTest/obj
+/MusicPlayer/.vs/MusicPlayer/v16
+/MusicPlayer/MusicPlayerApplication/bin
+/MusicPlayer/MusicPlayerApplication/obj
+/MusicPlayer/MusicPlayerApplication/MusicPlayerApplication.csproj.user
