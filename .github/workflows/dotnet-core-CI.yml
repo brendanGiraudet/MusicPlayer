@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  Continuous-integration:
 
     runs-on: ubuntu-latest
 
@@ -21,10 +21,11 @@ jobs:
         dotnet-version: 3.1.301
         
     - name: Install dependencies
-      working-directory: ./MusicPlayer/
+      working-directory: ./MusicPlayer
       run: dotnet restore
     
     - name: Build
+      working-directory: ./MusicPlayer/MusicPlayer/MusicPlayer
       run: dotnet build --configuration Release --no-restore
     
     - name: Test
