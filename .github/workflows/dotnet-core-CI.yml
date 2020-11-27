@@ -20,8 +20,8 @@ jobs:
       with:
         dotnet-version: 3.1.301
         
-    - name: Directories
-      run: ls
+    - name: Change in right directory
+      run: cd ./MusicPlayer/MusicPlayer/
         
     - name: Install dependencies
       run: dotnet restore
