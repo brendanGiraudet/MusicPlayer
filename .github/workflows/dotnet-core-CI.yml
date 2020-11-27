@@ -20,8 +20,11 @@ jobs:
       with:
         dotnet-version: 3.1.301
         
+    - name: Directories
+      run: ls
+        
     - name: Install dependencies
-      run: dotnet restore ./MusicPlayer.sln
+      run: dotnet restore
     
     - name: Build
       run: dotnet build --configuration Release --no-restore
