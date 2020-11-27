@@ -31,6 +31,7 @@ jobs:
       run: dotnet test --no-restore --verbosity normal
 
   Continuous_delivery:
+    needs: [Continuous-integration]
 
     runs-on: ubuntu-latest
 
@@ -42,9 +43,9 @@ jobs:
       run: sudo apt-get install docker
 
     - name: Build
-      working-directory: /home/runner/work/MusicPlayer/MusicPlayer/MusicPlayer/MusicPlayerApplication
-      run: docker build -t "MusicPlayer:latest" .
+      working-directory: /var/lib/docker/
+      run: docker build -t "MusicPlayer:latest" /home/runner/work/MusicPlayer/MusicPlayer/MusicPlayer/MusicPlayerApplication
 
     - name: Push
-      working-directory: /home/runner/work/MusicPlayer/MusicPlayer/MusicPlayer/MusicPlayerApplication
+      working-directory: /var/lib/docker/
       run: docker push "bakayarusama/music_player:image"
