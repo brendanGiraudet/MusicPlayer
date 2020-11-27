@@ -21,10 +21,13 @@ jobs:
         dotnet-version: 3.1.301
         
     - name: Install dependencies
-      run: dotnet restore ".\MusicPlayer\MusicPlayer\MusicPlayer.sln"
+      working-directory: ./MusicPlayer/
+      run: dotnet restore
     
     - name: Build
+      working-directory: ./MusicPlayer/
       run: dotnet build --configuration Release --no-restore
     
     - name: Test
+      working-directory: ./MusicPlayer/
       run: dotnet test --no-restore --verbosity normal
