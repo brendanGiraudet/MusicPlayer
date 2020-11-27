@@ -1,4 +1,4 @@
-name: .NET Core
+name: MusicPlayer
 
 on:
   push:
@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout 
+    - name: Checkout source code
       uses: actions/checkout@v2
       
-    - name: Setup .NET Core
+    - name: Install SDK 5.0
       run: sudo apt-get install dotnet-sdk-5.0
         
     - name: Install dependencies
@@ -29,3 +29,22 @@ jobs:
     - name: Test
       working-directory: /home/runner/work/MusicPlayer/MusicPlayer/MusicPlayer
       run: dotnet test --no-restore --verbosity normal
+
+  Continuous_delivery:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v2
+
+    - name: Install Docker
+      run: sudo apt-get install docker
+
+    - name: Build
+      working-directory: /home/runner/work/MusicPlayer/MusicPlayer/MusicPlayer/MusicPlayerApplication
+      run: docker build -t "MusicPlayer:latest" .
+
+    - name: Push
+      working-directory: /home/runner/work/MusicPlayer/MusicPlayer/MusicPlayer/MusicPlayerApplication
+      run: docker push "bakayarusama/music_player:image"
