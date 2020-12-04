@@ -39,18 +39,11 @@ jobs:
     - name: Checkout source code
       uses: actions/checkout@v2
 
-    - name: Publish Docker
-      uses: elgohr/Publish-Docker-Github-Action@3.01
-      with:
-        # The name of the image you would like to push
-        name: music_player_application
-        # The login username for the registry
-        username: bakayarusama
-        # The login password for the registry
-        password: 387b0e1d-0014-45d6-934d-adc253d1ff5b
-        # Use registry for pushing to a custom registry
-        #registry: # optional
-        # Use dockerfile when you would like to explicitly build a Dockerfile
-        dockerfile: /home/runner/work/MusicPlayer/MusicPlayer/MusicPlayer/MusicPlayerApplication/Dockerfile
-        # Use workdir when you would like to change the directory for building
-        #workdir: # optional
+    - name: Install Docker
+      run: sudo apt-get install docker
+
+    - name: Build
+      run: /usr/bin/docker build -t "MusicPlayer:latest" /home/runner/work/MusicPlayer/MusicPlayer/MusicPlayer/MusicPlayerApplication
+
+    - name: Push
+      run: /usr/bin/docker push "bakayarusama/music_player:image"
