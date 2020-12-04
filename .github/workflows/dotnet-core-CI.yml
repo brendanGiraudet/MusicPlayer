@@ -46,8 +46,8 @@ jobs:
              -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
     - name: Build Docker image
-      working-directory: $Repo
-      run: docker build -t $DockerImageName:latest $Repo
+      working-directory: /home/runner/work/MusicPlayer/MusicPlayer/MusicPlayer/MusicPlayerApplication/
+      run: docker build -t bakayarusama/music_player:latest /home/runner/work/MusicPlayer/MusicPlayer/MusicPlayer/MusicPlayerApplication/
 
     - name: Publish Docker image
       run: docker push $DockerImageName
