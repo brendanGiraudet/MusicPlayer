@@ -54,9 +54,9 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: ./
-        file: ./Dockerfile
+        file: /home/runner/work/MusicPlayer/MusicPlayer/MusicPlayer/MusicPlayerApplication/Dockerfile
         push: true
-        tags: ushamandya/simplewhale:latest
+        tags: bakayarusama/music_player:latest
 
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
