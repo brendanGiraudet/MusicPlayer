@@ -11,7 +11,6 @@ COPY ["./MusicPlayerApplication.csproj", "MusicPlayerApplication/"]
 WORKDIR "/src/MusicPlayerApplication"
 RUN dotnet restore "./MusicPlayerApplication.csproj"
 COPY . .
-WORKDIR "/src/MusicPlayerApplication"
 RUN dotnet build "MusicPlayerApplication.csproj" -c Release -o /app/build
 
 FROM build AS publish
