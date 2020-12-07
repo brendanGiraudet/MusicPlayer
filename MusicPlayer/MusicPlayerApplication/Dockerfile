@@ -8,6 +8,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
 COPY ["./MusicPlayerApplication.csproj", "MusicPlayerApplication/"]
+WORKDIR "/src/MusicPlayerApplication"
 RUN dotnet restore "./MusicPlayerApplication.csproj"
 COPY . .
 WORKDIR "/src/MusicPlayerApplication"
