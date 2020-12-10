@@ -19,4 +19,4 @@ RUN dotnet publish "MusicPlayerApplication.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "MusicPlayerApplication.dll"]
+CMD ["dotnet", "MusicPlayerApplication.dll"]
