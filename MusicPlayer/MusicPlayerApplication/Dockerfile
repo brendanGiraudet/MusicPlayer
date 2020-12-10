@@ -17,6 +17,7 @@ FROM build AS publish
 RUN dotnet publish "MusicPlayerApplication.csproj" -c Release -o /app/publish
 
 FROM base AS final
+ENV ASPNETCORE_URLS=http://+:1515
 WORKDIR /app
 COPY --from=publish /app/publish .
 CMD ["dotnet", "MusicPlayerApplication.dll"]
