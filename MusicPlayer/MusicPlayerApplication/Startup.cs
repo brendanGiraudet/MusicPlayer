@@ -1,15 +1,12 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MusicPlayerApplication.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using MusicPlayerApplication.Services;
+using MusicPlayerApplication.Services.ShellService;
+using MusicPlayerApplication.Settings;
 
 namespace MusicPlayerApplication
 {
@@ -26,6 +23,10 @@ namespace MusicPlayerApplication
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<YoutubeDlSettings>(Configuration.GetSection("YoutubeDl"));
+            services.Configure<ShellSettings>(Configuration.GetSection("Shell"));
+            services.AddTransient<IYoutubeDlService, YoutubeDlService>();
+            services.AddTransient<IShellService, ShellService>();
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
