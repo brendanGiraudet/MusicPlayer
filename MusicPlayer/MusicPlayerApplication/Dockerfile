@@ -23,5 +23,4 @@ FROM base AS final
 ENV ASPNETCORE_URLS=http://+:1515
 WORKDIR /app
 COPY --from=publish /app/publish .
-RUN mkdir -p /app/Musics
 CMD ["dotnet", "MusicPlayerApplication.dll"]
