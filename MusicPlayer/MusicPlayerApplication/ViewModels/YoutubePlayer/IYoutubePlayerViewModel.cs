@@ -5,8 +5,6 @@ namespace MusicPlayerApplication.ViewModels
 {
     public interface IYoutubePlayerViewModel
     {
-        List<string> SearchedVideos { get; set; }
-
-        Task SearchAsync(string wordToSearch);
+        Task<List<string>> SearchAsync(string wordToSearch);
     }
 }

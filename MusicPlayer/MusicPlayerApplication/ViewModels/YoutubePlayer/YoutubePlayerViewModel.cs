@@ -13,10 +13,9 @@ namespace MusicPlayerApplication.ViewModels
             _youTubeService = youTubeService;
         }
 
-        public List<string> SearchedVideos { get; set; } = new List<string>();
-
-        public async Task SearchAsync(string wordToSearch)
+        public async Task<List<string>> SearchAsync(string wordToSearch)
         {
+            var videos = new List<string>();
             try
             {
                 var searchListRequest = _youTubeService.Search.List("snippet");
@@ -29,16 +28,18 @@ namespace MusicPlayerApplication.ViewModels
                     switch (searchResult.Id.Kind)
                     {
                         case "youtube#video":
-                            SearchedVideos.Add(String.Format("{0} ({1})", searchResult.Snippet.Title, searchResult.Id.VideoId));
+                            videos.Add(String.Format("{0} ({1})", searchResult.Snippet.Title, searchResult.Id.VideoId));
                             break;
                     }
                 }
+
+                return videos;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                return new List<string>();
             }
         }
-
     }
 }

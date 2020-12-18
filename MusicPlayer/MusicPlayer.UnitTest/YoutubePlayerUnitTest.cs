@@ -32,10 +32,10 @@ namespace MusicPlayer.UnitTest
             var fakeWordToSearch = faker.Random.String2(2);
 
             // Act
-            await _youtubePlayerViewModel.SearchAsync(fakeWordToSearch);
+            var videos = await _youtubePlayerViewModel.SearchAsync(fakeWordToSearch);
 
             // Arrange
-            Assert.True(_youtubePlayerViewModel.SearchedVideos.Any());
+            Assert.True(videos.Any());
         }
         #endregion
     }

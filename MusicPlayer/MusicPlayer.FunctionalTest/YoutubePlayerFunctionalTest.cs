@@ -27,10 +27,10 @@ namespace MusicPlayer.FunctionalTest
             var wordToSearch = "i believe i can fly";
 
             // Act
-            await _youtubePlayer.SearchAsync(wordToSearch);
+            var videos = await _youtubePlayer.SearchAsync(wordToSearch);
 
             // Arrange
-            Assert.True(_youtubePlayer.SearchedVideos.Any());
+            Assert.True(videos.Any());
         }
         #endregion
     }
