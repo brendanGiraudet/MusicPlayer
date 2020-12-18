@@ -42,7 +42,7 @@ namespace MusicPlayerApplication.Services.ShellService
                     response.ErrorMessage = errorMessage;
                     return response;
                 }
-
+                process.WaitForExit();
                 process.Close();
                 response.HasError = false;
                 return response;

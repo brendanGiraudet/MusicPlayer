@@ -18,7 +18,8 @@ namespace MusicPlayerApplication.Services
         public ResponseModel DownloadMusic(string url)
         {
             var proxy = _youtubeDlSettings.Value.Proxy;
-            var command = $"youtube-dl --proxy {proxy} --write-thumbnail URL {url}";
+            //var command = $"youtube-dl --proxy {proxy} --write-thumbnail {url}";
+            var command = $"cd {_youtubeDlSettings.Value.MusicPath} && youtube-dl --write-thumbnail {url}";
 
             return _shellService.Run(command);
         }

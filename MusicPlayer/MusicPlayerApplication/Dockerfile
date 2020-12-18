@@ -2,7 +2,6 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base
 WORKDIR /app
-MKDIR /app/Musics
 EXPOSE 80
 EXPOSE 443
 RUN apt update && apt dist-upgrade -y
@@ -24,4 +23,5 @@ FROM base AS final
 ENV ASPNETCORE_URLS=http://+:1515
 WORKDIR /app
 COPY --from=publish /app/publish .
+RUN mkdir -p /app/Musics
 CMD ["dotnet", "MusicPlayerApplication.dll"]

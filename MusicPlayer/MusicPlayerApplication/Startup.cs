@@ -7,6 +7,7 @@ using MusicPlayerApplication.Data;
 using MusicPlayerApplication.Services;
 using MusicPlayerApplication.Services.ShellService;
 using MusicPlayerApplication.Settings;
+using MusicPlayerApplication.ViewModels;
 
 namespace MusicPlayerApplication
 {
@@ -27,6 +28,7 @@ namespace MusicPlayerApplication
             services.Configure<ShellSettings>(Configuration.GetSection("Shell"));
             services.AddTransient<IYoutubeDlService, YoutubeDlService>();
             services.AddTransient<IShellService, ShellService>();
+            services.AddTransient<YoutubeDlViewModel>();
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
