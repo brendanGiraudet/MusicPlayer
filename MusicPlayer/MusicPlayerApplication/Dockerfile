@@ -2,8 +2,12 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base
 WORKDIR /app
+MKDIR /app/Musics
 EXPOSE 80
 EXPOSE 443
+RUN apt update && apt dist-upgrade -y
+RUN apt install -y python3-pip
+RUN pip3 install --upgrade youtube-dl
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
