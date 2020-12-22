@@ -5,6 +5,7 @@ using MusicPlayerApplication.Models;
 using MusicPlayerApplication.Services;
 using MusicPlayerApplication.Services.ShellService;
 using MusicPlayerApplication.Settings;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace MusicPlayer.UnitTest
@@ -23,8 +24,8 @@ namespace MusicPlayer.UnitTest
 
             var shellServiceMock = new Mock<IShellService>();
             shellServiceMock
-                .Setup(s => s.Run(It.IsAny<string>()))
-                .Returns(new ResponseModel
+                .Setup(s => s.RunAsync(It.IsAny<string>()))
+                .ReturnsAsync(new ResponseModel
                 {
                     HasError = false
                 })
@@ -35,14 +36,14 @@ namespace MusicPlayer.UnitTest
 
         #region DownloadMusicAsync
         [Fact]
-        public void ShouldHaveResponseWithHasErrorFalseWhenDownloadMusic()
+        public async Task ShouldHaveResponseWithHasErrorFalseWhenDownloadMusic()
         {
             // Arrange
             var faker = new Faker();
             var fakeUrl = faker.Random.String2(2);
 
             // Act
-            var downloadMusicResponse = _youtubeDlService.DownloadMusic(fakeUrl);
+            var downloadMusicResponse = await _youtubeDlService.DownloadMusicAsync(fakeUrl);
 
             // Arrange
             Assert.False(downloadMusicResponse.HasError);

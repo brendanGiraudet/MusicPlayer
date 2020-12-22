@@ -2,6 +2,7 @@
 using MusicPlayerApplication.Models;
 using MusicPlayerApplication.Services.ShellService;
 using MusicPlayerApplication.Settings;
+using System.Threading.Tasks;
 
 namespace MusicPlayerApplication.Services
 {
@@ -15,13 +16,13 @@ namespace MusicPlayerApplication.Services
             _youtubeDlSettings = youtubeDlSettings;
             _shellService = shellService;
         }
-        public ResponseModel DownloadMusic(string url)
+        public async Task<ResponseModel> DownloadMusicAsync(string url)
         {
             var proxy = _youtubeDlSettings.Value.Proxy;
             //var command = $"youtube-dl --proxy {proxy} --write-thumbnail {url}";
             var command = $"cd {_youtubeDlSettings.Value.MusicPath} && youtube-dl --write-thumbnail {url}";
 
-            return _shellService.Run(command);
+            return await _shellService.RunAsync(command);
         }
     }
 }

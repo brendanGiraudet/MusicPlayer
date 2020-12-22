@@ -1,9 +1,10 @@
 ﻿using MusicPlayerApplication.Models;
+using System.Threading.Tasks;
 
 namespace MusicPlayerApplication.Services
 {
     public interface IYoutubeDlService
     {
-        ResponseModel DownloadMusic(string url);
+        Task<ResponseModel> DownloadMusicAsync(string url);
     }
 }

@@ -1,4 +1,5 @@
 using MusicPlayerApplication.Services;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace MusicPlayer.FunctionalTest
@@ -12,13 +13,13 @@ namespace MusicPlayer.FunctionalTest
         }
         #region DownloadMusicAsync
         [Fact(Skip ="missing youtubedl package")]
-        public void ShouldHaveResponseWithHasErrorFalseWhenDownloadMusic()
+        public async Task ShouldHaveResponseWithHasErrorFalseWhenDownloadMusic()
         {
             // Arrange
             var url = "https://www.youtube.com/watch?v=hjpF8ukSrvk&list=RDCLAK5uy_mfut9V_o1n9nVG_m5yZ3ztCif29AHUffI&index=12";
 
             // Act
-            var downloadMusicResponse = _youtubeDlService.DownloadMusic(url);
+            var downloadMusicResponse = await _youtubeDlService.DownloadMusicAsync(url);
 
             // Arrange
             Assert.False(downloadMusicResponse.HasError);

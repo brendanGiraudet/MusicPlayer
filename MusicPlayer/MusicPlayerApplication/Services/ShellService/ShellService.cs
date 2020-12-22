@@ -2,6 +2,7 @@
 using MusicPlayerApplication.Models;
 using MusicPlayerApplication.Settings;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace MusicPlayerApplication.Services.ShellService
 {
@@ -12,8 +13,9 @@ namespace MusicPlayerApplication.Services.ShellService
         {
             _shellSettings = shellSettings;
         }
-        public ResponseModel Run(string cmd)
+        public async Task<ResponseModel> RunAsync(string cmd)
         {
+            var task = new TaskCompletionSource<ResponseModel>();
             var response = new ResponseModel
             {
                 HasError = true
@@ -21,7 +23,7 @@ namespace MusicPlayerApplication.Services.ShellService
 
             var escapedArgs = cmd.Replace("\"", "\\\"");
 
-            var process = new Process()
+            using var process = new Process()
             {
                 StartInfo = new ProcessStartInfo
                 {
@@ -29,22 +31,25 @@ namespace MusicPlayerApplication.Services.ShellService
                     Arguments = $"-c \"{escapedArgs}\"",
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
-                    CreateNoWindow = true,
+                    CreateNoWindow = true
                 }
             };
+
             try
             {
                 var isStarted = process.Start();
-                if(!isStarted)
+                if (!isStarted)
                 {
                     var errorMessage = "Process not started !";
                     System.Console.WriteLine(errorMessage);
                     response.ErrorMessage = errorMessage;
                     return response;
                 }
-                process.WaitForExit();
-                process.Close();
+
+                await Task.WhenAny(task.Task, Task.Delay(30000));
+
                 response.HasError = false;
+
                 return response;
             }
             catch (System.Exception ex)

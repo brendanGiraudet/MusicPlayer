@@ -1,9 +1,10 @@
 ﻿using MusicPlayerApplication.Models;
+using System.Threading.Tasks;
 
 namespace MusicPlayerApplication.Services.ShellService
 {
     public interface IShellService
     {
-        ResponseModel Run(string cmd);
+        Task<ResponseModel> RunAsync(string cmd);
     }
 }

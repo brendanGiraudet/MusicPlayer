@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using MusicPlayerApplication.Models;
 using MusicPlayerApplication.Services;
+using System.Threading.Tasks;
 
 namespace MusicPlayerApplication.Components.YoutubeDownloader
 {
@@ -11,9 +12,9 @@ namespace MusicPlayerApplication.Components.YoutubeDownloader
 
         public YoutubeVideoModel Model { get; set; } = new YoutubeVideoModel();
 
-        private void DownloadClick(MouseEventArgs mouseEventArgs)
+        private async Task DownloadClick(MouseEventArgs mouseEventArgs)
         {
-            var response = YoutubeDlService.DownloadMusic(Model.Url);
+            await YoutubeDlService.DownloadMusicAsync(Model.Url);
         }
     }
 }

@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Options;
 using MusicPlayerApplication.Services.ShellService;
 using MusicPlayerApplication.Settings;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace MusicPlayer.UnitTest
@@ -16,13 +17,13 @@ namespace MusicPlayer.UnitTest
 
         #region Run
         [Fact]
-        public void ShouldHaveRunResponseWithHasErrorFalseWhenRunShellCommand()
+        public async Task ShouldHaveRunResponseWithHasErrorFalseWhenRunShellCommand()
         {
             // Arrange
             var fakeCommand = "echo hello";
 
             // Act
-            var runResponse = _shellService.Run(fakeCommand);
+            var runResponse = await _shellService.RunAsync(fakeCommand);
 
             // Arrange
             Assert.False(runResponse.HasError);
