@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MusicPlayerApplication.Data;
 using MusicPlayerApplication.Services;
+using MusicPlayerApplication.Services.ModalService;
 using MusicPlayerApplication.Services.ShellService;
 using MusicPlayerApplication.Settings;
 using MusicPlayerApplication.ViewModels;
@@ -32,6 +33,7 @@ namespace MusicPlayerApplication
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+            services.AddSingleton<IModalService, ModalService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
