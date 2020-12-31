@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPlayerApplication", "MusicPlayerApplication\MusicPlayerApplication.csproj", "{BC1B4797-2DCE-448F-B002-BE5DD6A7A762}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayerApplication", "MusicPlayerApplication\MusicPlayerApplication.csproj", "{BC1B4797-2DCE-448F-B002-BE5DD6A7A762}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPlayer.UnitTest", "MusicPlayer.UnitTest\MusicPlayer.UnitTest.csproj", "{FAED073A-ED8D-4F5F-BCD0-CAE2A9F7320A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayer.UnitTest", "MusicPlayer.UnitTest\MusicPlayer.UnitTest.csproj", "{FAED073A-ED8D-4F5F-BCD0-CAE2A9F7320A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPlayer.FunctionalTest", "MusicPlayer.FunctionalTest\MusicPlayer.FunctionalTest.csproj", "{0D2023A9-D7A9-44BA-AAE5-D2E99AD169A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayer.FunctionalTest", "MusicPlayer.FunctionalTest\MusicPlayer.FunctionalTest.csproj", "{0D2023A9-D7A9-44BA-AAE5-D2E99AD169A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

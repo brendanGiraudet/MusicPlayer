@@ -1,0 +1,17 @@
+﻿
+<div class="modal fade @DisplayClass">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">@Title</h5>
+            <button type="button" class="close" @onclick="Toggle">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            @Message
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" @onclick="Toggle">Ok</button>
+        </div>
+    </div>
+</div>
