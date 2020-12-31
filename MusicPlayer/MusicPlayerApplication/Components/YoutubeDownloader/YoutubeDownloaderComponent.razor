@@ -1,6 +1,6 @@
 ﻿<h3>YoutubeDownloaderComponent</h3>
 
 <div>
-    <input @bind-value="@Model.Url" type="text" placeholder="Url" />
-    <button class="btn btn-primary" @onclick="DownloadClick">Download</button>
+    <input @bind-value="@ViewModel.Model.Url" type="text" placeholder="Url" />
+    <button class="btn btn-primary" @onclick="ViewModel.DownloadMusicAsync">Download</button>
 </div>

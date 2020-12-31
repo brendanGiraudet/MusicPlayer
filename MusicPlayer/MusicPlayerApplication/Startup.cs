@@ -29,11 +29,11 @@ namespace MusicPlayerApplication
             services.Configure<ShellSettings>(Configuration.GetSection("Shell"));
             services.AddTransient<IYoutubeDlService, YoutubeDlService>();
             services.AddTransient<IShellService, ShellService>();
-            services.AddTransient<YoutubeDlViewModel>();
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<IModalService, ModalService>();
+            services.AddTransient<IYoutubeDlViewModel, YoutubeDlViewModel>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
