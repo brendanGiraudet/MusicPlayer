@@ -9,6 +9,7 @@ using MusicPlayerApplication.Services.ModalService;
 using MusicPlayerApplication.Services.ShellService;
 using MusicPlayerApplication.Settings;
 using MusicPlayerApplication.ViewModels;
+using MusicPlayerApplication.ViewModels.PlayerViewModel;
 
 namespace MusicPlayerApplication
 {
@@ -34,6 +35,7 @@ namespace MusicPlayerApplication
             services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<IModalService, ModalService>();
             services.AddTransient<IYoutubeDlViewModel, YoutubeDlViewModel>();
+            services.AddTransient<IPlayerViewModel, PlayerViewModel>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

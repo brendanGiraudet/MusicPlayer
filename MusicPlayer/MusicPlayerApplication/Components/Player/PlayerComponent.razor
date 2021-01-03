@@ -1,0 +1,55 @@
+﻿<div class="player">
+
+    <div id="background-wrap">
+        <div class="bubble x1"></div>
+        <div class="bubble x2"></div>
+        <div class="bubble x3"></div>
+        <div class="bubble x4"></div>
+        <div class="bubble x5"></div>
+        <div class="bubble x6"></div>
+        <div class="bubble x7"></div>
+        <div class="bubble x8"></div>
+        <div class="bubble x9"></div>
+        <div class="bubble x10"></div>
+        <div class="bubble x1"></div>
+    </div>
+
+    <div id="wrapper">
+        <div id="iphone">
+            <div id="screen">
+                <div id="content-wrap">
+                    <div id="background"></div>
+                    <div id="content">
+                        <div class="jcarousel">
+                            <ul id="songs">
+                                @foreach (var song in ViewModel.Songs)
+                                {
+                                    <li class="song" data-audio="@song.Path" data-color="#eb6e60">
+                                        <img src="@song.ImagePath" alt="">
+                                        <p class="song-title">@song.Title</p>
+                                        <p class="song-artist">@song.Artist</p>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        <audio id="audio"><source src="@ViewModel.CurrentSong.Path" type="audio/mpeg"></audio>
+                        <div id="controls">
+                            <span id="previous-btn"><i class="fa fa-step-backward fa-fw" aria-hidden="true"></i></span>
+                            <span id="play-btn"><i class="fa @IconPlayerClass fa-fw" aria-hidden="true" @onclick="OnClickPlayPauseButton"></i></span>
+                            <span id="next-btn"><i class="fa fa-step-forward fa-fw" aria-hidden="true"></i></span>
+                        </div>
+                        <div id="timeline">
+                            <span id="current-time">--:--</span>
+                            <span id="total-time">--:--</span>
+                            <div class="slider" data-direction="horizontal">
+                                <div class="progress">
+                                    <div class="pin" id="progress-pin" data-method="rewind"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
