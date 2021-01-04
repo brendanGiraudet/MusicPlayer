@@ -116,7 +116,7 @@
 
 .bubble {
     border-radius: 50%;
-    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px #adb5bd;
     height: 200px;
     position: absolute;
     width: 200px;
@@ -134,17 +134,7 @@
         width: 180px;
     }
 
-/* Float: left/right */
-.pull-left {
-    float: left;
-}
-
-.pull-right {
-    float: right;
-}
-
 /* Flex center */
-.flex-center,
 div#home-screen div.home-content div.app-icon,
 div#home-screen {
     display: -webkit-box;
@@ -156,14 +146,6 @@ div#home-screen {
     -webkit-align-items: center;
     align-items: center;
     justify-content: center;
-}
-
-/* Flex */
-.flex {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
 }
 
 /* Outline none */
@@ -241,8 +223,6 @@ div#iphone {
     display: flex;
 }
 
-
-
     div#iphone div#screen {
         background: #666666;
         border: 2px solid #f2f2f2;
@@ -270,24 +250,6 @@ div#iphone {
             transform: rotate(-20deg);
         }
 
-    div#iphone.dark-mode {
-        background: #262626;
-        border: 4px solid #a6a6a6;
-    }
-
-    div#iphone div#screen.dark-mode {
-        border: 2px solid #a6a6a6;
-    }
-
-    div#iphone.dark-mode {
-        background: #262626;
-        border: 4px solid #a6a6a6;
-    }
-
-    div#iphone div#screen.dark-mode {
-        border: 2px solid #a6a6a6;
-    }
-
 div#content-wrap {
     background: #333;
     height: 100%;
@@ -300,26 +262,6 @@ div#content-wrap {
     -o-transition: transform 0.25s ease;
     transition: transform 0.25s ease;
 }
-
-    div#content-wrap.minimized {
-        -moz-transform: scale(0);
-        -o-transform: scale(0);
-        -ms-transform: scale(0);
-        -webkit-transform: scale(0);
-        transform: scale(0);
-    }
-
-    div#content-wrap.inactive {
-        -moz-transform: scale(0.85) translate(0, 60%);
-        -o-transform: scale(0.85) translate(0, 60%);
-        -ms-transform: scale(0.85) translate(0, 60%);
-        -webkit-transform: scale(0.85) translate(0, 60%);
-        transform: scale(0.85) translate(0, 60%);
-    }
-
-        div#content-wrap.inactive div#overlay {
-            display: block;
-        }
 
 div#overlay {
     cursor: pointer;
@@ -505,64 +447,29 @@ div#timeline {
     width: 92.5%;
 }
 
-    div#timeline span {
-        color: #b3b3b3;
-        font-size: 7px;
-        position: absolute;
-        top: -10px;
+#songProgressbar {
+    background-color: gray;
+    border-radius: 2px;
+    cursor: pointer;
+    height: 2px;
+    position: relative;
+    width: 100%;
+}
+
+div#timeline span {
+    color: #b3b3b3;
+    font-size: 7px;
+    position: absolute;
+    top: -10px;
+}
+
+    div#timeline span#current-time {
+        left: 0;
     }
 
-        div#timeline span#current-time {
-            left: 0;
-        }
-
-        div#timeline span#total-time {
-            right: 0;
-        }
-
-    div#timeline div.slider {
-        background-color: gray;
-        border-radius: 2px;
-        cursor: pointer;
-        height: 2px;
-        position: relative;
-        width: 100%;
+    div#timeline span#total-time {
+        right: 0;
     }
-
-        div#timeline div.slider div.progress {
-            background-color: #e74c3c;
-            height: 100%;
-            pointer-events: none;
-            position: absolute;
-            width: 0;
-        }
-
-            div#timeline div.slider div.progress div.pin {
-                background-color: white;
-                border-radius: 8px;
-                height: 8px;
-                position: absolute;
-                pointer-events: all;
-                right: -5px;
-                top: -3px;
-                width: 8px;
-                -webkit-box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.32);
-                -moz-box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.32);
-                box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.32);
-                -webkit-transition: transform 0.25s ease;
-                -moz-transition: transform 0.25s ease;
-                -ms-transition: transform 0.25s ease;
-                -o-transition: transform 0.25s ease;
-                transition: transform 0.25s ease;
-            }
-
-                div#timeline div.slider div.progress div.pin:active {
-                    -moz-transform: scale(1.5);
-                    -o-transform: scale(1.5);
-                    -ms-transform: scale(1.5);
-                    -webkit-transform: scale(1.5);
-                    transform: scale(1.5);
-                }
 
 div#home-screen {
     background: linear-gradient(to bottom, #4f6f8f, #3d566e);

@@ -25,22 +25,22 @@ namespace MusicPlayerApplication.Components.Player
 
         private async Task Play()
         {
-            await JSRuntime.InvokeAsync<string>("player.play", "audio");
+            await JSRuntime.InvokeAsync<string>("player.play", "audioPlayer");
         }
         private async Task Pause()
         {
-            await JSRuntime.InvokeAsync<string>("player.pause", "audio");
-        }
-
-        private async Task OnTimeUpdate()
-        {
-            await JSRuntime.InvokeAsync<string>("player.timeupdate", "audio", "current-time", "total-time");
+            await JSRuntime.InvokeAsync<string>("player.pause", "audioPlayer");
         }
 
         protected override async Task OnInitializedAsync()
         {
             await ViewModel.LoadSongsAsync();
             await base.OnInitializedAsync();
+        }
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await base.OnAfterRenderAsync(firstRender);
+            await JSRuntime.InvokeAsync<string>("player.timeupdate");
         }
     }
 }
