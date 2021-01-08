@@ -13,10 +13,10 @@ namespace MusicPlayerApplication.Services.ShellService
         {
             _shellSettings = shellSettings;
         }
-        public async Task<ResponseModel> RunAsync(string cmd)
+        public async Task<ResponseModel<bool>> RunAsync(string cmd)
         {
-            var task = new TaskCompletionSource<ResponseModel>();
-            var response = new ResponseModel
+            var task = new TaskCompletionSource<ResponseModel<bool>>();
+            var response = new ResponseModel<bool>
             {
                 HasError = true
             };
