@@ -7,6 +7,7 @@ EXPOSE 443
 RUN apt update && apt dist-upgrade -y
 RUN apt install -y python3-pip
 RUN pip3 install --upgrade youtube-dl
+RUN apt install -y ffmpeg
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
