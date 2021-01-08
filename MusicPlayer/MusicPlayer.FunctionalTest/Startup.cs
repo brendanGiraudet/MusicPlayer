@@ -14,7 +14,12 @@ namespace MusicPlayer.FunctionalTest
             configBuilder.AddJsonFile("appsettings.json");
             var config = configBuilder.Build();
 
+            // Config
             services.Configure<YoutubeDlSettings>(config.GetSection("YoutubeDl"));
+            services.Configure<ShellSettings>(config.GetSection("Shell"));
+            services.Configure<SongSettings>(config.GetSection("Song"));
+
+            // Services
             services.AddTransient<IYoutubeDlService, YoutubeDlService>();
             services.AddTransient<IShellService, ShellService>();
         }
