@@ -1,7 +1,6 @@
 ﻿using MusicPlayerApplication.Models;
 using MusicPlayerApplication.Services;
 using MusicPlayerApplication.Services.ModalService;
-using System;
 using System.Threading.Tasks;
 
 namespace MusicPlayerApplication.ViewModels
@@ -30,8 +29,17 @@ namespace MusicPlayerApplication.ViewModels
         public async Task DownloadMusicAsync()
         {
             IsBusy = true;
-            await _youtubeDlService.DownloadMusicAsync(Model.Url);
-            await _modalService.ShowAsync("Téléchargement de la musique provenant de youtube", "Le téléchargement c'est bien effectué");
+
+            var downloadResponse = await _youtubeDlService.DownloadMusicAsync(Model.Url);
+            if (downloadResponse.HasError)
+            {
+                await _modalService.ShowAsync("Téléchargement de la musique provenant de youtube", downloadResponse.ErrorMessage);
+            }
+            else
+            {
+                await _modalService.ShowAsync("Téléchargement de la musique provenant de youtube", "Le téléchargement c'est bien effectué");
+            }
+
             IsBusy = false;
         }
     }
