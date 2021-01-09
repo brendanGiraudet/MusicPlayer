@@ -7,6 +7,15 @@
         var player = document.getElementById(playerId);
         player.pause();
     },
+    stop: function (playerId) {
+        var player = document.getElementById(playerId);
+        player.pause();
+        player.currentTime = 0;
+    },
+    change: function (playerId, source) {
+        var player = document.getElementById(playerId);
+        player.src = source;
+    },
     converttotime: function (duration) {
         var sec_num = parseInt(duration, 10);
         var hours = Math.floor(sec_num / 3600);

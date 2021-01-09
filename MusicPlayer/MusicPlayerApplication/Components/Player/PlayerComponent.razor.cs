@@ -22,6 +22,20 @@ namespace MusicPlayerApplication.Components.Player
             else await Play();
             TooglePlay();
         }
+        private async Task OnClickNextButton()
+        {
+            await Stop();
+            await ViewModel.NextSongAsync();
+            await Change(ViewModel.CurrentSong.Path);
+            StateHasChanged();
+        }
+        private async Task OnClickPreviousButton()
+        {
+            await Stop();
+            await ViewModel.PreviousSongAsync();
+            await Change(ViewModel.CurrentSong.Path);
+            StateHasChanged();
+        }
 
         private async Task Play()
         {
@@ -30,6 +44,14 @@ namespace MusicPlayerApplication.Components.Player
         private async Task Pause()
         {
             await JSRuntime.InvokeAsync<string>("player.pause", "audioPlayer");
+        }
+        private async Task Stop()
+        {
+            await JSRuntime.InvokeAsync<string>("player.stop", "audioPlayer");
+        }
+        private async Task Change(string sourceFile)
+        {
+            await JSRuntime.InvokeAsync<string>("player.change", "audioPlayer", sourceFile);
         }
 
         protected override async Task OnInitializedAsync()

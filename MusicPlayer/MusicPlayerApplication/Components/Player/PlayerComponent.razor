@@ -22,21 +22,18 @@
                     <div id="content">
                         <div class="jcarousel">
                             <ul id="songs">
-                                @foreach (var song in ViewModel.Songs)
-                                {
-                                    <li class="song" data-audio="@song.Path" data-color="#eb6e60">
-                                        <img src="@song.ImagePath" alt="">
-                                        <p class="song-title">@song.Title</p>
-                                        <p class="song-artist">@song.Artist</p>
-                                    </li>
-                                }
+                                <li class="song">
+                                    <img src="@ViewModel.CurrentSong.ImagePath" alt="@ViewModel.CurrentSong.Title">
+                                    <p class="song-title">@ViewModel.CurrentSong.Title</p>
+                                    <p class="song-artist">@ViewModel.CurrentSong.Artist</p>
+                                </li>
                             </ul>
                         </div>
                         <audio id="audioPlayer"><source src="@ViewModel.CurrentSong.Path" type="audio/mpeg"></audio>
                         <div id="controls">
-                            <span id="previous-btn"><i class="fa fa-step-backward fa-fw" aria-hidden="true"></i></span>
+                            <span id="previous-btn"><i class="fa fa-step-backward fa-fw" aria-hidden="true" disable="@ViewModel.IsBeginList" @onclick="OnClickPreviousButton"></i></span>
                             <span id="play-btn"><i class="fa @IconPlayerClass fa-fw" aria-hidden="true" @onclick="OnClickPlayPauseButton"></i></span>
-                            <span id="next-btn"><i class="fa fa-step-forward fa-fw" aria-hidden="true"></i></span>
+                            <span id="next-btn"><i class="fa fa-step-forward fa-fw" aria-hidden="true" disabled="@ViewModel.IsEndList" @onclick="OnClickNextButton"></i></span>
                         </div>
                         <div id="timeline">
                             <span id="current-time">--:--</span>
