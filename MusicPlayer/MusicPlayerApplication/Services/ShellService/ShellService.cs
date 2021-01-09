@@ -46,7 +46,7 @@ namespace MusicPlayerApplication.Services.ShellService
                     return response;
                 }
 
-                await Task.WhenAny(task.Task, Task.Delay(30000));
+                await Task.WhenAny(task.Task, Task.Delay(15000));
 
                 response.HasError = false;
 
