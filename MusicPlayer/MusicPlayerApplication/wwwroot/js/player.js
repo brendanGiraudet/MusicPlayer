@@ -15,29 +15,57 @@
     change: function (playerId, source) {
         var player = document.getElementById(playerId);
         player.src = source;
-    },
-    converttotime: function (duration) {
-        var sec_num = parseInt(duration, 10);
-        var hours = Math.floor(sec_num / 3600);
-        var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-        var seconds = sec_num - (hours * 3600) - (minutes * 60);
+    }
+}
 
-        if (hours < 10) { hours = "0" + hours; }
-        if (minutes < 10) { minutes = "0" + minutes; }
-        if (seconds < 10) { seconds = "0" + seconds; }
-        return hours + ':' + minutes + ':' + seconds;
-    },
-    timeupdate: function () {
-        var audioplayer = document.getElementById("audioPlayer");
-        var currentTimeTag = document.getElementById("current-time");
-        var totalTimetag = document.getElementById("total-time");
-        var progressbarTag = document.getElementById("songProgressbar");
+window.CustomEventHandler = function (playerId, eventName, payload) {
+    var player = document.getElementById(playerId);
+    if (!(player && eventName)) {
+        return false
+    }
+    if (!player.hasOwnProperty('customEvent')) {
+        player['customEvent'] = function (eventName, payload) {
 
-        audioplayer.addEventListener('timeupdate', function () {
-            currentTimeTag.innerHTML = window.player.converttotime(audioplayer.currentTime);
-            totalTimetag.innerHTML = window.player.converttotime(audioplayer.duration);
-            progressbarTag.value = '' + audioplayer.currentTime;
-            progressbarTag.max = '' + audioplayer.duration;
-        });
+            payload.currentTime = 4;
+            this['value'] = getJSON(this, eventName, payload)
+
+            var event
+            if (typeof (Event) === 'function') {
+                event = new Event('change')
+            } else {
+                event = document.createEvent('Event')
+                event.initEvent('change', true, true)
+            }
+
+            this.dispatchEvent(event)
+        }
+    }
+
+    player.addEventListener(eventName, function () { player.customEvent(eventName, payload) });
+
+    // Craft a bespoke json string to serve as a payload for the event
+    function getJSON(el, eventName, payload) {
+
+        if (payload && payload.length > 0) {
+            // this syntax copies just the properties we request from the source element
+            // IE 11 compatible
+            let data = {};
+            for (var obj in payload) {
+                var item = payload[obj];
+                if (el[item]) {
+                    data[item] = el[item]
+                }
+            }
+
+            // this stringify overload eliminates undefined/null/empty values
+            return JSON.stringify(
+                { name: eventName, state: data }
+                , function (k, v) { return (v === undefined || v == null || v.length === 0) ? undefined : v }
+            )
+        } else {
+            return JSON.stringify(
+                { name: eventName }
+            )
+        }
     }
 }

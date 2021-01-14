@@ -36,7 +36,6 @@ namespace MusicPlayerApplication.ViewModels.PlayerViewModel
             {
                 Songs = getSongsResponse.Content;
                 CurrentSong = getSongsResponse.Content.FirstOrDefault();
-                await Task.CompletedTask;
             }
         }
 
@@ -49,6 +48,7 @@ namespace MusicPlayerApplication.ViewModels.PlayerViewModel
             }
             await Task.CompletedTask;
         }
+
         public async Task PreviousSongAsync()
         {
             if (!IsBeginList)

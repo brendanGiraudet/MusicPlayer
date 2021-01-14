@@ -29,16 +29,16 @@
                                 </li>
                             </ul>
                         </div>
-                        <audio id="audioPlayer"><source src="@ViewModel.CurrentSong.Path" type="audio/mpeg"></audio>
+                        <audio id="@Id" @onchange="@OnChange"><source src="@ViewModel.CurrentSong.Path" type="audio/mpeg"></audio>
                         <div id="controls">
                             <span id="previous-btn"><i class="fa fa-step-backward fa-fw" aria-hidden="true" disable="@ViewModel.IsBeginList" @onclick="OnClickPreviousButton"></i></span>
                             <span id="play-btn"><i class="fa @IconPlayerClass fa-fw" aria-hidden="true" @onclick="OnClickPlayPauseButton"></i></span>
                             <span id="next-btn"><i class="fa fa-step-forward fa-fw" aria-hidden="true" disabled="@ViewModel.IsEndList" @onclick="OnClickNextButton"></i></span>
                         </div>
                         <div id="timeline">
-                            <span id="current-time">--:--</span>
-                            <span id="total-time">--:--</span>
-                            <progress id="songProgressbar" value="0" max="100"></progress>
+                            <span id="current-time">@CurrentTimeAsTime</span>
+                            <span id="total-time">@DurationAsTime</span>
+                            <progress id="songProgressbar" value="@_currentTime" max="@_duration"></progress>
                         </div>
                     </div>
                 </div>
