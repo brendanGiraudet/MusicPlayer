@@ -8,11 +8,21 @@
 
   <ItemGroup>
     <None Remove="appsettings.json" />
+    <None Remove="Musics\Wish You Were Here-hjpF8ukSrvk.info.json" />
+    <None Remove="Musics\Wish You Were Here-hjpF8ukSrvk.mp3" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Musics\Wish You Were Here-hjpF8ukSrvk.info.json">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Musics\Wish You Were Here-hjpF8ukSrvk.mp3">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

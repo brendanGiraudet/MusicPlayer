@@ -5,6 +5,6 @@ namespace MusicPlayerApplication.Services
 {
     public interface IYoutubeDlService
     {
-        Task<ResponseModel> DownloadMusicAsync(string url);
+        Task<ResponseModel<bool>> DownloadMusicAsync(string url);
     }
 }

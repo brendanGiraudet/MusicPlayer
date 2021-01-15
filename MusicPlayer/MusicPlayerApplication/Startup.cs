@@ -7,8 +7,10 @@ using MusicPlayerApplication.Data;
 using MusicPlayerApplication.Services;
 using MusicPlayerApplication.Services.ModalService;
 using MusicPlayerApplication.Services.ShellService;
+using MusicPlayerApplication.Services.SongService;
 using MusicPlayerApplication.Settings;
 using MusicPlayerApplication.ViewModels;
+using MusicPlayerApplication.ViewModels.PlayerViewModel;
 
 namespace MusicPlayerApplication
 {
@@ -25,15 +27,25 @@ namespace MusicPlayerApplication
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<YoutubeDlSettings>(Configuration.GetSection("YoutubeDl"));
-            services.Configure<ShellSettings>(Configuration.GetSection("Shell"));
-            services.AddTransient<IYoutubeDlService, YoutubeDlService>();
-            services.AddTransient<IShellService, ShellService>();
+            // Other
             services.AddRazorPages();
             services.AddServerSideBlazor();
+
+            // Config
+            services.Configure<YoutubeDlSettings>(Configuration.GetSection("YoutubeDl"));
+            services.Configure<ShellSettings>(Configuration.GetSection("Shell"));
+            services.Configure<SongSettings>(Configuration.GetSection("Song"));
+
+            // Services
+            services.AddTransient<IYoutubeDlService, YoutubeDlService>();
+            services.AddTransient<IShellService, ShellService>();
+            services.AddTransient<ISongService, SongService>();
             services.AddSingleton<WeatherForecastService>();
+
+            // ViewModel
             services.AddSingleton<IModalService, ModalService>();
             services.AddTransient<IYoutubeDlViewModel, YoutubeDlViewModel>();
+            services.AddSingleton<IPlayerViewModel, PlayerViewModel>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

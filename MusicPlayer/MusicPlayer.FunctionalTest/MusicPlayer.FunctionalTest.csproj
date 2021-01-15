@@ -36,4 +36,8 @@
     <ProjectReference Include="..\MusicPlayerApplication\MusicPlayerApplication.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Musics\" />
+  </ItemGroup>
+
 </Project>

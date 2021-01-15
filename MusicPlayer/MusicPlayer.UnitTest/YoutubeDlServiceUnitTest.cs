@@ -25,7 +25,7 @@ namespace MusicPlayer.UnitTest
             var shellServiceMock = new Mock<IShellService>();
             shellServiceMock
                 .Setup(s => s.RunAsync(It.IsAny<string>()))
-                .ReturnsAsync(new ResponseModel
+                .ReturnsAsync(new ResponseModel<bool>
                 {
                     HasError = false
                 })

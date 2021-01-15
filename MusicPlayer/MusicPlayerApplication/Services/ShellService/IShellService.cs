@@ -5,6 +5,6 @@ namespace MusicPlayerApplication.Services.ShellService
 {
     public interface IShellService
     {
-        Task<ResponseModel> RunAsync(string cmd);
+        Task<ResponseModel<bool>> RunAsync(string cmd);
     }
 }
