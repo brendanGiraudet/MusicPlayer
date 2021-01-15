@@ -37,7 +37,11 @@ namespace MusicPlayerApplication.Services.SongService
                     var song = System.Text.Json.JsonSerializer.Deserialize<SongModel>(songInfo);
 
                     song.Path = _songSettings.Path + "/" + songFile.Name;
-                    song.ImagePath = _songSettings.Path + "/" + songFile.Name.Replace("mp3", "webp");
+                    var webpImagePathToCheck = _youtubeDlSettings.MusicPath + "/" + songFile.Name.Replace("mp3", "webp");
+                    var webpImagePath = _songSettings.Path + "/" + songFile.Name.Replace("mp3", "webp");
+                    var jpgImagePath = _songSettings.Path + "/" + songFile.Name.Replace("mp3", "jpg");
+                    var webpImageExist = File.Exists(webpImagePathToCheck);
+                    song.ImagePath = webpImageExist ? webpImagePath : jpgImagePath;
                     response.Content = response.Content.Append(song);
                 }
                 response.HasError = false;
