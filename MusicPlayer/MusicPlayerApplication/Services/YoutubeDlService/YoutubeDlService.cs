@@ -21,7 +21,7 @@ namespace MusicPlayerApplication.Services
             var proxy = _youtubeDlSettings.Value.Proxy;
             //var command = $"youtube-dl --proxy {proxy} --write-thumbnail {url}";
             //var command = $"cd {_youtubeDlSettings.Value.MusicPath} && youtube-dl --write-thumbnail {url}";
-            var command = $"youtube-dl -o '{_youtubeDlSettings.Value.MusicPath}/%(format_id)s.%(ext)s' --write-info-json -x --audio-format mp3 --write-thumbnail {url}";
+            var command = $"youtube-dl -o '{_youtubeDlSettings.Value.MusicPath}/%(id)s.%(ext)s' --write-info-json -x --audio-format mp3 --write-thumbnail {url}";
 
             return await _shellService.RunAsync(command);
         }

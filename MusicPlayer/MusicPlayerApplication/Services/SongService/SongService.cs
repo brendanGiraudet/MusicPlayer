@@ -37,7 +37,7 @@ namespace MusicPlayerApplication.Services.SongService
                     var song = System.Text.Json.JsonSerializer.Deserialize<SongModel>(songInfo);
 
                     song.Path = _songSettings.Path + "/" + songFile.Name;
-                    song.ImagePath = _songSettings.Path + "/" + songFile.Name.Replace("mp3", "jpg");
+                    song.ImagePath = _songSettings.Path + "/" + songFile.Name.Replace("mp3", "webp");
                     response.Content = response.Content.Append(song);
                 }
                 response.HasError = false;

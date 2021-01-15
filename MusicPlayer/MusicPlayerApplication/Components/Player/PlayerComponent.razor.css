@@ -230,6 +230,7 @@ div#iphone {
         overflow: hidden;
         position: relative;
         z-index: 1;
+        width: 100%;
     }
 
         div#iphone div#screen::after {
@@ -348,7 +349,13 @@ div.jcarousel {
     width: calc(100% + 30px);
     position: relative;
     overflow: hidden;
+    text-align: center;
 }
+
+    div.jcarousel > img {
+        height: 12rem;
+        width: 15rem;
+    }
 
     div.jcarousel ul#songs {
         width: 20000em;
@@ -407,6 +414,11 @@ div#controls {
         div#controls span i {
             cursor: pointer;
         }
+
+            div#controls span i.disabled {
+                color: gray;
+                cursor: default;
+            }
 
 div#sub-controls {
     color: #999999;
@@ -560,3 +572,7 @@ div#home-screen {
                 height: 60%;
                 width: 60%;
             }
+
+#random-btn.no-random {
+    color: gray;
+}

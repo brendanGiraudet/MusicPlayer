@@ -10,36 +10,47 @@ namespace MusicPlayerApplication.Components.Player
 {
     public partial class PlayerComponent
     {
+        [Inject] public IPlayerViewModel ViewModel { get; set; }
+        [Inject] public IJSRuntime JSRuntime { get; set; }
+
         private bool _isPlaying = false;
         private string _currentTime;
         private string _duration;
         private readonly JsonSerializerOptions serializationOptions = new JsonSerializerOptions { IgnoreNullValues = true, PropertyNameCaseInsensitive = true };
-
-        [Inject] public IPlayerViewModel ViewModel { get; set; }
-        [Inject] public IJSRuntime JSRuntime { get; set; }
+        private bool _isRandom = false;
+        
+        private bool HasNextButtonDisabled => ViewModel.IsEndList;
+        private bool HasPreviousButtonDisabled => ViewModel.IsBeginList;
         public string CurrentTimeAsTime => ConvertToTime(_currentTime);
         public string DurationAsTime => ConvertToTime(_duration);
         public string IconPlayerClass => _isPlaying ? "fa-pause" : "fa-play";
         public string Id { get; set; } = "audioPlayer";
+        public string RandomClass => _isRandom ? string.Empty : "no-random";
+        public string DisabledNextButtonClass => HasNextButtonDisabled ? "disabled" : string.Empty;
+        public string DisabledPreviousButtonClass => HasPreviousButtonDisabled ? "disabled" : string.Empty;
 
         private Task OnClickPlayPauseButton() => _isPlaying ? Pause() : Play();
 
         private async Task OnClickNextButton()
         {
+            if (HasNextButtonDisabled) await Task.CompletedTask;
+
             await Stop();
             if (!ViewModel.IsEndList)
             {
-                await ViewModel.NextSongAsync();
+                await ViewModel.NextSongAsync(_isRandom);
                 await ChangeSource(ViewModel.CurrentSong.Path);
                 StateHasChanged();
             }
         }
         private async Task OnClickPreviousButton()
         {
+            if (HasPreviousButtonDisabled) await Task.CompletedTask;
+
             await Stop();
             if(!ViewModel.IsBeginList)
             {
-                await ViewModel.PreviousSongAsync();
+                await ViewModel.PreviousSongAsync(_isRandom);
                 await ChangeSource(ViewModel.CurrentSong.Path);
                 StateHasChanged();
             }

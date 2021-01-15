@@ -13,7 +13,7 @@ namespace MusicPlayerApplication.ViewModels.PlayerViewModel
         bool IsBeginList { get; }
 
         Task LoadSongsAsync();
-        Task NextSongAsync();
-        Task PreviousSongAsync();
+        Task NextSongAsync(bool isRandom);
+        Task PreviousSongAsync(bool isRandom);
     }
 }

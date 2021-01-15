@@ -1,6 +1,7 @@
 ﻿using MusicPlayerApplication.Models;
 using MusicPlayerApplication.Services.ModalService;
 using MusicPlayerApplication.Services.SongService;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,8 +40,14 @@ namespace MusicPlayerApplication.ViewModels.PlayerViewModel
             }
         }
 
-        public async Task NextSongAsync()
+        public async Task NextSongAsync(bool isRandom)
         {
+            if (isRandom)
+            {
+                await RandomSong();
+                await Task.CompletedTask;
+            }
+
             if (!IsEndList)
             {
                 CurrentSongIndex++;
@@ -49,13 +56,27 @@ namespace MusicPlayerApplication.ViewModels.PlayerViewModel
             await Task.CompletedTask;
         }
 
-        public async Task PreviousSongAsync()
+        public async Task PreviousSongAsync(bool isRandom)
         {
+            if (isRandom) 
+            {
+                await RandomSong();
+                await Task.CompletedTask;
+            }
+
             if (!IsBeginList)
             {
                 CurrentSongIndex--;
                 CurrentSong = Songs.ToArray()[CurrentSongIndex];
             }
+            await Task.CompletedTask;
+        }
+
+        private async Task RandomSong()
+        {
+            var random = new Random();
+            CurrentSongIndex = random.Next(0, Songs.Count() - 1);
+            CurrentSong = Songs.ToArray()[CurrentSongIndex];
             await Task.CompletedTask;
         }
     }
