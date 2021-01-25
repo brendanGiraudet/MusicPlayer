@@ -2,8 +2,8 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 1515
+EXPOSE 1516
 RUN apt update && apt dist-upgrade -y
 RUN apt install -y python3-pip
 RUN pip3 install --upgrade youtube-dl
@@ -21,7 +21,7 @@ FROM build AS publish
 RUN dotnet publish "MusicPlayerApplication.csproj" -c Release -o /app/publish
 
 FROM base AS final
-ENV ASPNETCORE_URLS=https://+:443;http://+:80
+ENV ASPNETCORE_URLS=https://+:1515;http://+:1516
 ENV ASPNETCORE_HTTPS_PORT=1515
 ENV ASPNETCORE_Kestrel__Certificates__Default__Password="music_playerpass"
 ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/https/music_player.pfx
