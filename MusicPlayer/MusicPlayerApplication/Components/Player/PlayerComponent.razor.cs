@@ -2,7 +2,6 @@
 using Microsoft.JSInterop;
 using MusicPlayerApplication.ViewModels.PlayerViewModel;
 using System;
-using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -18,9 +17,9 @@ namespace MusicPlayerApplication.Components.Player
         private string _duration;
         private readonly JsonSerializerOptions serializationOptions = new JsonSerializerOptions { IgnoreNullValues = true, PropertyNameCaseInsensitive = true };
         private bool _isRandom = false;
-        
-        private bool HasNextButtonDisabled => ViewModel.IsEndList;
-        private bool HasPreviousButtonDisabled => ViewModel.IsBeginList;
+
+        private bool HasNextButtonDisabled => ViewModel.IsEndList && !_isRandom;
+        private bool HasPreviousButtonDisabled => ViewModel.IsBeginList && !_isRandom;
         public string CurrentTimeAsTime => ConvertToTime(_currentTime);
         public string DurationAsTime => ConvertToTime(_duration);
         public string IconPlayerClass => _isPlaying ? "fa-pause" : "fa-play";
@@ -33,26 +32,24 @@ namespace MusicPlayerApplication.Components.Player
 
         private async Task OnClickNextButton()
         {
-            if (HasNextButtonDisabled) await Task.CompletedTask;
-
-            await Stop();
-            if (!ViewModel.IsEndList)
+            if (!HasNextButtonDisabled)
             {
+                await Stop();
                 await ViewModel.NextSongAsync(_isRandom);
                 await ChangeSource(ViewModel.CurrentSong.Path);
                 StateHasChanged();
+                await Play();
             }
         }
         private async Task OnClickPreviousButton()
         {
-            if (HasPreviousButtonDisabled) await Task.CompletedTask;
-
-            await Stop();
-            if(!ViewModel.IsBeginList)
+            if (!HasPreviousButtonDisabled)
             {
+                await Stop();
                 await ViewModel.PreviousSongAsync(_isRandom);
                 await ChangeSource(ViewModel.CurrentSong.Path);
                 StateHasChanged();
+                await Play();
             }
         }
 

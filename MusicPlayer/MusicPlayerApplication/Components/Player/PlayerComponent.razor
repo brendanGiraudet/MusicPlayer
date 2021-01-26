@@ -27,9 +27,9 @@
                         </div>
                         <audio id="@Id" @onchange="@OnChange"><source src="@ViewModel.CurrentSong.Path" type="audio/mpeg"></audio>
                         <div id="controls">
-                            <span id="previous-btn"><i class="fa fa-step-backward fa-fw @DisabledPreviousButtonClass" aria-hidden="true" disable="@ViewModel.IsBeginList" @onclick="OnClickPreviousButton"></i></span>
+                            <span id="previous-btn"><i class="fa fa-step-backward fa-fw @DisabledPreviousButtonClass" aria-hidden="true" disable="@HasPreviousButtonDisabled" @onclick="OnClickPreviousButton"></i></span>
                             <span id="play-btn"><i class="fa @IconPlayerClass fa-fw" aria-hidden="true" @onclick="OnClickPlayPauseButton"></i></span>
-                            <span id="next-btn"><i class="fa fa-step-forward fa-fw @DisabledNextButtonClass" aria-hidden="true" disabled="@ViewModel.IsEndList" @onclick="OnClickNextButton"></i></span>
+                            <span id="next-btn"><i class="fa fa-step-forward fa-fw @DisabledNextButtonClass" aria-hidden="true" disabled="@HasNextButtonDisabled" @onclick="OnClickNextButton"></i></span>
                         </div>
                         <div id="timeline">
                             <span id="current-time">@CurrentTimeAsTime</span>
