@@ -9,15 +9,18 @@ namespace MusicPlayerApplication.ViewModels
     {
         private readonly IYoutubeDlService _youtubeDlService;
         private readonly IModalService _modalService;
+        private readonly ILoaderService _loaderService;
         private YoutubeVideoModel _model = new YoutubeVideoModel();
 
         public YoutubeDlViewModel(
             IYoutubeDlService youtubeDlService,
-            IModalService modalService
+            IModalService modalService,
+            ILoaderService loaderService
             )
         {
             _youtubeDlService = youtubeDlService;
             _modalService = modalService;
+            _loaderService = loaderService;
         }
 
         public YoutubeVideoModel Model
@@ -29,6 +32,7 @@ namespace MusicPlayerApplication.ViewModels
         public async Task DownloadMusicAsync()
         {
             IsBusy = true;
+            await _loaderService.ShowAsync();
 
             var downloadResponse = await _youtubeDlService.DownloadMusicAsync(Model.Url);
             if (downloadResponse.HasError)
@@ -40,6 +44,7 @@ namespace MusicPlayerApplication.ViewModels
                 await _modalService.ShowAsync("Téléchargement de la musique provenant de youtube", "Le téléchargement c'est bien effectué");
             }
 
+            await _loaderService.HideAsync();
             IsBusy = false;
         }
     }
