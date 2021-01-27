@@ -22,13 +22,16 @@ namespace MusicPlayerApplication.Components.Player
         private bool HasPreviousButtonDisabled => ViewModel.IsBeginList && !_isRandom;
         public string CurrentTimeAsTime => ConvertToTime(_currentTime);
         public string DurationAsTime => ConvertToTime(_duration);
-        public string IconPlayerClass => _isPlaying ? "fa-pause" : "fa-play";
+        public string IconPlayer => _isPlaying ? "pause" : "play_arrow";
         public string Id { get; set; } = "audioPlayer";
         public string RandomClass => _isRandom ? string.Empty : "no-random";
         public string DisabledNextButtonClass => HasNextButtonDisabled ? "disabled" : string.Empty;
         public string DisabledPreviousButtonClass => HasPreviousButtonDisabled ? "disabled" : string.Empty;
 
         private Task OnClickPlayPauseButton() => _isPlaying ? Pause() : Play();
+
+        private bool IsCurrentSong(string title) => ViewModel.CurrentSong.Title == title;
+        private string PlayedIcon(string title) => IsCurrentSong(title) ? "equalizer" : "play_arrow";
 
         private async Task OnClickNextButton()
         {

@@ -1,47 +1,51 @@
 ﻿<div class="player">
-
-    <div id="background-wrap">
-        <div class="bubble x1"></div>
-        <div class="bubble x2"></div>
-        <div class="bubble x3"></div>
-        <div class="bubble x4"></div>
-        <div class="bubble x5"></div>
-        <div class="bubble x6"></div>
-        <div class="bubble x7"></div>
-        <div class="bubble x8"></div>
-        <div class="bubble x9"></div>
-        <div class="bubble x10"></div>
-        <div class="bubble x1"></div>
+    <div class="cover">
+        <img src="@ViewModel.CurrentSong.ImagePath" alt="@ViewModel.CurrentSong.Title" />
     </div>
-
-    <div id="wrapper">
-        <div id="iphone">
-            <div id="screen">
-                <div id="content-wrap">
-                    <div id="background"></div>
-                    <div id="content">
-                        <div class="jcarousel">
-                            <img src="@ViewModel.CurrentSong.ImagePath" alt="@ViewModel.CurrentSong.Title">
-                            <p class="song-title">@ViewModel.CurrentSong.Title</p>
-                            <p class="song-artist">@ViewModel.CurrentSong.Artist</p>
-                        </div>
-                        <audio id="@Id" @onchange="@OnChange"><source src="@ViewModel.CurrentSong.Path" type="audio/mpeg"></audio>
-                        <div id="controls">
-                            <span id="previous-btn"><i class="fa fa-step-backward fa-fw @DisabledPreviousButtonClass" aria-hidden="true" disable="@HasPreviousButtonDisabled" @onclick="OnClickPreviousButton"></i></span>
-                            <span id="play-btn"><i class="fa @IconPlayerClass fa-fw" aria-hidden="true" @onclick="OnClickPlayPauseButton"></i></span>
-                            <span id="next-btn"><i class="fa fa-step-forward fa-fw @DisabledNextButtonClass" aria-hidden="true" disabled="@HasNextButtonDisabled" @onclick="OnClickNextButton"></i></span>
-                        </div>
-                        <div id="timeline">
-                            <span id="current-time">@CurrentTimeAsTime</span>
-                            <span id="total-time">@DurationAsTime</span>
-                            <progress id="songProgressbar" value="@_currentTime" max="@_duration"></progress>
-                        </div>
-                        <div id="controls">
-                            <span id="random-btn" class="@RandomClass"><i class="fa fa-random" aria-hidden="true" @onclick="@(() => _isRandom = !_isRandom)"></i></span>
-                        </div>
+    <nav>
+        <div class="left">
+            <i class="material-icons">@*menu*@</i>
+            <h6>@*Playlist*@</h6>
+        </div>
+        <div class="right">
+            <i class="material-icons search">@*search*@</i>
+            <i class="material-icons">@*queue_music*@</i>
+        </div>
+    </nav>
+    <div class="player-ui">
+        <div class="title">
+            <h3>@ViewModel.CurrentSong.Title</h3>
+        </div>
+        <div class="small">
+            <i class="material-icons">@*replay*@</i>
+            <p>@ViewModel.CurrentSong.Artist</p>
+            <i class="material-icons @RandomClass" @onclick="@(() => _isRandom = !_isRandom)">shuffle</i>
+        </div>
+        <audio id="@Id" @onchange="@OnChange"><source src="@ViewModel.CurrentSong.Path" type="audio/mpeg"></audio>
+        <progress id="songProgressbar" value="@_currentTime" max="@_duration"></progress>
+        <div class="controls">
+            <i class="material-icons @DisabledPreviousButtonClass" disable="@HasPreviousButtonDisabled" @onclick="OnClickPreviousButton">skip_previous</i>
+            <i class="material-icons" @onclick="OnClickPlayPauseButton">@IconPlayer</i>
+            <i class="material-icons @DisabledNextButtonClass" disabled="@HasNextButtonDisabled" @onclick="OnClickNextButton">skip_next</i>
+        </div>
+    </div>
+    <div class="music">
+        @foreach (var song in ViewModel.Songs)
+        {
+            <div class="song">
+                <div class="info">
+                    <div class="img first">
+                        <img src="@song.ImagePath" alt="@song.Title" />
+                    </div>
+                    <div class="titles">
+                        <h5>@song.Title</h5>
+                        <p>@song.Artist</p>
                     </div>
                 </div>
+                <div class="state">
+                    <i class="material-icons">@PlayedIcon(song.Title)</i>
+                </div>
             </div>
-        </div>
+        }
     </div>
 </div>
