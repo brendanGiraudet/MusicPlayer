@@ -11,8 +11,4 @@
     <PackageReference Include="System.Linq" Version="4.3.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\Musics\" />
-  </ItemGroup>
-
 </Project>
