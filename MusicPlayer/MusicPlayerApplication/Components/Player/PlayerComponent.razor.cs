@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using MusicPlayerApplication.Models;
 using MusicPlayerApplication.ViewModels.PlayerViewModel;
 using System;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -153,6 +155,15 @@ namespace MusicPlayerApplication.Components.Player
             {
                 Console.WriteLine($"Failed to convert the JSON: {ThisEvent}");
             }
+        }
+
+        private async Task OnClickPlayIcon(SongModel song)
+        {
+            ViewModel.CurrentSong = song;
+            ViewModel.CurrentSongIndex = ViewModel.Songs.ToList().IndexOf(song);
+            await ChangeSource(ViewModel.CurrentSong.Path);
+            StateHasChanged();
+            await Play();
         }
     }
 }
