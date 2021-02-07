@@ -27,7 +27,7 @@
     <div class="music">
         @foreach (var song in ViewModel.Songs)
         {
-            <div class="song">
+            <div class="song" @onclick="@(() => OnClickPlayIcon(song))">
                 <div class="info">
                     <div class="img first">
                         <img src="@song.ImagePath" alt="@song.Title" />
@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="state">
-                    <i class="material-icons" @onclick="@(() => OnClickPlayIcon(song))">@PlayedIcon(song.Title)</i>
+                    <i class="material-icons">@PlayedIcon(song.Title)</i>
                 </div>
             </div>
         }
