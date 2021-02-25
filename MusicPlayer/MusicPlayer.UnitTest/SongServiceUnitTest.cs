@@ -1,3 +1,4 @@
+using Bogus;
 using Microsoft.Extensions.Options;
 using MusicPlayerApplication.Services.SongService;
 using MusicPlayerApplication.Settings;
@@ -28,6 +29,22 @@ namespace MusicPlayer.UnitTest
             // Arrange
             Assert.False(getSongResponse.HasError);
             Assert.True(getSongResponse.Content.Any());
+        }
+        #endregion
+
+        #region RemoveByNameAsync
+        [Fact(Skip ="no file service to mock")]
+        public async Task ShouldHaveTrueWhenRemoveSongByName()
+        {
+            // Arrange  
+            var faker = new Faker();
+            var songFileName = faker.Random.String2(2);
+
+            // Act 
+            var removeSongByNameResponse = await _songService.RemoveByNameAsync(songFileName);
+
+            // Assert 
+            Assert.True(removeSongByNameResponse.Content);
         }
         #endregion
     }

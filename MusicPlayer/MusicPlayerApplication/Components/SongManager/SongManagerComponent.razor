@@ -1,0 +1,20 @@
+﻿<div class="music">
+    @foreach (var song in ViewModel.Songs)
+    {
+        <div class="song">
+            <div class="info">
+                <div class="img first">
+                    <img src="@song.ImagePath" alt="@song.Title" />
+                </div>
+                <div class="titles">
+                    <h5>@song.Title</h5>
+                    <p>@song.Artist</p>
+                </div>
+            </div>
+            <div class="state">
+                <i class="material-icons" @onclick="@(() => Remove(song.FileName, song.Title))">delete</i>
+                <i class="material-icons">download</i>
+            </div>
+        </div>
+    }
+</div>

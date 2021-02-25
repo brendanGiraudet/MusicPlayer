@@ -20,6 +20,35 @@ namespace MusicPlayerApplication.Services.SongService
             _songSettings = songSettings.Value;
         }
 
+        public Task<ResponseModel<bool>> RemoveByNameAsync(string songFileName)
+        {
+            var response = new ResponseModel<bool>
+            {
+                Content = false,
+                HasError = true
+            };
+
+            try
+            {
+                var dirInfo = new DirectoryInfo(_youtubeDlSettings.MusicPath);
+                var songFiles = dirInfo.GetFiles($"{songFileName}.*");
+
+                foreach (var song in songFiles)
+                {
+                    File.Delete(song.FullName);
+                }
+
+                response.Content = true;
+                response.HasError = false;
+            }
+            catch (Exception ex)
+            {
+                response.ErrorMessage = ex.Message;
+            }
+
+            return Task.FromResult(response);
+        }
+
         Task<ResponseModel<IEnumerable<SongModel>>> ISongService.GetSongsAsync()
         {
             var response = new ResponseModel<IEnumerable<SongModel>>
@@ -42,6 +71,7 @@ namespace MusicPlayerApplication.Services.SongService
                     var jpgImagePath = _songSettings.Path + "/" + songFile.Name.Replace("mp3", "jpg");
                     var webpImageExist = File.Exists(webpImagePathToCheck);
                     song.ImagePath = webpImageExist ? webpImagePath : jpgImagePath;
+                    song.FileName = songFile.Name.Replace(".mp3", "");
                     response.Content = response.Content.Append(song);
                 }
                 response.HasError = false;

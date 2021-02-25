@@ -10,5 +10,6 @@ namespace MusicPlayerApplication.Models
         [JsonPropertyName("artist")]
         public string Artist { get; set; }
         public string ImagePath { get; set; }
+        public string FileName { get; set; }
     }
 }

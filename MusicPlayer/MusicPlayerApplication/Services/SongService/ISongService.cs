@@ -7,5 +7,6 @@ namespace MusicPlayerApplication.Services.SongService
     public interface ISongService
     {
         Task<ResponseModel<IEnumerable<SongModel>>> GetSongsAsync();
+        Task<ResponseModel<bool>> RemoveByNameAsync(string songFileName);
     }
 }

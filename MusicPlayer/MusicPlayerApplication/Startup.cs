@@ -11,6 +11,7 @@ using MusicPlayerApplication.Services.SongService;
 using MusicPlayerApplication.Settings;
 using MusicPlayerApplication.ViewModels;
 using MusicPlayerApplication.ViewModels.PlayerViewModel;
+using MusicPlayerApplication.ViewModels.SongManagerViewModel;
 
 namespace MusicPlayerApplication
 {
@@ -47,6 +48,7 @@ namespace MusicPlayerApplication
             // ViewModel
             services.AddTransient<IYoutubeDlViewModel, YoutubeDlViewModel>();
             services.AddTransient<IPlayerViewModel, PlayerViewModel>();
+            services.AddTransient<ISongManagerViewModel, SongManagerViewModel>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
