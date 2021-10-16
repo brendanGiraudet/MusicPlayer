@@ -245,13 +245,13 @@ i {
                 }
 
                 .player .music .song .info .titles h5 {
-                    font-size: 1.0625rem;
+                    font-size: 0.8rem;
                     font-weight: 400;
                     margin-bottom: .4375rem;
                 }
 
                 .player .music .song .info .titles p {
-                    font-size: .8125rem;
+                    font-size: 0.6rem;
                     color: #929292;
                 }
 
