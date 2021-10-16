@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
+using MusicPlayerApplication.Enumerations;
 using MusicPlayerApplication.Models;
+using MusicPlayerApplication.Services.LogService;
 using MusicPlayerApplication.Settings;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -9,9 +11,11 @@ namespace MusicPlayerApplication.Services.ShellService
     public class ShellService : IShellService
     {
         readonly IOptions<ShellSettings> _shellSettings;
-        public ShellService(IOptions<ShellSettings> shellSettings)
+        readonly ILogService _logService;
+        public ShellService(IOptions<ShellSettings> shellSettings, ILogService logService)
         {
             _shellSettings = shellSettings;
+            _logService = logService;
         }
         public async Task<ResponseModel<bool>> RunAsync(string cmd)
         {
@@ -41,7 +45,7 @@ namespace MusicPlayerApplication.Services.ShellService
                 if (!isStarted)
                 {
                     var errorMessage = "Process not started !";
-                    System.Console.WriteLine(errorMessage);
+                    await _logService.Log(LogLevel.Errors.ToString(), errorMessage);
                     response.ErrorMessage = errorMessage;
                     return response;
                 }
@@ -49,12 +53,14 @@ namespace MusicPlayerApplication.Services.ShellService
                 await Task.WhenAny(task.Task, Task.Delay(15000));
 
                 response.HasError = false;
+                var message = $"The process {process.StartInfo.FileName} was executed successfully";
+                await _logService.Log(LogLevel.Informations.ToString(), message);
 
                 return response;
             }
             catch (System.Exception ex)
             {
-                System.Console.WriteLine(ex.Message);
+                await _logService.Log(LogLevel.Errors.ToString(), ex.Message);
                 response.ErrorMessage = ex.Message;
                 return response;
             }
