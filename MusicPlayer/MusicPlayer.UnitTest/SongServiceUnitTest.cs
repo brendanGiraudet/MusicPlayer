@@ -1,5 +1,7 @@
 using Bogus;
 using Microsoft.Extensions.Options;
+using Moq;
+using MusicPlayerApplication.Services.LogService;
 using MusicPlayerApplication.Services.SongService;
 using MusicPlayerApplication.Settings;
 using System.Linq;
@@ -10,11 +12,29 @@ namespace MusicPlayer.UnitTest
 {
     public class SongServiceUnitTest
     {
-        readonly ISongService _songService;
-
-        public SongServiceUnitTest(IOptions<YoutubeDlSettings> youtubeDlSettings, IOptions<SongSettings> songSettings)
+        IOptions<YoutubeDlSettings> _youtubeDlSettingsOptions;
+     
+        IOptions<SongSettings> _songSettingsOptions;
+        
+        ILogService DefaultLogService
         {
-            _songService = new SongService(youtubeDlSettings, songSettings);
+            get
+            {
+                var mock = new Mock<ILogService>();
+
+                mock.Setup(s => s.Log(It.IsAny<string>(), It.IsAny<string>()))
+                    .Returns(Task.FromResult(true))
+                    .Verifiable();
+
+                return mock.Object;
+            }
+        }
+        ISongService CreateSongService() => new SongService(_youtubeDlSettingsOptions, _songSettingsOptions, DefaultLogService);
+
+        public SongServiceUnitTest(IOptions<YoutubeDlSettings> youtubeDlSettingsOptions, IOptions<SongSettings> songSettingsOptions)
+        {
+            _youtubeDlSettingsOptions = youtubeDlSettingsOptions;
+            _songSettingsOptions = songSettingsOptions;
         }
 
         #region GetSongsAsync
@@ -22,9 +42,9 @@ namespace MusicPlayer.UnitTest
         public async Task ShouldHaveListOfSongWhenGetSongsAsync()
         {
             // Arrange
-
+            var songService = CreateSongService();
             // Act
-            var getSongResponse = await _songService.GetSongsAsync();
+            var getSongResponse = await songService.GetSongsAsync();
 
             // Arrange
             Assert.False(getSongResponse.HasError);
@@ -39,9 +59,10 @@ namespace MusicPlayer.UnitTest
             // Arrange  
             var faker = new Faker();
             var songFileName = faker.Random.String2(2);
+            var songService = CreateSongService();
 
             // Act 
-            var removeSongByNameResponse = await _songService.RemoveByNameAsync(songFileName);
+            var removeSongByNameResponse = await songService.RemoveByNameAsync(songFileName);
 
             // Assert 
             Assert.True(removeSongByNameResponse.Content);
