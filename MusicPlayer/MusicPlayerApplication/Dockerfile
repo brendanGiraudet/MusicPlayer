@@ -25,6 +25,7 @@ RUN dotnet publish "MusicPlayerApplication.csproj" -c Release -o /app/publish
 FROM base AS final
 ENV ASPNETCORE_URLS=https://+:1515;http://+:1516
 ENV ASPNETCORE_HTTPS_PORT=1515
+ENV ASPNETCORE_ENVIRONMENT=Production
 ENV ASPNETCORE_Kestrel__Certificates__Default__Password="music_playerpass"
 ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/https/music_player.pfx
 WORKDIR /app

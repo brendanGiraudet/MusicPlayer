@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MusicPlayerApplication.Data;
 using MusicPlayerApplication.Services;
+using MusicPlayerApplication.Services.LogService;
 using MusicPlayerApplication.Services.ModalService;
 using MusicPlayerApplication.Services.ShellService;
 using MusicPlayerApplication.Services.SongService;
@@ -36,6 +37,7 @@ namespace MusicPlayerApplication
             services.Configure<YoutubeDlSettings>(Configuration.GetSection("YoutubeDl"));
             services.Configure<ShellSettings>(Configuration.GetSection("Shell"));
             services.Configure<SongSettings>(Configuration.GetSection("Song"));
+            services.Configure<LogSettings>(Configuration.GetSection("Log"));
 
             // Services
             services.AddTransient<IYoutubeDlService, YoutubeDlService>();
@@ -44,6 +46,7 @@ namespace MusicPlayerApplication
             services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<IModalService, ModalService>();
             services.AddSingleton<ILoaderService, LoaderService>();
+            services.AddSingleton<ILogService, LogService>();
 
             // ViewModel
             services.AddTransient<IYoutubeDlViewModel, YoutubeDlViewModel>();

@@ -16,6 +16,7 @@ namespace MusicPlayer.UnitTest
             // Config
             services.Configure<YoutubeDlSettings>(config.GetSection("YoutubeDl"));
             services.Configure<ShellSettings>(config.GetSection("Shell"));
+            services.Configure<LogSettings>(config.GetSection("Log"));
 
             // Services
             services.AddTransient<IYoutubeDlService, YoutubeDlService>();
