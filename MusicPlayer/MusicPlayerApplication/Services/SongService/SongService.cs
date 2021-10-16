@@ -73,25 +73,14 @@ namespace MusicPlayerApplication.Services.SongService
                 {
                     var songInfo = File.ReadAllText(songFile.FullName.Replace("mp3", "info.json"));
                     
-                    var song = System.Text.Json.JsonSerializer.Deserialize<SongModel>(songInfo);
+                    SongModel song = GetSongModel(songFile, songInfo);
 
-                    song.Path = _songSettings.Path + "/" + songFile.Name;
-                    
-                    var webpImagePath = _songSettings.Path + "/" + songFile.Name.Replace("mp3", "webp");
-                    
-                    var jpgImagePath = _songSettings.Path + "/" + songFile.Name.Replace("mp3", "jpg");
-                    
-                    var webpImagePathToCheck = _youtubeDlSettings.MusicPath + "/" + songFile.Name.Replace("mp3", "webp");
-                    
-                    var webpImageExist = File.Exists(webpImagePathToCheck);
-                    
-                    song.ImagePath = webpImageExist ? webpImagePath : jpgImagePath;
-                    
-                    song.FileName = songFile.Name.Replace(".mp3", "");
-                    
                     response.Content = response.Content.Append(song);
                 }
+                
                 response.HasError = false;
+
+                response.Content = response.Content.OrderByDescending(c => c.CreationDate);
             }
             catch (Exception ex)
             {
@@ -100,6 +89,29 @@ namespace MusicPlayerApplication.Services.SongService
             }
 
             return Task.FromResult(response);
+        }
+
+        private SongModel GetSongModel(FileInfo songFile, string songInfo)
+        {
+            var song = System.Text.Json.JsonSerializer.Deserialize<SongModel>(songInfo);
+
+            song.Path = _songSettings.Path + "/" + songFile.Name;
+
+            var webpImagePath = _songSettings.Path + "/" + songFile.Name.Replace("mp3", "webp");
+
+            var jpgImagePath = _songSettings.Path + "/" + songFile.Name.Replace("mp3", "jpg");
+
+            var webpImagePathToCheck = _youtubeDlSettings.MusicPath + "/" + songFile.Name.Replace("mp3", "webp");
+
+            var webpImageExist = File.Exists(webpImagePathToCheck);
+
+            song.ImagePath = webpImageExist ? webpImagePath : jpgImagePath;
+
+            song.FileName = songFile.Name.Replace(".mp3", "");
+
+            song.CreationDate = songFile.CreationTime;
+
+            return song;
         }
     }
 }

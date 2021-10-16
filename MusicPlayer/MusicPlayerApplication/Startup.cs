@@ -47,6 +47,7 @@ namespace MusicPlayerApplication
             services.AddSingleton<IModalService, ModalService>();
             services.AddSingleton<ILoaderService, LoaderService>();
             services.AddSingleton<ILogService, LogService>();
+            services.AddHttpClient();
 
             // ViewModel
             services.AddTransient<IYoutubeDlViewModel, YoutubeDlViewModel>();

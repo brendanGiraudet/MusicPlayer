@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace MusicPlayerApplication.Models
 {
@@ -6,10 +7,16 @@ namespace MusicPlayerApplication.Models
     {
         [JsonPropertyName("title")]
         public string Title { get; set; }
+
         public string Path { get; set; }
+
         [JsonPropertyName("artist")]
         public string Artist { get; set; }
+
         public string ImagePath { get; set; }
+
         public string FileName { get; set; }
+
+        public DateTime CreationDate { get; set; }
     }
 }
