@@ -10,11 +10,11 @@ namespace MusicPlayerApplication.Services.ShellService
 {
     public class ShellService : IShellService
     {
-        readonly IOptions<ShellSettings> _shellSettings;
+        readonly ShellSettings _shellSettings;
         readonly ILogService _logService;
-        public ShellService(IOptions<ShellSettings> shellSettings, ILogService logService)
+        public ShellService(IOptions<ShellSettings> shellSettingsOptions, ILogService logService)
         {
-            _shellSettings = shellSettings;
+            _shellSettings = shellSettingsOptions.Value;
             _logService = logService;
         }
         public async Task<ResponseModel<bool>> RunAsync(string cmd)
@@ -31,7 +31,7 @@ namespace MusicPlayerApplication.Services.ShellService
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = _shellSettings.Value.TerminalPath,
+                    FileName = _shellSettings.TerminalPath,
                     Arguments = $"-c \"{escapedArgs}\"",
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
@@ -50,7 +50,8 @@ namespace MusicPlayerApplication.Services.ShellService
                     return response;
                 }
 
-                await Task.WhenAny(task.Task, Task.Delay(15000));
+                var waitForExitTask = Task.Run(() => process.WaitForExit());
+                await Task.WhenAny(waitForExitTask, Task.Delay(_shellSettings.Timeout));
 
                 response.HasError = false;
                 var message = $"The process {process.StartInfo.FileName} was executed successfully";

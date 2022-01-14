@@ -3,7 +3,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
 EXPOSE 1515
-EXPOSE 1516
+EXPOSE 2525
 EXPOSE 80
 EXPOSE 443
 RUN apt update && apt dist-upgrade -y

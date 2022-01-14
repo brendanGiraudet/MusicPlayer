@@ -13,7 +13,7 @@
         </div>
     </nav>
     <div class="player-ui">
-        <audio id="@Id" @onchange="@OnChange"><source src="@ViewModel.CurrentSong.Path" type="audio/mpeg"></audio>
+        <audio id="@Id" @onchange="@OnChange"><source src="@ViewModel.CurrentSong.Path" type="audio/ogg; codecs=opus"></audio>
         <progress id="songProgressbar" value="@_currentTime" max="@_duration"></progress>
         <div class="controls">
             <i class="material-icons @DisabledPreviousButtonClass" disable="@HasPreviousButtonDisabled" @onclick="OnClickPreviousButton">skip_previous</i>

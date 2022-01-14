@@ -43,6 +43,7 @@ namespace MusicPlayer.UnitTest
         {
             // Arrange
             var songService = CreateSongService();
+
             // Act
             var getSongResponse = await songService.GetSongsAsync();
 

@@ -16,6 +16,9 @@ namespace MusicPlayerApplication.Services.SongService
         private YoutubeDlSettings _youtubeDlSettings;
         private SongSettings _songSettings;
         private ILogService _logService;
+        private string[] _enabledMusicFileExtensions = { "wav", "mp3", "opus", "best", "aac", "flac", "m4a", "vorbis", "webm" };
+        private string[] _enabledImageFileExtensions = { ".jpg", ".webp" };
+        private string _infoFileExtension = ".info.json";
         public SongService(IOptions<YoutubeDlSettings> youtubeDlSettings,
             IOptions<SongSettings> songSettings, ILogService logService)
         {
@@ -66,12 +69,17 @@ namespace MusicPlayerApplication.Services.SongService
             };
             try
             {
-                var dirInfo = new DirectoryInfo(_youtubeDlSettings.MusicPath);
-                var songFiles = dirInfo.GetFiles("*.mp3");
                 
+                var dirInfo = new DirectoryInfo(_youtubeDlSettings.MusicPath);
+                var songFiles = new List <FileInfo>();
+                foreach (var enableMusicFileExtension in _enabledMusicFileExtensions)
+                {
+                    songFiles.AddRange(dirInfo.GetFiles($"*.{enableMusicFileExtension}"));
+                }
+
                 foreach (var songFile in songFiles)
                 {
-                    var songInfo = File.ReadAllText(songFile.FullName.Replace("mp3", "info.json"));
+                    var songInfo = File.ReadAllText($"{ChangeFilenameExtension(songFile.FullName, _infoFileExtension)}");
                     
                     SongModel song = GetSongModel(songFile, songInfo);
 
@@ -95,23 +103,40 @@ namespace MusicPlayerApplication.Services.SongService
         {
             var song = System.Text.Json.JsonSerializer.Deserialize<SongModel>(songInfo);
 
-            song.Path = _songSettings.Path + "/" + songFile.Name;
+            song.Path = $"{_songSettings.Path}/{songFile.Name}";
 
-            var webpImagePath = _songSettings.Path + "/" + songFile.Name.Replace("mp3", "webp");
+            song.ImagePath = GetImagePath(songFile.Name);
 
-            var jpgImagePath = _songSettings.Path + "/" + songFile.Name.Replace("mp3", "jpg");
-
-            var webpImagePathToCheck = _youtubeDlSettings.MusicPath + "/" + songFile.Name.Replace("mp3", "webp");
-
-            var webpImageExist = File.Exists(webpImagePathToCheck);
-
-            song.ImagePath = webpImageExist ? webpImagePath : jpgImagePath;
-
-            song.FileName = songFile.Name.Replace(".mp3", "");
+            song.FileName = GetFileNameWithoutExtension(songFile.Name);
 
             song.CreationDate = songFile.CreationTime;
 
             return song;
+        }
+
+        private string GetImagePath(string songName)
+        {
+            foreach (var enableImageExtension in _enabledImageFileExtensions)
+            {
+                var imageName = ChangeFilenameExtension(songName, enableImageExtension);
+                var imagePathToCheck = $"{_youtubeDlSettings.MusicPath}/{imageName}";
+
+                if(File.Exists(imagePathToCheck))
+                    return $"{_songSettings.Path}/{imageName}";
+            }
+            return string.Empty;
+        }
+
+        private string ChangeFilenameExtension(string nameFile, string extension)
+        {
+            var filenameWithoutExtension = GetFileNameWithoutExtension(nameFile);
+            return $"{filenameWithoutExtension}{extension}";
+        }
+
+        private string GetFileNameWithoutExtension(string filenameWithExtension)
+        {
+            var indexOfDot = filenameWithExtension.LastIndexOf('.');
+            return filenameWithExtension.Substring(0, indexOfDot);
         }
     }
 }
