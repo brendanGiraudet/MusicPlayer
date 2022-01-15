@@ -84,7 +84,7 @@ namespace MusicPlayerApplication.ViewModels.PlayerViewModel
 
         public async Task ApplyFilter(string filter)
         {
-            FilteredSongs = Songs.Where(s => s.Title.ToLowerInvariant().Contains(filter));
+            FilteredSongs = Songs.Where(s => s.Title.ToLowerInvariant().Contains(filter.ToLowerInvariant()) || s.Artist.ToLowerInvariant().Contains(filter.ToLowerInvariant()));
             await Task.CompletedTask;
         }
     }
