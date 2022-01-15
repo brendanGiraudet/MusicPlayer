@@ -159,11 +159,25 @@ namespace MusicPlayerApplication.Components.Player
 
         private async Task OnClickPlayIcon(SongModel song)
         {
-            ViewModel.CurrentSong = song;
-            ViewModel.CurrentSongIndex = ViewModel.Songs.ToList().IndexOf(song);
-            await ChangeSource(ViewModel.CurrentSong.Path);
-            StateHasChanged();
-            await Play();
+            if (_isPlaying && ViewModel.CurrentSong.Title == song.Title)
+            {
+                await Pause();
+            }
+            else
+            {
+                ViewModel.CurrentSong = song;
+                ViewModel.CurrentSongIndex = ViewModel.Songs.ToList().IndexOf(song);
+                await ChangeSource(ViewModel.CurrentSong.Path);
+                StateHasChanged();
+                await Play();
+            }
+        }
+
+        private async Task OnFilterChanged(ChangeEventArgs changeEventArgs)
+        {
+            var value = changeEventArgs.Value.ToString();
+
+            if(value != null) await ViewModel.ApplyFilter(value);
         }
     }
 }

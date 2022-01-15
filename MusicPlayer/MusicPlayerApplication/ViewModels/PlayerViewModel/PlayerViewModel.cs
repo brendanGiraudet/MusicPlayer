@@ -20,6 +20,7 @@ namespace MusicPlayerApplication.ViewModels.PlayerViewModel
             _modalService = modalService;
         }
         public IEnumerable<SongModel> Songs { get; set; } = Enumerable.Empty<SongModel>();
+        public IEnumerable<SongModel> FilteredSongs { get; set; } = Enumerable.Empty<SongModel>();
         public int CurrentSongIndex { get; set; } = 0;
         public SongModel CurrentSong { get; set; }
         public bool IsEndList => Songs.Count() == (CurrentSongIndex + 1);
@@ -36,6 +37,7 @@ namespace MusicPlayerApplication.ViewModels.PlayerViewModel
             else
             {
                 Songs = getSongsResponse.Content;
+                FilteredSongs = Songs;
                 CurrentSong = getSongsResponse.Content.FirstOrDefault();
             }
         }
@@ -77,6 +79,12 @@ namespace MusicPlayerApplication.ViewModels.PlayerViewModel
             var random = new Random();
             CurrentSongIndex = random.Next(0, Songs.Count() - 1);
             CurrentSong = Songs.ToArray()[CurrentSongIndex];
+            await Task.CompletedTask;
+        }
+
+        public async Task ApplyFilter(string filter)
+        {
+            FilteredSongs = Songs.Where(s => s.Title.ToLowerInvariant().Contains(filter));
             await Task.CompletedTask;
         }
     }

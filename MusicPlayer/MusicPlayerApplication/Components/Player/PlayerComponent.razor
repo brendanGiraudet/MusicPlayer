@@ -24,8 +24,11 @@
             <i class="material-icons random-icon @RandomClass" @onclick="@(() => _isRandom = !_isRandom)">shuffle</i>
         </div>
     </div>
+    <div class="filter">
+        <input type="text" @oninput="@OnFilterChanged" />
+    </div>
     <div class="music">
-        @foreach (var song in ViewModel.Songs)
+        @foreach (var song in ViewModel.FilteredSongs)
         {
             <div class="song" @onclick="@(() => OnClickPlayIcon(song))">
                 <div class="info">

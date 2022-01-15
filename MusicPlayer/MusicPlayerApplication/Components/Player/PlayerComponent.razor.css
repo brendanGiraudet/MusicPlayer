@@ -39,17 +39,20 @@ i {
     position: relative;
     width: 100%;
     height: 100%;
+    background: #1a1b1e;
+    padding: .625rem;
 }
 
     .player .cover {
         position: relative;
-        z-index: -1;
         background-size: cover;
+        display: flex;
+        justify-content: center;
     }
 
     .player > .cover > img {
-        width: 30rem;
-        height: 15rem;
+        width: 20rem;
+        height: 10rem;
         opacity: 0.75;
     }
 
@@ -96,12 +99,12 @@ i {
                 padding-right: .625rem;
             }
 
+    .player .container {
+        
+    }
+
     .player .player-ui {
         position: relative;
-        z-index: 3;
-        background: #1a1b1e;
-        padding: .625rem;
-        border-bottom: 1px solid rgba(255,255,255,0.2)
     }
 
         .player .player-ui .title {
@@ -190,6 +193,16 @@ i {
         .player .btn i {
             font-size: 1.75rem;
             color: white;
+        }
+
+    .player .filter {
+        padding: 1rem;
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+
+        .player .filter input {
+            width: 100%;
+            border-radius: 20px;
         }
 
     .player .music {
