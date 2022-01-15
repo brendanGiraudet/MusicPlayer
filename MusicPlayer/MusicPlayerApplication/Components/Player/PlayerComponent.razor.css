@@ -44,14 +44,12 @@ i {
     .player .cover {
         position: relative;
         z-index: -1;
-        width: 100%;
-        height: 40%;
         background-size: cover;
     }
 
     .player > .cover > img {
-        width: 100%;
-        height: 100%;
+        width: 30rem;
+        height: 15rem;
         opacity: 0.75;
     }
 
@@ -197,7 +195,7 @@ i {
     .player .music {
         padding: .625rem 1.25rem 0px 1.25rem;
         background: #1a1b1e;
-        height: 40%;
+        height: 28rem;
         overflow: auto;
     }
 
@@ -294,8 +292,8 @@ i {
 
     .player {
         box-shadow: 0px .125rem .625rem rgba(0, 0, 0, 0.6);
-        width: 40rem;
-        height: 35rem;
+        width: 80%;
+        height: 50rem;
         margin: auto;
     }
 }
