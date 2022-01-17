@@ -89,7 +89,7 @@ namespace MusicPlayerApplication.ViewModels.PlayerViewModel
                 return;
             }
 
-            var songs = Songs.Where(s => s.Title.ToLowerInvariant().Contains(filter.ToLowerInvariant()) || s.Artist.ToLowerInvariant().Contains(filter.ToLowerInvariant()));
+            var songs = Songs.Where(s => (s.Title != null && s.Title.ToLowerInvariant().Contains(filter.ToLowerInvariant())) || (s.Artist != null && s.Artist.ToLowerInvariant().Contains(filter.ToLowerInvariant())));
             FilteredSongs = songs.Any() ? songs : Array.Empty<SongModel>();
             await Task.CompletedTask;
         }
