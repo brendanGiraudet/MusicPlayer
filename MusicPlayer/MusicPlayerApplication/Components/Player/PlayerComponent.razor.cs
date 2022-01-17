@@ -175,7 +175,7 @@ namespace MusicPlayerApplication.Components.Player
 
         private async Task OnFilterChanged(ChangeEventArgs changeEventArgs)
         {
-            var value = changeEventArgs.Value.ToString();
+            var value = changeEventArgs.Value?.ToString();
 
             if(value != null) await ViewModel.ApplyFilter(value);
         }

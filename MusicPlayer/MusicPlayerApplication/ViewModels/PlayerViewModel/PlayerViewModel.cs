@@ -84,6 +84,11 @@ namespace MusicPlayerApplication.ViewModels.PlayerViewModel
 
         public async Task ApplyFilter(string filter)
         {
+            if (filter == null) {
+                FilteredSongs = Songs;
+                return;
+            }
+
             var songs = Songs.Where(s => s.Title.ToLowerInvariant().Contains(filter.ToLowerInvariant()) || s.Artist.ToLowerInvariant().Contains(filter.ToLowerInvariant()));
             FilteredSongs = songs.Any() ? songs : Array.Empty<SongModel>();
             await Task.CompletedTask;
