@@ -30,7 +30,7 @@
     <div class="music">
         @foreach (var song in ViewModel.FilteredSongs)
         {
-            <div class="song" @onclick="@(() => OnClickPlayIcon(song))">
+            <div class="song" @onclick="@(() => OnClickSongLine(song))">
                 <div class="info">
                     <div class="img first">
                         <img src="@song.ImagePath" alt="@song.Title" />

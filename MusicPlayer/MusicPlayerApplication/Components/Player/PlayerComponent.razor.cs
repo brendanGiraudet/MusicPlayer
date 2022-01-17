@@ -110,6 +110,7 @@ namespace MusicPlayerApplication.Components.Player
             if (hours < 10) { stringHours = "0" + stringHours; }
             if (minutes < 10) { stringMinutes = "0" + stringMinutes; }
             if (seconds < 10) { stringSeconds = "0" + stringSeconds; }
+
             return $"{stringHours}:{stringMinutes}:{stringSeconds}";
         }
 
@@ -134,10 +135,9 @@ namespace MusicPlayerApplication.Components.Player
         private async Task OnChange(ChangeEventArgs args)
         {
             var ThisEvent = args?.Value?.ToString();
-            var videoData = new AudioEventData();
             try
             {
-                videoData = JsonSerializer.Deserialize<AudioEventData>(ThisEvent, serializationOptions);
+                var videoData = JsonSerializer.Deserialize<AudioEventData>(ThisEvent, serializationOptions);
                 switch (videoData.EventName)
                 {
                     case AudioEvents.TimeUpdate:
@@ -154,21 +154,23 @@ namespace MusicPlayerApplication.Components.Player
             catch (Exception ex)
             {
                 Console.WriteLine($"Failed to convert the JSON: {ThisEvent}");
+                Console.WriteLine($"Due to: {ex.Message}");
             }
         }
 
-        private async Task OnClickPlayIcon(SongModel song)
+        private async Task OnClickSongLine(SongModel song)
         {
-            if (_isPlaying && ViewModel.CurrentSong.Title == song.Title)
+            if (ViewModel.CurrentSong.Title == song.Title)
             {
-                await Pause();
+                if (_isPlaying) await Pause();
+                else await Play();
             }
             else
             {
+                await Stop();
                 ViewModel.CurrentSong = song;
                 ViewModel.CurrentSongIndex = ViewModel.Songs.ToList().IndexOf(song);
                 await ChangeSource(ViewModel.CurrentSong.Path);
-                StateHasChanged();
                 await Play();
             }
         }
