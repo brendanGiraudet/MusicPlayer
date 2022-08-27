@@ -1,10 +1,5 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
-EXPOSE 1515
-EXPOSE 2525
-EXPOSE 80
 EXPOSE 443
 RUN apt update && apt dist-upgrade -y
 RUN apt install -y python3-pip
