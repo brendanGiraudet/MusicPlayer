@@ -1,12 +1,12 @@
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
-EXPOSE 443
+EXPOSE 1515
 RUN apt update && apt dist-upgrade -y
 RUN apt install -y python3-pip
 RUN pip3 install --upgrade youtube-dl
 RUN apt install -y ffmpeg
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0.102-ca-patch-buster-slim AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["./MusicPlayerApplication.csproj", "MusicPlayerApplication/"]
 WORKDIR "/src/MusicPlayerApplication"
