@@ -26,6 +26,7 @@ namespace MusicPlayerApplication.Services.ShellService
             };
 
             var escapedArgs = cmd.Replace("\"", "\\\"");
+            System.Console.WriteLine($"command => {escapedArgs}");
 
             using var process = new Process()
             {
