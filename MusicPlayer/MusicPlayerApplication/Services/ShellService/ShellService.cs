@@ -63,6 +63,7 @@ namespace MusicPlayerApplication.Services.ShellService
             catch (System.Exception ex)
             {
                 await _logService.Log(LogLevel.Errors.ToString(), ex.Message);
+                System.Console.WriteLine(ex.StackTrace);
                 response.ErrorMessage = ex.Message;
                 return response;
             }
