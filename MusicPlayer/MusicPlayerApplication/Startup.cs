@@ -3,17 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MusicPlayerApplication.Data;
-using MusicPlayerApplication.Services;
-using MusicPlayerApplication.Services.LogService;
-using MusicPlayerApplication.Services.ModalService;
-using MusicPlayerApplication.Services.ShellService;
-using MusicPlayerApplication.Services.SongService;
-using MusicPlayerApplication.Settings;
-using MusicPlayerApplication.ViewModels;
-using MusicPlayerApplication.ViewModels.PlayerViewModel;
-using MusicPlayerApplication.ViewModels.SongManagerViewModel;
-
+using MusicPlayerApplication.Extensions;
 namespace MusicPlayerApplication
 {
     public class Startup
@@ -34,25 +24,16 @@ namespace MusicPlayerApplication
             services.AddServerSideBlazor();
 
             // Config
-            services.Configure<YoutubeDlSettings>(Configuration.GetSection("YoutubeDl"));
-            services.Configure<ShellSettings>(Configuration.GetSection("Shell"));
-            services.Configure<SongSettings>(Configuration.GetSection("Song"));
-            services.Configure<LogSettings>(Configuration.GetSection("Log"));
+            services.AddConfigurations(Configuration);
 
             // Services
-            services.AddTransient<IYoutubeDlService, YoutubeDlService>();
-            services.AddTransient<IShellService, ShellService>();
-            services.AddTransient<ISongService, SongService>();
-            services.AddSingleton<WeatherForecastService>();
-            services.AddSingleton<IModalService, ModalService>();
-            services.AddSingleton<ILoaderService, LoaderService>();
-            services.AddSingleton<ILogService, LogService>();
-            services.AddHttpClient();
+            services.AddServices();
+
+            // Http clients
+            services.AddHttpClients();
 
             // ViewModel
-            services.AddTransient<IYoutubeDlViewModel, YoutubeDlViewModel>();
-            services.AddTransient<IPlayerViewModel, PlayerViewModel>();
-            services.AddTransient<ISongManagerViewModel, SongManagerViewModel>();
+            services.AddViewModels();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
