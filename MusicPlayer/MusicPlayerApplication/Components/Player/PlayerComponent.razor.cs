@@ -99,8 +99,8 @@ namespace MusicPlayerApplication.Components.Player
 
         private void TimeUpdate(AudioState audioState)
         {
-            _currentTime = audioState.CurrentTime.ToString();
-            _duration = audioState.Duration.ToString();
+            _currentTime = Math.Round(audioState.CurrentTime).ToString();
+            _duration = Math.Round(audioState.Duration).ToString();
         }
 
         private async Task Ended()

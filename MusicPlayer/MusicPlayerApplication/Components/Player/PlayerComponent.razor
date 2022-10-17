@@ -2,17 +2,18 @@
 
     <div class="cover">
         <img src="@CurrentSong.ImagePath" alt="@CurrentSong.Title" />
-    </div>
-
-    <div class="player-ui">
         <audio id="@Id" @onchange="@OnChange">
             <source src="@CurrentSong.Path" type="audio/ogg; codecs=opus">
         </audio>
         <progress id="songProgressbar" value="@_currentTime" max="@_duration"></progress>
+    </div>
+
+    <div class="player-ui">
+
         <div class="controls">
             <i class="material-icons @DisabledPreviousButtonClass" disable="@HasPreviousButtonDisabled"
                 @onclick="OnClickPreviousButton">skip_previous</i>
-            <i class="material-icons" @onclick="OnClickPlayPauseButton">@IconPlayer</i>
+            <i class="material-icons play-icon" @onclick="OnClickPlayPauseButton">@IconPlayer</i>
             <i class="material-icons @DisabledNextButtonClass" disabled="@HasNextButtonDisabled"
                 @onclick="OnClickNextButton">skip_next</i>
         </div>
