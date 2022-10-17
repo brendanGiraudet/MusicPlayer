@@ -1,40 +1,4 @@
-﻿html {
-    font-family: sans-serif;
-    -ms-text-size-adjust: 100%;
-    -webkit-text-size-adjust: 100%;
-}
-
-html,
-body {
-    margin: 0;
-    height: 100%;
-    align-items: center;
-    color: #333;
-    font-family: "Roboto", sans-serif;
-    font-size: 1em;
-    -webkit-font-smoothing: antialiased;
-    line-height: 1em;
-}
-
-body {
-    background: #e9e9e9;
-    display: flex;
-    justify-content: center;
-}
-
-* {
-    box-sizing: border-box;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-i {
-    cursor: pointer;
-}
-
-.player {
+﻿.player {
     overflow: hidden;
     position: relative;
     width: 100%;
@@ -43,251 +7,165 @@ i {
     padding: .625rem;
 }
 
-    .player .cover {
-        position: relative;
-        background-size: cover;
-        display: flex;
-        justify-content: center;
-    }
+.player .cover {
+    position: relative;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+}
 
-    .player > .cover > img {
-        width: 20rem;
-        height: 10rem;
-        opacity: 0.75;
-    }
+.player>.cover>img {
+    max-width: 100%;
+    max-height: 100%;
+    opacity: 0.75;
+}
 
-    .player nav {
-        margin-top: 0.3125rem;
-        position: absolute;
-        z-index: 3;
-        min-height: 2.5rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0px 0.9375rem;
-        top: 0px;
-        width: 26.25rem;
-    }
+.player nav {
+    margin-top: 0.3125rem;
+    position: absolute;
+    z-index: 3;
+    min-height: 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 0.9375rem;
+    top: 0px;
+    width: 26.25rem;
+}
 
-        .player nav .left {
-            display: flex;
-        }
+.player nav .left {
+    display: flex;
+}
 
-            .player nav .left i {
-                cursor: pointer;
-                color: white;
-            }
+.player nav .left i {
+    color: white;
+}
 
-            .player nav .left h6 {
-                margin: 0;
-                padding-left: 1.25rem;
-                color: white;
-                font-size: 1.125rem;
-                line-height: 1.38;
-            }
+.player nav .left h6 {
+    margin: 0;
+    padding-left: 1.25rem;
+    color: white;
+    font-size: 1.125rem;
+    line-height: 1.38;
+}
 
-        .player nav .right {
-            display: flex;
-        }
+.player nav .right {
+    display: flex;
+}
 
-            .player nav .right i {
-                cursor: pointer;
-                color: white;
-            }
+.player nav .right i {
+    color: white;
+}
 
-            .player nav .right .search {
-                padding-right: .625rem;
-            }
+.player nav .right .search {
+    padding-right: .625rem;
+}
 
-    .player .container {
-        
-    }
+.player .player-ui {
+    position: relative;
+}
 
-    .player .player-ui {
-        position: relative;
-    }
+.player .player-ui .title {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
 
-        .player .player-ui .title {
-            display: flex;
-            justify-content: center;
-            text-align: center;
-        }
+.player .player-ui .title h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.875rem;
+    font-weight: 100;
+}
 
-            .player .player-ui .title h3 {
-                margin: 0;
-                color: white;
-                font-size: 1.875rem;
-                font-weight: 100;
-            }
+.player .player-ui .small {
+    padding: .625rem 2.1875rem 0px 2.1875rem;
+    display: flex;
+    justify-content: space-between;
+}
 
-        .player .player-ui .small {
-            padding: .625rem 2.1875rem 0px 2.1875rem;
-            display: flex;
-            justify-content: space-between;
-        }
+.player .player-ui .small p,
+.player .player-ui .small i {
+    margin: 0;
+    color: white;
+    font-size: .875rem;
+}
 
-            .player .player-ui .small p,
-            .player .player-ui .small i {
-                margin: 0;
-                color: white;
-                font-size: .875rem;
-            }
+.player .player-ui .small p {
+    color: #ddd;
+}
 
-            .player .player-ui .small p {
-                color: #ddd;
-            }
+.player .player-ui .small i {
+    font-size: 1rem;
+}
 
-            .player .player-ui .small i {
-                font-size: 1rem;
-            }
+.player .player-ui .progress {
+    position: relative;
+    height: .125rem;
+    margin: 1.875rem 1.25rem 0px 1.25rem;
+    background: rgba(255, 255, 255, 0.3);
+}
 
-        .player .player-ui .progress {
-            position: relative;
-            height: .125rem;
-            margin: 1.875rem 1.25rem 0px 1.25rem;
-            background: rgba(255, 255, 255, 0.3);
-        }
+.player .player-ui .progress .played {
+    width: 20%;
+    height: .125rem;
+    position: absolute;
+    background: #f44336;
+}
 
-            .player .player-ui .progress .played {
-                width: 20%;
-                height: .125rem;
-                position: absolute;
-                background: #f44336;
-            }
+.player .player-ui .progress .played .circle {
+    width: .625rem;
+    height: .625rem;
+    background: #f44336;
+    border-radius: 50%;
+    margin-left: 3.25rem;
+    margin-top: -0.25rem;
+    box-shadow: 0px 0px .625rem rgba(0, 0, 0, 0.7);
+}
 
-                .player .player-ui .progress .played .circle {
-                    width: .625rem;
-                    height: .625rem;
-                    background: #f44336;
-                    border-radius: 50%;
-                    margin-left: 3.25rem;
-                    margin-top: -0.25rem;
-                    box-shadow: 0px 0px .625rem rgba(0, 0, 0, 0.7);
-                }
+.player .player-ui .controls {
+    display: flex;
+    justify-content: space-between;
+    padding: .625rem 3.125rem 0px 3.125rem;
+}
 
-        .player .player-ui .controls {
-            display: flex;
-            justify-content: space-between;
-            padding: .625rem 3.125rem 0px 3.125rem;
-        }
+.player .player-ui .controls i {
+    color: white;
+    font-size: 2rem;
+}
 
-            .player .player-ui .controls i {
-                color: white;
-                font-size: 2rem;
-            }
+.player .btn {
+    margin-left: auto;
+    margin-right: .625rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 4;
+    margin-top: 1.25rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+}
 
-    .player .btn {
-        margin-left: auto;
-        margin-right: .625rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        z-index: 4;
-        margin-top: 1.25rem;
-        width: 2.5rem;
-        height: 2.5rem;
-        border-radius: 50%;
-    }
+.player .btn i {
+    font-size: 1.75rem;
+    color: white;
+}
 
-        .player .btn i {
-            font-size: 1.75rem;
-            color: white;
-        }
+.player .player-ui .controls .disabled {
+    color: gray;
+    cursor: default;
+}
 
-    .player .filter {
-        padding: 1rem;
-        border-bottom: 1px solid rgba(255,255,255,0.2);
-    }
+.player .player-ui .small .random-icon.no-random {
+    color: gray;
+}
 
-        .player .filter input {
-            width: 100%;
-            height: 1.5rem;
-            border-radius: 20px;
-        }
-
-    .player .music {
-        padding: .625rem 1.25rem 0px 1.25rem;
-        background: #1a1b1e;
-        height: 16rem;
-        overflow: auto;
-    }
-
-        .player .music::-webkit-scrollbar-track {
-            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-            border-radius: .625rem;
-            background-color: #F5F5F5;
-        }
-
-        .player .music::-webkit-scrollbar {
-            width: .75rem;
-            background-color: #F5F5F5;
-        }
-
-        .player .music::-webkit-scrollbar-thumb {
-            border-radius: .625rem;
-            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-            background-color: #555;
-        }
-
-        .player .music .song {
-            height: 5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-            .player .music .song .info {
-                display: flex;
-                align-items: center;
-            }
-
-                .player .music .song .info .img > img {
-                    width: 3.75rem;
-                    height: 3.75rem;
-                    background: red;
-                    margin-right: .625rem;
-                }
-
-                .player .music .song .info .titles h5,
-                .player .music .song .info .titles p {
-                    margin: 0;
-                    color: white;
-                }
-
-                .player .music .song .info .titles h5 {
-                    font-size: 0.8rem;
-                    font-weight: 400;
-                    margin-bottom: .4375rem;
-                }
-
-                .player .music .song .info .titles p {
-                    font-size: 0.6rem;
-                    color: #929292;
-                }
-
-            .player .music .song .state.playing i {
-                color: #f44336;
-            }
-
-            .player .music .song .state i {
-                color: #ddd;
-            }
-
-    .player .player-ui .controls .disabled {
-        color: gray;
-        cursor: default;
-    }
-
-    .player .player-ui .small .random-icon.no-random {
-        color: gray;
-    }
-
-    .player .player-ui .small .random-icon {
-        left: 25%;
-        position: relative;
-    }
+.player .player-ui .small .random-icon {
+    left: 25%;
+    position: relative;
+}
 
 #songProgressbar {
     height: 0.250rem;
@@ -297,6 +175,10 @@ i {
     position: relative;
     width: 80%;
     margin-left: 10%;
+}
+
+.hidden {
+    opacity: 100%;
 }
 
 @media only screen and (min-width:640px) {

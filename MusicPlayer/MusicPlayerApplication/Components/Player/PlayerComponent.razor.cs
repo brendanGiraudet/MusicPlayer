@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MusicPlayerApplication.Models;
-using MusicPlayerApplication.ViewModels.PlayerViewModel;
 using System;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -11,51 +9,69 @@ namespace MusicPlayerApplication.Components.Player
 {
     public partial class PlayerComponent
     {
-        [Inject] public IPlayerViewModel ViewModel { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
+        [Parameter] public bool IsEndList { get; set; }
+        [Parameter] public bool IsBeginList { get; set; }
+        [Parameter] public bool IsRandom { get; set; }
+        [Parameter] public EventCallback OnNextClickCallback { get; set; }
+        [Parameter] public EventCallback OnPreviousClickCallback { get; set; }
+        [Parameter] public EventCallback OnRandomClickCallback { get; set; }
+        [Parameter] public SongModel CurrentSong { get; set; }
+        [Parameter] public bool IsDisplay { get; set; }
 
-        private bool _isPlaying = false;
-        private string _currentTime;
-        private string _duration;
+        private string CssDisplay => !IsDisplay ? "hidden" : string.Empty;
+
         private readonly JsonSerializerOptions serializationOptions = new JsonSerializerOptions { IgnoreNullValues = true, PropertyNameCaseInsensitive = true };
-        private bool _isRandom = false;
 
-        private bool HasNextButtonDisabled => ViewModel.IsEndList && !_isRandom;
-        private bool HasPreviousButtonDisabled => ViewModel.IsBeginList && !_isRandom;
         public string CurrentTimeAsTime => ConvertToTime(_currentTime);
+        private string _currentTime;
+
         public string DurationAsTime => ConvertToTime(_duration);
+        private string _duration;
+
         public string IconPlayer => _isPlaying ? "pause" : "play_arrow";
+        private bool _isPlaying = false;
+
         public string Id { get; set; } = "audioPlayer";
-        public string RandomClass => _isRandom ? string.Empty : "no-random";
+
+        public string RandomClass => IsRandom ? string.Empty : "no-random";
+
         public string DisabledNextButtonClass => HasNextButtonDisabled ? "disabled" : string.Empty;
+        private bool HasNextButtonDisabled => IsEndList && !IsRandom;
+
         public string DisabledPreviousButtonClass => HasPreviousButtonDisabled ? "disabled" : string.Empty;
+        private bool HasPreviousButtonDisabled => IsBeginList && !IsRandom;
 
         private Task OnClickPlayPauseButton() => _isPlaying ? Pause() : Play();
 
-        private bool IsCurrentSong(string title) => ViewModel.CurrentSong.Title == title;
-        private string PlayedIcon(string title) => IsCurrentSong(title) ? "equalizer" : "play_arrow";
-
         private async Task OnClickNextButton()
         {
-            if (!HasNextButtonDisabled)
-            {
-                await Stop();
-                await ViewModel.NextSongAsync(_isRandom);
-                await ChangeSource(ViewModel.CurrentSong.Path);
-                StateHasChanged();
-                await Play();
-            }
+            await OnMusicChange(OnNextClickCallback, !HasNextButtonDisabled);
         }
+
         private async Task OnClickPreviousButton()
         {
-            if (!HasPreviousButtonDisabled)
+            await OnMusicChange(OnPreviousClickCallback, !HasPreviousButtonDisabled);
+        }
+
+        private async Task OnMusicChange(EventCallback callback, bool canChangeMusic)
+        {
+            if (canChangeMusic)
             {
-                await Stop();
-                await ViewModel.PreviousSongAsync(_isRandom);
-                await ChangeSource(ViewModel.CurrentSong.Path);
-                StateHasChanged();
-                await Play();
+                if (callback.HasDelegate) await callback.InvokeAsync();
+
+                await ReloadMusic();
             }
+        }
+
+        public async Task ReloadMusic()
+        {
+            await Stop();
+            await ChangeSource(CurrentSong.Path);
+
+            StateHasChanged();
+
+            await Play();
         }
 
         private async Task Play()
@@ -63,31 +79,30 @@ namespace MusicPlayerApplication.Components.Player
             _isPlaying = true;
             await JSRuntime.InvokeAsync<string>("player.play", "audioPlayer");
         }
+
         private async Task Pause()
         {
             _isPlaying = false;
             await JSRuntime.InvokeAsync<string>("player.pause", "audioPlayer");
         }
+
         private async Task Stop()
         {
             _isPlaying = false;
             await JSRuntime.InvokeAsync<string>("player.stop", "audioPlayer");
         }
+
         private async Task ChangeSource(string sourceFile)
         {
             await JSRuntime.InvokeAsync<string>("player.change", "audioPlayer", sourceFile);
         }
 
-        protected override async Task OnInitializedAsync()
-        {
-            await ViewModel.LoadSongsAsync();
-            await base.OnInitializedAsync();
-        }
         private void TimeUpdate(AudioState audioState)
         {
             _currentTime = audioState.CurrentTime.ToString();
             _duration = audioState.Duration.ToString();
         }
+
         private async Task Ended()
         {
             await OnClickNextButton();
@@ -120,13 +135,16 @@ namespace MusicPlayerApplication.Components.Player
             if (firstRender)
             {
                 await ConfigureEvents();
+                // await Play();
             }
         }
+
         private async Task ConfigureEvents()
         {
             await Implement(AudioEvents.TimeUpdate);
             await Implement(AudioEvents.Ended);
         }
+
         private async Task Implement(AudioEvents eventName)
         {
             await JSRuntime.InvokeVoidAsync("window.CustomEventHandler", Id, eventName.ToString().ToLower(), AudioState.GetPayload());
@@ -158,28 +176,9 @@ namespace MusicPlayerApplication.Components.Player
             }
         }
 
-        private async Task OnClickSongLine(SongModel song)
+        private async Task OnRandomClick()
         {
-            if (ViewModel.CurrentSong.Title == song.Title)
-            {
-                if (_isPlaying) await Pause();
-                else await Play();
-            }
-            else
-            {
-                await Stop();
-                ViewModel.CurrentSong = song;
-                ViewModel.CurrentSongIndex = ViewModel.Songs.ToList().IndexOf(song);
-                await ChangeSource(ViewModel.CurrentSong.Path);
-                await Play();
-            }
-        }
-
-        private async Task OnFilterChanged(ChangeEventArgs changeEventArgs)
-        {
-            var value = changeEventArgs.Value?.ToString();
-
-            if(value != null) await ViewModel.ApplyFilter(value);
+            if (OnRandomClickCallback.HasDelegate) await OnRandomClickCallback.InvokeAsync();
         }
     }
 }

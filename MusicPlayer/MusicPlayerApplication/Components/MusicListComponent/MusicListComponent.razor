@@ -1,0 +1,24 @@
+<div class="music-list">
+    <div class="filter">
+        <input type="text" @oninput="@OnFilterChanged" />
+    </div>
+    <div class="music">
+        @foreach (var song in FilteredSongs)
+        {
+            <div class="song" @onclick="@(async () => {await OnClickSongLine(song);})">
+                <div class="info">
+                    <div class="img first">
+                        <img src="@song.ImagePath" alt="@song.Title" />
+                    </div>
+                    <div class="titles">
+                        <h5>@song.Title</h5>
+                        <p>@song.Artist</p>
+                    </div>
+                </div>
+                <div class="state">
+                    <i class="material-icons">@PlayedIcon(song.Title)</i>
+                </div>
+            </div>
+        }
+    </div>
+</div>

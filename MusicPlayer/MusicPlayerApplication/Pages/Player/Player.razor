@@ -1,0 +1,9 @@
+﻿@page "/player"
+
+<PlayerComponent CurrentSong="@_currentSong" OnNextClickCallback="@(async () => await NextSongAsync())"
+    OnPreviousClickCallback="@(async () => await PreviousSongAsync())" IsBeginList="@_isBeginList"
+    IsEndList="@_isEndList" IsRandom="@_isRandom" OnRandomClickCallback="@(() => RandomSongShuffle())"
+    IsDisplay="_showPlayer" @ref="_playerComponent" />
+
+<MusicListComponent Songs="@_songs" CurrentSong="@_currentSong"
+    OnClickCallback="@( async (song) => { await OnSelectedSong(song); })" />

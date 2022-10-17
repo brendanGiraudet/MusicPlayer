@@ -1,49 +1,25 @@
-﻿<div class="player">
+﻿<div class="player @CssDisplay">
+
     <div class="cover">
-        <img src="@ViewModel.CurrentSong.ImagePath" alt="@ViewModel.CurrentSong.Title" />
+        <img src="@CurrentSong.ImagePath" alt="@CurrentSong.Title" />
     </div>
-    <nav>
-        <div class="left">
-            <i class="material-icons">@*menu*@</i>
-            <h6>@*Playlist*@</h6>
-        </div>
-        <div class="right">
-            <i class="material-icons search">@*search*@</i>
-            <i class="material-icons">@*queue_music*@</i>
-        </div>
-    </nav>
+
     <div class="player-ui">
-        <audio id="@Id" @onchange="@OnChange"><source src="@ViewModel.CurrentSong.Path" type="audio/ogg; codecs=opus"></audio>
+        <audio id="@Id" @onchange="@OnChange">
+            <source src="@CurrentSong.Path" type="audio/ogg; codecs=opus">
+        </audio>
         <progress id="songProgressbar" value="@_currentTime" max="@_duration"></progress>
         <div class="controls">
-            <i class="material-icons @DisabledPreviousButtonClass" disable="@HasPreviousButtonDisabled" @onclick="OnClickPreviousButton">skip_previous</i>
+            <i class="material-icons @DisabledPreviousButtonClass" disable="@HasPreviousButtonDisabled"
+                @onclick="OnClickPreviousButton">skip_previous</i>
             <i class="material-icons" @onclick="OnClickPlayPauseButton">@IconPlayer</i>
-            <i class="material-icons @DisabledNextButtonClass" disabled="@HasNextButtonDisabled" @onclick="OnClickNextButton">skip_next</i>
+            <i class="material-icons @DisabledNextButtonClass" disabled="@HasNextButtonDisabled"
+                @onclick="OnClickNextButton">skip_next</i>
         </div>
         <div class="small">
-            <i class="material-icons random-icon @RandomClass" @onclick="@(() => _isRandom = !_isRandom)">shuffle</i>
+            <i class="material-icons random-icon @RandomClass"
+                @onclick="@(async () => await OnRandomClick())">shuffle</i>
         </div>
     </div>
-    <div class="filter">
-        <input type="text" @oninput="@OnFilterChanged" />
-    </div>
-    <div class="music">
-        @foreach (var song in ViewModel.FilteredSongs)
-        {
-            <div class="song" @onclick="@(() => OnClickSongLine(song))">
-                <div class="info">
-                    <div class="img first">
-                        <img src="@song.ImagePath" alt="@song.Title" />
-                    </div>
-                    <div class="titles">
-                        <h5>@song.Title</h5>
-                        <p>@song.Artist</p>
-                    </div>
-                </div>
-                <div class="state">
-                    <i class="material-icons">@PlayedIcon(song.Title)</i>
-                </div>
-            </div>
-        }
-    </div>
+
 </div>
