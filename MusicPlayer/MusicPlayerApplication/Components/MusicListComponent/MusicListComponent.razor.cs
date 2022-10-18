@@ -12,7 +12,9 @@ namespace MusicPlayerApplication.Components.MusicListComponent
         [Parameter] public IEnumerable<SongModel> Songs { get; set; }
         [Parameter] public SongModel CurrentSong { get; set; }
         [Parameter] public EventCallback<SongModel> OnClickCallback { get; set; }
+        [Parameter] public bool IsDisplay { get; set; }
 
+        private string CssDisplay => IsDisplay ? string.Empty : "hidden";
         private IEnumerable<SongModel> FilteredSongs { get; set; }
         private bool IsCurrentSong(string title) => CurrentSong.Title == title;
         private string PlayedIcon(string title) => IsCurrentSong(title) ? "equalizer" : "play_arrow";

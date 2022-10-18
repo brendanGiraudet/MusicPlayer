@@ -16,6 +16,7 @@ namespace MusicPlayerApplication.Components.Player
         [Parameter] public EventCallback OnNextClickCallback { get; set; }
         [Parameter] public EventCallback OnPreviousClickCallback { get; set; }
         [Parameter] public EventCallback OnRandomClickCallback { get; set; }
+        [Parameter] public EventCallback OnShowMusicListClickCallback { get; set; }
         [Parameter] public SongModel CurrentSong { get; set; }
         [Parameter] public bool IsDisplay { get; set; }
 
@@ -179,6 +180,11 @@ namespace MusicPlayerApplication.Components.Player
         private async Task OnRandomClick()
         {
             if (OnRandomClickCallback.HasDelegate) await OnRandomClickCallback.InvokeAsync();
+        }
+
+        private async Task OnShowMusicListClick()
+        {
+            if (OnShowMusicListClickCallback.HasDelegate) await OnShowMusicListClickCallback.InvokeAsync();
         }
     }
 }

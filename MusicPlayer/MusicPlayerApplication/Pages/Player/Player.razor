@@ -2,8 +2,7 @@
 
 <PlayerComponent CurrentSong="@_currentSong" OnNextClickCallback="@(async () => await NextSongAsync())"
     OnPreviousClickCallback="@(async () => await PreviousSongAsync())" IsBeginList="@_isBeginList"
-    IsEndList="@_isEndList" IsRandom="@_isRandom" OnRandomClickCallback="@(() => RandomSongShuffle())"
-    IsDisplay="_showPlayer" @ref="_playerComponent" />
+    IsEndList="@_isEndList" IsRandom="@_isRandom" OnRandomClickCallback="@(() => RandomSongShuffle())" @ref="_playerComponent"  OnShowMusicListClickCallback="@(() => MusicListDisplayShuffle())" IsDisplay="@(!_isMusicListDisplay)"/>
 
 <MusicListComponent Songs="@_songs" CurrentSong="@_currentSong"
-    OnClickCallback="@( async (song) => { await OnSelectedSong(song); })" />
+OnClickCallback="@( async (song) => { await OnSelectedSong(song); })" IsDisplay="@_isMusicListDisplay" />

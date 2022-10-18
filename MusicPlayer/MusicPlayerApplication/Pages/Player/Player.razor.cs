@@ -20,7 +20,7 @@ namespace MusicPlayerApplication.Pages.Player
         private bool _isBeginList => 0 == _currentSongIndex;
         private int _currentSongIndex { get; set; } = 0;
         private bool _isRandom = false;
-        private bool _showPlayer = true;
+        private bool _isMusicListDisplay = false;
         private PlayerComponent _playerComponent;
 
         protected override async Task OnInitializedAsync()
@@ -83,11 +83,17 @@ namespace MusicPlayerApplication.Pages.Player
             StateHasChanged();
         }
 
+        private void MusicListDisplayShuffle()
+        {
+            _isMusicListDisplay = !_isMusicListDisplay;
+            StateHasChanged();
+        }
+
         private async Task OnSelectedSong(SongModel song)
         {
             _currentSong = song;
-            _showPlayer = true;
             await _playerComponent.ReloadMusic();
+            _isMusicListDisplay = false;
         }
     }
 }

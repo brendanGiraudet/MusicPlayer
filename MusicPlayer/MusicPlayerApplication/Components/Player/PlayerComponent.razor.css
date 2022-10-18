@@ -36,56 +36,25 @@
     font-weight: 100;
 }
 
+.player .player-ui .controls,
 .player .player-ui .small {
-    padding: .625rem 2.1875rem 0px 2.1875rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    align-items: center;
+    max-width: 35rem;
 }
 
-.player .player-ui .small p,
+.player .player-ui .controls i,
 .player .player-ui .small i {
-    margin: 0;
     color: white;
-    font-size: .875rem;
 }
 
-.player .player-ui .small p {
-    color: #ddd;
+.player .player-ui .controls i {
+    font-size: 2rem;
 }
 
 .player .player-ui .small i {
     font-size: 1rem;
-}
-
-.player .player-ui .controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: .625rem 3.125rem 0px 3.125rem;
-}
-
-.player .player-ui .controls i {
-    color: white;
-    font-size: 2rem;
-}
-
-.player .btn {
-    margin-left: auto;
-    margin-right: .625rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    z-index: 4;
-    margin-top: 1.25rem;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-}
-
-.player .btn i {
-    font-size: 1.75rem;
-    color: white;
 }
 
 .player .player-ui .controls .disabled {
@@ -95,11 +64,6 @@
 
 .player .player-ui .small .random-icon.no-random {
     color: gray;
-}
-
-.player .player-ui .small .random-icon {
-    left: 25%;
-    position: relative;
 }
 
 .play-icon {
@@ -117,7 +81,8 @@
 }
 
 .hidden {
-    opacity: 100%;
+    transform: display 2s;
+    display: none;
 }
 
 @media only screen and (min-width:640px) {
