@@ -20,7 +20,6 @@
 }
 
 .music {
-    padding: .625rem 1.25rem 0px 1.25rem;
     overflow: auto;
     max-height: 83vh;
 }
@@ -55,14 +54,14 @@
 }
 
 .music .song .info .img>img {
-    width: 6.75rem;
-    height: 4.75rem;
+    width: 15vh;
+    height: 10vh;
     background: red;
     margin-right: .625rem;
 }
 
 .music .song .info .titles {
-    max-width: 22rem;
+    max-width: 30vh;
 }
 
 .music .song .info .titles h5,
