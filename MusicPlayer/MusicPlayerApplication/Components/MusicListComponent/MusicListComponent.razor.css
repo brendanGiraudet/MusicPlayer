@@ -1,6 +1,6 @@
 .music-list {
     background: #1a1b1e;
-    max-height: 92vh;
+    height: 92vh;
     overflow: auto;
 }
 
