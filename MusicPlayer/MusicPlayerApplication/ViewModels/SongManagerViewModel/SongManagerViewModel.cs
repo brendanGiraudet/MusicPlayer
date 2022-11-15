@@ -19,7 +19,7 @@ namespace MusicPlayerApplication.ViewModels.SongManagerViewModel
             _songService = songService;
         }
 
-        public IEnumerable<SongModel> Songs { get; set; } = Enumerable.Empty<SongModel>();
+        public HashSet<SongModel> Songs { get; set; } = new();
 
         public async Task LoadSongsAsync()
         {
@@ -40,10 +40,10 @@ namespace MusicPlayerApplication.ViewModels.SongManagerViewModel
             await _songService.RemoveByNameAsync(name);
             await _modalService.ShowAsync("Confirmation", $"La musique {title}({name}) à bien été supprimée");
             var removedSong = Songs.FirstOrDefault(s => s.FileName == name);
-            
-            if(removedSong != null)
+
+            if (removedSong != null)
             {
-                Songs = Songs.Where(s => s.FileName != name);
+                Songs.RemoveWhere(s => s.FileName == name);
             }
         }
     }

@@ -6,7 +6,7 @@ namespace MusicPlayerApplication.ViewModels.SongManagerViewModel
 {
     public interface ISongManagerViewModel
     {
-        IEnumerable<SongModel> Songs { get; set; }
+        HashSet<SongModel> Songs { get; set; }
 
         Task LoadSongsAsync();
         Task RemoveAsync(string name, string title);

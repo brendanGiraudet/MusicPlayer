@@ -60,18 +60,19 @@ namespace MusicPlayerApplication.Services.SongService
             return Task.FromResult(response);
         }
 
-        Task<ResponseModel<IEnumerable<SongModel>>> ISongService.GetSongsAsync()
+        Task<ResponseModel<HashSet<SongModel>>> ISongService.GetSongsAsync()
         {
-            var response = new ResponseModel<IEnumerable<SongModel>>
+            var response = new ResponseModel<HashSet<SongModel>>
             {
-                Content = Enumerable.Empty<SongModel>(),
+                Content = new(),
                 HasError = true
             };
             try
             {
-                
                 var dirInfo = new DirectoryInfo(_youtubeDlSettings.MusicPath);
-                var songFiles = new List <FileInfo>();
+
+                var songFiles = new List<FileInfo>();
+
                 foreach (var enableMusicFileExtension in _enabledMusicFileExtensions)
                 {
                     songFiles.AddRange(dirInfo.GetFiles($"*.{enableMusicFileExtension}"));
@@ -80,15 +81,15 @@ namespace MusicPlayerApplication.Services.SongService
                 foreach (var songFile in songFiles)
                 {
                     var songInfo = File.ReadAllText($"{ChangeFilenameExtension(songFile.FullName, _infoFileExtension)}");
-                    
+
                     SongModel song = GetSongModel(songFile, songInfo);
 
-                    response.Content = response.Content.Append(song);
+                    response.Content.Add(song);
                 }
-                
+
                 response.HasError = false;
 
-                response.Content = response.Content.OrderByDescending(c => c.CreationDate);
+                response.Content = response.Content.OrderByDescending(c => c.CreationDate).ToHashSet();
             }
             catch (Exception ex)
             {
@@ -121,7 +122,7 @@ namespace MusicPlayerApplication.Services.SongService
                 var imageName = ChangeFilenameExtension(songName, enableImageExtension);
                 var imagePathToCheck = $"{_youtubeDlSettings.MusicPath}/{imageName}";
 
-                if(File.Exists(imagePathToCheck))
+                if (File.Exists(imagePathToCheck))
                     return $"{_songSettings.Path}/{imageName}";
             }
             return string.Empty;

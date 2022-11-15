@@ -14,7 +14,7 @@ namespace MusicPlayerApplication.Pages.Player
     {
         [Inject] public ISongService _songService { get; set; }
         [Inject] public IModalService _modalService { get; set; }
-        private IEnumerable<SongModel> _songs { get; set; }
+        private HashSet<SongModel> _songs { get; set; }
         private SongModel _currentSong { get; set; }
         private bool _isEndList => _songs.Count() == (_currentSongIndex + 1);
         private bool _isBeginList => 0 == _currentSongIndex;
@@ -48,7 +48,7 @@ namespace MusicPlayerApplication.Pages.Player
         {
             var random = new Random();
             _currentSongIndex = random.Next(0, _songs.Count() - 1);
-            _currentSong = _songs.ToArray()[_currentSongIndex];
+            _currentSong = _songs.ElementAt(_currentSongIndex);
             await Task.CompletedTask;
         }
 
@@ -72,7 +72,7 @@ namespace MusicPlayerApplication.Pages.Player
             else if (canChange)
             {
                 _currentSongIndex = newSongIndex;
-                _currentSong = _songs.ToArray()[_currentSongIndex];
+                _currentSong = _songs.ElementAt(_currentSongIndex);
             }
             await Task.CompletedTask;
         }
@@ -92,6 +92,9 @@ namespace MusicPlayerApplication.Pages.Player
         private async Task OnSelectedSong(SongModel song)
         {
             _currentSong = song;
+
+            _currentSongIndex = _songs.ToList().IndexOf(song);
+
             await _playerComponent.ReloadMusic();
             _isMusicListDisplay = false;
         }
