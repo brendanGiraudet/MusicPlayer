@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.applicationName }}
+  namespace: {{ .Values.applicationName }}
+  labels:
+    app: {{ .Values.applicationName }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.applicationName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.applicationName }}
+    spec:
+      containers:
+      - name: {{ .Values.applicationName }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        ports:
+        - containerPort: {{ .Values.service.port }}
+        
+        {{- with .Values.volumeMounts }}
+        volumeMounts:
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+      
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "{{ .Values.environmentVar.aspnetcore.env }}"
+
+        - name: ASPNETCORE_HTTPS_PORT
+          value: "{{ .Values.environmentVar.aspnetcore.port }}"
+
+        - name: ASPNETCORE_Kestrel__Certificates__Default__KeyPath
+          value: "{{ .Values.environmentVar.aspnetcore.privateKey }}"
+
+        - name: ASPNETCORE_Kestrel__Certificates__Default__Path
+          value: "{{ .Values.environmentVar.aspnetcore.certificate }}"
+
+        - name: ASPNETCORE_URLS
+          value: "{{ .Values.environmentVar.aspnetcore.urls }}"
+
+        - name: Log__Url
+          value: "{{ .Values.environmentVar.log.url }}"
+
+        - name: Shell__TerminalPath
+          value: "{{ .Values.environmentVar.shell.terminalPath }}"
+
+        - name: Song__Path
+          value: "{{ .Values.environmentVar.song.path }}"
+
+        - name: YoutubeDl__MusicPath
+          value: "{{ .Values.environmentVar.youtubeDl.musicPath }}"
+
+        - name: YoutubeDl__Proxy
+          value: "{{ .Values.environmentVar.youtubeDl.proxy }}"
+      
+      {{- with .Values.volumes }}
+      volumes:
+        {{- toYaml . | nindent 6 }}
+      {{- end }}

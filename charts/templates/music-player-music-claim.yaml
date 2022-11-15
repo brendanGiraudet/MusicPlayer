@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    io.kompose.service: music-player-music-claim
+  name: music-player-music-claim
+  namespace: music-player
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  volumeMode: Filesystem
+  volumeName: music-pv-volume
+status:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 50Gi
+  phase: Bound
