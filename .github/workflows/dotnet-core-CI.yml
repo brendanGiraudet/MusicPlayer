@@ -2,9 +2,11 @@ name: MusicPlayer
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    #branches: [ master ]
+  #pull_request:
+    #branches: [ master ]
+    tags:
+      - '*'
 
 jobs:
   Continuous-integration:
@@ -35,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       Repo: /home/runner/work/MusicPlayer/MusicPlayer/MusicPlayer/MusicPlayerApplication/
-      DockerImageName: bakayarusama/music_player:latest
+      DockerImageName: bakayarusama/music_player:${{  github.ref_name }}
 
     steps:
     - name: Checkout source code
