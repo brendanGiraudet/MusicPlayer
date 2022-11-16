@@ -6,6 +6,12 @@
             <source src="@CurrentSong.Path" type="audio/ogg; codecs=opus">
         </audio>
         <progress id="songProgressbar" value="@_currentTime" max="@_duration"></progress>
+
+        <div class="song-presentation">
+            <div class="song-title">@CurrentSong.Title</div>
+            <div class="song-artist">@CurrentSong.Artist</div>
+        </div>
+
     </div>
 
     <div class="player-ui">
@@ -20,7 +26,7 @@
         <div class="small">
             <i class="material-icons random-icon @RandomClass"
                 @onclick="@(async () => await OnRandomClick())">shuffle</i>
-                <i class="material-icons random-icon" @onclick="@(async () => await OnShowMusicListClick())">menu_open</i>
+            <i class="material-icons random-icon" @onclick="@(async () => await OnShowMusicListClick())">menu_open</i>
         </div>
     </div>
 

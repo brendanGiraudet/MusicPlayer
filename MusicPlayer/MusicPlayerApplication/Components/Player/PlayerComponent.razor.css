@@ -1,9 +1,9 @@
 ﻿.player {
     background: #1a1b1e;
-    min-height: 91vh;
+    min-height: 89vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
 
 .player .cover {
@@ -16,6 +16,18 @@
     max-width: 100%;
     max-height: 100%;
     opacity: 0.75;
+}
+
+.player .cover .song-presentation {
+    margin: 1rem;
+    min-height: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.player .cover .song-presentation .song-title {
+    color: white;
 }
 
 .player .player-ui {
