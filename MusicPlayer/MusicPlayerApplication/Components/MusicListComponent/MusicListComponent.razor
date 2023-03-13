@@ -5,19 +5,19 @@
     <div class="music">
         @foreach (var song in FilteredSongs)
         {
-            <div class="song" @onclick="@(async () => {await OnClickSongLine(song);})">
+            <div class="song @PlayedSongCss(song.Title)" @onclick="@(async () => {await OnClickSongLine(song);})">
                 <div class="info">
                     <div class="img first">
                         <img src="@song.ImagePath" alt="@song.Title" />
                     </div>
-                    <div class="titles">
+                    <div class="titles @PlayedSongCss(song.Title)">
                         <h5>@song.Title</h5>
                         <p>@song.Artist</p>
                     </div>
                 </div>
-                <div class="state">
+                @*<div class="state">
                     <i class="material-icons">@PlayedIcon(song.Title)</i>
-                </div>
+                </div>*@
             </div>
         }
     </div>

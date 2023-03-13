@@ -18,6 +18,7 @@ namespace MusicPlayerApplication.Components.MusicListComponent
         private IEnumerable<SongModel> FilteredSongs { get; set; }
         private bool IsCurrentSong(string title) => CurrentSong.Title == title;
         private string PlayedIcon(string title) => IsCurrentSong(title) ? "equalizer" : "play_arrow";
+        private string PlayedSongCss(string title) => IsCurrentSong(title) ? "song-played" : string.Empty;
 
         private async Task OnClickSongLine(SongModel song)
         {

@@ -1,6 +1,6 @@
 .music-list {
     background: #1a1b1e;
-    height: 92vh;
+    height: 100%;
     overflow: auto;
 }
 
@@ -15,80 +15,91 @@
     flex-direction: column;
 }
 
-.filter input {
-    border-radius: 20px;
-}
+    .filter input {
+        border-radius: 20px;
+    }
 
 .music {
     overflow: auto;
-    max-height: 83vh;
+    height: 90%;
 }
 
-.music::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: .625rem;
-    background-color: #F5F5F5;
-}
+    .music::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        border-radius: .625rem;
+        background-color: #F5F5F5;
+    }
 
-.music::-webkit-scrollbar {
-    width: .75rem;
-    background-color: #F5F5F5;
-}
+    .music::-webkit-scrollbar {
+        width: .75rem;
+        background-color: #F5F5F5;
+    }
 
-.music::-webkit-scrollbar-thumb {
-    border-radius: .625rem;
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-    background-color: #555;
-}
+    .music::-webkit-scrollbar-thumb {
+        border-radius: .625rem;
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+        background-color: #555;
+    }
 
-.music .song {
-    height: 5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+    .music .song {
+        height: 5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+    }
+        .music .song.song-played {
+            border-top: 1px solid goldenrod;
+            border-bottom: 1px solid goldenrod;
+        }
+    
+        .music .song .info {
+            display: flex;
+            align-items: center;
+        }
 
-.music .song .info {
-    display: flex;
-    align-items: center;
-}
+            .music .song .info .img > img {
+                width: 15vh;
+                height: 10vh;
+                background: red;
+                margin-right: .625rem;
+            }
 
-.music .song .info .img>img {
-    width: 15vh;
-    height: 10vh;
-    background: red;
-    margin-right: .625rem;
-}
+            .music .song .info .titles {
+                max-width: 30vh;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
 
-.music .song .info .titles {
-    max-width: 30vh;
-}
+                .music .song .info .titles.song-played h5,
+                .music .song .info .titles.song-played p {
+                    color: goldenrod;
+                }
 
-.music .song .info .titles h5,
-.music .song .info .titles p {
-    margin: 0;
-    color: white;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    max-width: 15rem;
-}
 
-.music .song .info .titles h5 {
-    font-size: 0.8rem;
-    font-weight: 400;
-    margin-bottom: .4375rem;
-}
+                .music .song .info .titles h5,
+                .music .song .info .titles p {
+                    margin: 0;
+                    color: white;
+                    max-width: 15rem;
+                }
 
-.music .song .info .titles p {
-    font-size: 0.6rem;
-    color: #929292;
-}
+                .music .song .info .titles h5 {
+                    font-size: 0.8rem;
+                    font-weight: 400;
+                    margin-bottom: .4375rem;
+                }
 
-.music .song .state.playing i {
-    color: #f44336;
-}
+                .music .song .info .titles p {
+                    font-size: 0.6rem;
+                    color: #929292;
+                }
 
-.music .song .state i {
-    color: #ddd;
-}
+        .music .song .state.playing i {
+            color: #f44336;
+        }
+
+        .music .song .state i {
+            color: #ddd;
+        }
