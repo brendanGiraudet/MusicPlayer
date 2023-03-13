@@ -14,8 +14,8 @@ jobs:
     - name: Checkout source code
       uses: actions/checkout@v2
       
-    - name: Install SDK 5.0
-      run: sudo apt-get install dotnet-sdk-5.0
+    - name: Install SDK
+      run: sudo apt-get install dotnet-sdk-7.0
         
     - name: Install dependencies
       working-directory: /home/runner/work/MusicPlayer/MusicPlayer/MusicPlayer
