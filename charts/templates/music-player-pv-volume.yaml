@@ -10,7 +10,7 @@ spec:
   capacity:
     storage: 50Gi
   hostPath:
-    path: /vagrant/web/Musics
+    path: /baka-media/web/Musics
     type: ""
   persistentVolumeReclaimPolicy: Retain
   volumeMode: Filesystem

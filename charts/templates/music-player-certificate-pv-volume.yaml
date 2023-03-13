@@ -10,7 +10,7 @@ spec:
   capacity:
     storage: 50Mi
   hostPath:
-    path: /vagrant/web/Certifications/
+    path: /baka-media/web/Certifications/
     type: ""
   persistentVolumeReclaimPolicy: Retain
   volumeMode: Filesystem

@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: {{ .Values.applicationName }}
-        image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         ports:
         - containerPort: {{ .Values.service.port }}
         
@@ -25,37 +25,11 @@ spec:
         volumeMounts:
           {{- toYaml . | nindent 8 }}
         {{- end }}
-      
+        
+        {{- with .Values.environmentVar }}
         env:
-        - name: ASPNETCORE_ENVIRONMENT
-          value: "{{ .Values.environmentVar.aspnetcore.env }}"
-
-        - name: ASPNETCORE_HTTPS_PORT
-          value: "{{ .Values.environmentVar.aspnetcore.port }}"
-
-        - name: ASPNETCORE_Kestrel__Certificates__Default__KeyPath
-          value: "{{ .Values.environmentVar.aspnetcore.privateKey }}"
-
-        - name: ASPNETCORE_Kestrel__Certificates__Default__Path
-          value: "{{ .Values.environmentVar.aspnetcore.certificate }}"
-
-        - name: ASPNETCORE_URLS
-          value: "{{ .Values.environmentVar.aspnetcore.urls }}"
-
-        - name: Log__Url
-          value: "{{ .Values.environmentVar.log.url }}"
-
-        - name: Shell__TerminalPath
-          value: "{{ .Values.environmentVar.shell.terminalPath }}"
-
-        - name: Song__Path
-          value: "{{ .Values.environmentVar.song.path }}"
-
-        - name: YoutubeDl__MusicPath
-          value: "{{ .Values.environmentVar.youtubeDl.musicPath }}"
-
-        - name: YoutubeDl__Proxy
-          value: "{{ .Values.environmentVar.youtubeDl.proxy }}"
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
       
       {{- with .Values.volumes }}
       volumes:
