@@ -16,3 +16,5 @@
 /MusicPlayer/.vs/MusicPlayer
 /MusicPlayer/MusicPlayerApplication/appsettings.Development.json
 /MusicPlayer/.vs/ProjectEvaluation
+MusicPlayer/MusicPlayerApplication/wwwroot/certificate.crt
+MusicPlayer/MusicPlayerApplication/wwwroot/private.key
