@@ -10,7 +10,7 @@ spec:
   capacity:
     storage: 50Gi
   hostPath:
-    path: /baka-media/web/Musics
+    path: /plex/Musics
     type: ""
   persistentVolumeReclaimPolicy: Retain
   volumeMode: Filesystem
