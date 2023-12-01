@@ -14,7 +14,7 @@ namespace MusicPlayerApplication.Pages.Player
     {
         [Inject] public ISongService _songService { get; set; }
         [Inject] public IModalService _modalService { get; set; }
-        private HashSet<SongModel> _songs { get; set; }
+        private HashSet<SongModel> _songs { get; set; } = new HashSet<SongModel>();
         private SongModel _currentSong { get; set; }
         private bool _isEndList => _songs.Count() == (_currentSongIndex + 1);
         private bool _isBeginList => 0 == _currentSongIndex;
