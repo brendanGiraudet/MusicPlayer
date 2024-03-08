@@ -119,3 +119,6 @@ environmentVar:
 
   - name: YoutubeDl__Proxy
     value: "https://cors-anywhere.herokuapp.com/"
+
+  - name: ApplicationVersion
+    value: "{{ .Chart.AppVersion }}"

@@ -1,0 +1,9 @@
+:root {
+    /* COLOR */
+    --primary-color: #202020;
+    --secondary-color: #ffff;
+    --third-color:#333;
+
+    --navbar-color:#1a1b1e;
+    --activ-color: rgba(255,255,255,0.25);
+}

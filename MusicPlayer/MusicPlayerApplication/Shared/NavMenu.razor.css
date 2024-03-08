@@ -1,10 +1,18 @@
-.navbar-toggler {
-    background-color: rgba(255, 255, 255, 0.1);
+.sidebar {
+    background-color: var(--primary-color);
+    border-bottom: solid 1px var(--third-color);
+    height: 3.5rem;
 }
 
-.top-row {
-    height: 3.5rem;
-    background-color: #1a1b1e;
+.application-version{
+    font-size:.75rem;
+    font-style: italic;
+    margin-right: 0.25rem;
+}
+
+.navbar-toggler {
+    background-color: var(--primary-color);
+    border: solid 1px var(--third-color);
 }
 
 .navbar-brand {
@@ -19,9 +27,9 @@
 }
 
 .nav-item {
+    background-color: var(--primary-color);
     font-size: 0.9rem;
     padding-bottom: 0.5rem;
-    background-color: #1a1b1e;
     z-index: 9;
 }
 
@@ -34,7 +42,7 @@
     }
 
     .nav-item ::deep a {
-        color: #d7d7d7;
+        color: var(--secondary-color);
         border-radius: 4px;
         height: 3rem;
         display: flex;
@@ -42,14 +50,8 @@
         line-height: 3rem;
     }
 
-.nav-item ::deep a.active {
-    background-color: rgba(255,255,255,0.25);
-    color: white;
-}
-
-.nav-item ::deep a:hover {
-    background-color: rgba(255,255,255,0.1);
-    color: white;
+.nav-item ::deep a.active, .nav-item ::deep a:hover {
+    background-color: var(--activ-color);
 }
 
 @media (min-width: 641px) {
