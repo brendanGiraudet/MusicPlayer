@@ -1,5 +1,5 @@
 ﻿.player {
-    background: #1a1b1e;
+    background: var(--background-color);    
     max-height:100%;
     display: flex;
     flex-direction: column;
@@ -90,6 +90,11 @@
     width: 100%;
 }
 
+.song-artist{
+    font-style: italic;
+    color: var(--border-color);
+}
+
 .hidden {
     transform: display 2s;
     display: none;
@@ -102,8 +107,15 @@
 
     .player {
         box-shadow: 0px .125rem .625rem rgba(0, 0, 0, 0.6);
-        width: 80%;
-        height: 50rem;
         margin: auto;
+        border-radius: 1rem;
+    }
+
+    .player .cover img{
+        border-radius: 1rem;
+    }
+
+    .player .player-ui{
+        padding: 1rem;
     }
 }
