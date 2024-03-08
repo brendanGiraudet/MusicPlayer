@@ -11,7 +11,6 @@ image:
   pullPolicy: Always
   # pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "2.0.4"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -119,6 +118,3 @@ environmentVar:
 
   - name: YoutubeDl__Proxy
     value: "https://cors-anywhere.herokuapp.com/"
-
-  - name: ApplicationVersion
-    value: "{{ .Chart.AppVersion }}"
