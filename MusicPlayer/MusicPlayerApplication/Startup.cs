@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MusicPlayerApplication.Extensions;
+using Radzen;
 namespace MusicPlayerApplication
 {
     public class Startup
@@ -34,6 +35,9 @@ namespace MusicPlayerApplication
 
             // ViewModel
             services.AddViewModels();
+
+            // Radzen
+            services.AddRadzenComponents();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

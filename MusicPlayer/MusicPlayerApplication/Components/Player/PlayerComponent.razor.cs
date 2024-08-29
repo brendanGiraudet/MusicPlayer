@@ -25,9 +25,11 @@ namespace MusicPlayerApplication.Components.Player
         private readonly JsonSerializerOptions serializationOptions = new JsonSerializerOptions { IgnoreNullValues = true, PropertyNameCaseInsensitive = true };
 
         public string CurrentTimeAsTime => ConvertToTime(_currentTime);
+        public double CurrentTimeAsDouble => Convert.ToDouble(_currentTime);
         private string _currentTime;
 
         public string DurationAsTime => ConvertToTime(_duration);
+        public double DurationAsDouble => Convert.ToDouble(_duration);
         private string _duration;
 
         public string IconPlayer => _isPlaying ? "pause" : "play_arrow";
