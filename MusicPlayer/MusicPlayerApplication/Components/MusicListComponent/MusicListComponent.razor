@@ -1,24 +1,34 @@
-<div class="music-list @CssDisplay">
-    <div class="filter">
-        <input type="text" @oninput="@OnFilterChanged" />
-    </div>
-    <div class="music">
-        @foreach (var song in FilteredSongs)
-        {
-            <div class="song @PlayedSongCss(song.Title)" @onclick="@(async () => {await OnClickSongLine(song);})">
-                <div class="info">
-                    <div class="img first">
-                        <img src="@song.ImagePath" alt="@song.Title" />
-                    </div>
-                    <div class="titles @PlayedSongCss(song.Title)">
-                        <h5>@song.Title</h5>
-                        <p>@song.Artist</p>
-                    </div>
-                </div>
-                @*<div class="state">
-                    <i class="material-icons">@PlayedIcon(song.Title)</i>
-                </div>*@
-            </div>
-        }
-    </div>
-</div>
+<RadzenCard class="rz-my-12 rz-mx-auto"
+            Style="max-width: 45rem"
+            Visible="@IsDisplay">
+    <RadzenRow class="rz-p-2">
+        <RadzenTextBox @oninput="@OnFilterChanged"
+                        class="w-100"/>
+    </RadzenRow>
+
+    @foreach (var song in FilteredSongs)
+    {
+        <RadzenRow AlignItems="AlignItems.Center" 
+                   @onclick="@(async () => {await OnClickSongLine(song);})"
+                   class="rz-p-2"
+                   Style="@GetBackgroundColorStyle(song.Title)">
+            <RadzenColumn Size="4">
+                <RadzenImage Path="@song.ImagePath" Style="width: 100%; height: 100%;" />
+            </RadzenColumn>
+
+            <RadzenColumn Size="8">
+                <RadzenRow>
+                    <RadzenText Text="@song.Title"
+                                TextStyle="TextStyle.Overline"
+                                Style="@GetColorTextStyle(song.Title)" />
+                </RadzenRow>
+
+                <RadzenRow>
+                    <RadzenText Text="@song.Artist"
+                                TextStyle="TextStyle.Overline"
+                                Style="@GetColorTextStyle(song.Title)" />
+                </RadzenRow>
+            </RadzenColumn>
+        </RadzenRow>
+    }
+</RadzenCard>

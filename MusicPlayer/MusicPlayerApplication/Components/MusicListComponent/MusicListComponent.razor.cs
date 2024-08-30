@@ -14,11 +14,8 @@ namespace MusicPlayerApplication.Components.MusicListComponent
         [Parameter] public EventCallback<SongModel> OnClickCallback { get; set; }
         [Parameter] public bool IsDisplay { get; set; }
 
-        private string CssDisplay => IsDisplay ? string.Empty : "hidden";
         private IEnumerable<SongModel> FilteredSongs { get; set; }
         private bool IsCurrentSong(string title) => CurrentSong.Title == title;
-        private string PlayedIcon(string title) => IsCurrentSong(title) ? "equalizer" : "play_arrow";
-        private string PlayedSongCss(string title) => IsCurrentSong(title) ? "song-played" : string.Empty;
 
         private async Task OnClickSongLine(SongModel song)
         {
@@ -49,6 +46,24 @@ namespace MusicPlayerApplication.Components.MusicListComponent
         {
             base.OnInitialized();
             FilteredSongs = Songs;
+        }
+
+        private string GetColorTextStyle(string title)
+        {
+            var color = IsCurrentSong(title) ? Radzen.Colors.Primary : Radzen.Colors.Secondary;
+
+            var style = $"color : {color}";
+
+            return style;
+        }
+
+        private string GetBackgroundColorStyle(string title)
+        {
+            var color = IsCurrentSong(title) ? Radzen.Colors.Warning : Radzen.Colors.Primary;
+
+            var style = $"background-color : {color}";
+
+            return style;
         }
     }
 }

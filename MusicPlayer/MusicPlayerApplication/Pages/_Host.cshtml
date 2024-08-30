@@ -13,12 +13,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Baka music application</title>
     <base href="~/" />
+    <component type="typeof(RadzenTheme)" render-mode="ServerPrerendered" param-Theme="@("material")" />
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link href="css/site.css" rel="stylesheet" />
     <link href="css/variables.css" rel="stylesheet" />
     <link href="MusicPlayerApplication.styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <component type="typeof(RadzenTheme)" render-mode="ServerPrerendered" param-Theme="@("material")" />
+    
 </head>
 <body>
     <component type="typeof(App)" render-mode="ServerPrerendered" />

@@ -2,7 +2,10 @@
     /* COLOR */
     --background-color: #202020;
     --text-color: #ffff;
-    --border-color:gray;
+    --border-color: gray;
     --activ-color: rgba(255,255,255,0.25);
     --selected-color: goldenrod;
+    /* CUSTOM VARIABLE RADZEN */
+    --rz-primary: #202020;
+    --rz-secondary: #ffff;
 }
