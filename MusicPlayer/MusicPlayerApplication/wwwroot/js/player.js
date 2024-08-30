@@ -15,6 +15,10 @@
     change: function (playerId, source) {
         var player = document.getElementById(playerId);
         player.src = source;
+    },
+    updateCurrentTime: function (playerId, currentTime) {
+        var player = document.getElementById(playerId);
+        player.currentTime = currentTime;
     }
 }
 
