@@ -1,6 +1,14 @@
 ﻿<h3>Télécharger ici les musiques</h3>
 
-<div>
-    <input @bind-value="@ViewModel.Model.Url" type="text" placeholder="Url" />
-    <button class="btn btn-primary" @onclick="ViewModel.DownloadMusicAsync">Download</button>
-</div>
+<RadzenRow>
+    <RadzenColumn>
+        <RadzenTextBox @bind-Value=@ViewModel.Model.Url Placeholder="Url" />
+    </RadzenColumn>
+
+    <RadzenColumn>
+        <RadzenButton Click="@( async (args) => await ViewModel.DownloadMusicAsync())"
+                      Icon="download"
+                      ButtonStyle="ButtonStyle.Primary"
+                      Disabled="string.IsNullOrEmpty(ViewModel.Model.Url)" />
+    </RadzenColumn>
+</RadzenRow>
