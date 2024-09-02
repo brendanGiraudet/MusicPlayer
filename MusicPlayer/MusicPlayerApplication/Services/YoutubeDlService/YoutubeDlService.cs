@@ -20,7 +20,7 @@ namespace MusicPlayerApplication.Services
         }
         public async Task<ResponseModel<bool>> DownloadMusicAsync(string url)
         {
-            var command = $"yt-dlp -o '{_youtubeDlSettings.Value.MusicPath}/%(id)s.%(ext)s' --write-info-json -x --audio-format {_musicFormats.First()} --write-thumbnail '{url}'";
+            var command = $"yt-dlp -o '{_youtubeDlSettings.Value.MusicPath}/%(title)s.%(ext)s' --write-info-json -x --audio-format {_musicFormats.First()} --write-thumbnail '{url}'";
 
             return await _shellService.RunAsync(command);
         }
