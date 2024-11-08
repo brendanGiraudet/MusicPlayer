@@ -1,6 +1,6 @@
 ﻿
 <audio id="@Id" @onchange="@OnChange">
-    <source src="@CurrentSong.Path" type="audio/ogg; codecs=opus">
+    <source src="@CurrentSong?.Path" type="audio/ogg; codecs=opus">
 </audio>
 
 <RadzenCard class="rz-my-12 rz-mx-auto"
@@ -9,7 +9,7 @@
 
     <RadzenCard class="rz-shadow-0 rz-border-radius-0">
         <RadzenRow RowGap="1">
-            <RadzenImage Path="@CurrentSong.ImagePath" Style="width: 100%; height: 15rem;" />
+            <RadzenImage Path="@CurrentSong?.ImagePath" Style="width: 100%; height: 15rem;" />
 
             <RadzenRow JustifyContent="JustifyContent.SpaceBetween"
                        class="w-100 rz-p-2">
@@ -31,15 +31,15 @@
         </RadzenRow>
 
         <RadzenRow RowGap="0">
-            <RadzenText TextStyle="TextStyle.H6"><strong>@CurrentSong.Title</strong></RadzenText>
+            <RadzenText TextStyle="TextStyle.H6"><strong>@CurrentSong?.Title</strong></RadzenText>
         </RadzenRow>
 
         <RadzenRow RowGap="0">
-            <RadzenText TextStyle="TextStyle.Overline">@CurrentSong.Artist</RadzenText>
+            <RadzenText TextStyle="TextStyle.Overline">@CurrentSong?.Artist</RadzenText>
         </RadzenRow>
 
         <RadzenRow>
-            <RadzenText TextStyle="TextStyle.Overline">@CurrentSong.CreationDate</RadzenText>
+            <RadzenText TextStyle="TextStyle.Overline">@CurrentSong?.CreationDate</RadzenText>
         </RadzenRow>
     </RadzenCard>
 

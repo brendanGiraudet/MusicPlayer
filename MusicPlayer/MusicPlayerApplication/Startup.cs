@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using MusicPlayerApplication.Extensions;
 using Radzen;
@@ -56,6 +57,12 @@ namespace MusicPlayerApplication
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Configuration["YoutubeDl:MusicPath"]),
+                RequestPath = Configuration["Song:Path"]
+            });
+
 
             app.UseRouting();
 

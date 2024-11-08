@@ -8,95 +8,94 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MusicPlayerApplication.Pages.Player
+namespace MusicPlayerApplication.Pages.Player;
+
+public partial class Player
 {
-    public partial class Player
+    [Inject] public ISongService _songService { get; set; }
+    [Inject] public IModalService _modalService { get; set; }
+    private HashSet<SongModel> _songs { get; set; } = new HashSet<SongModel>();
+    private SongModel _currentSong { get; set; }
+    private bool _isEndList => _songs.Count() == (_currentSongIndex + 1);
+    private bool _isBeginList => 0 == _currentSongIndex;
+    private int _currentSongIndex { get; set; } = 0;
+    private bool _isRandom = false;
+    private bool _isMusicListDisplay = false;
+    private PlayerComponent _playerComponent;
+
+    protected override async Task OnInitializedAsync()
     {
-        [Inject] public ISongService _songService { get; set; }
-        [Inject] public IModalService _modalService { get; set; }
-        private HashSet<SongModel> _songs { get; set; } = new HashSet<SongModel>();
-        private SongModel _currentSong { get; set; }
-        private bool _isEndList => _songs.Count() == (_currentSongIndex + 1);
-        private bool _isBeginList => 0 == _currentSongIndex;
-        private int _currentSongIndex { get; set; } = 0;
-        private bool _isRandom = false;
-        private bool _isMusicListDisplay = false;
-        private PlayerComponent _playerComponent;
+        await LoadSongsAsync();
+        await base.OnInitializedAsync();
+    }
 
-        protected override async Task OnInitializedAsync()
+    public async Task LoadSongsAsync()
+    {
+        var getSongsResponse = await _songService.GetSongsAsync();
+
+        if (getSongsResponse.HasError)
         {
-            await LoadSongsAsync();
-            await base.OnInitializedAsync();
+            await _modalService.ShowAsync("Erreur lors du chargement des musiques", getSongsResponse.ErrorMessage);
+        }
+        else
+        {
+            _songs = getSongsResponse.Content;
+            _currentSong = getSongsResponse.Content.FirstOrDefault();
+        }
+    }
+
+    private async Task RandomSong()
+    {
+        var random = new Random();
+        _currentSongIndex = random.Next(0, _songs.Count() - 1);
+        _currentSong = _songs.ElementAt(_currentSongIndex);
+        await Task.CompletedTask;
+    }
+
+    public async Task PreviousSongAsync()
+    {
+        await ChangeSong(!_isBeginList, _currentSongIndex - 1);
+    }
+
+    public async Task NextSongAsync()
+    {
+        await ChangeSong(!_isEndList, _currentSongIndex + 1);
+    }
+
+    private async Task ChangeSong(bool canChange, int newSongIndex)
+    {
+        if (_isRandom)
+        {
+            await RandomSong();
         }
 
-        public async Task LoadSongsAsync()
+        else if (canChange)
         {
-            var getSongsResponse = await _songService.GetSongsAsync();
-
-            if (getSongsResponse.HasError)
-            {
-                await _modalService.ShowAsync("Erreur lors du chargement des musiques", getSongsResponse.ErrorMessage);
-            }
-            else
-            {
-                _songs = getSongsResponse.Content;
-                _currentSong = getSongsResponse.Content.FirstOrDefault();
-            }
-        }
-
-        private async Task RandomSong()
-        {
-            var random = new Random();
-            _currentSongIndex = random.Next(0, _songs.Count() - 1);
+            _currentSongIndex = newSongIndex;
             _currentSong = _songs.ElementAt(_currentSongIndex);
-            await Task.CompletedTask;
         }
+        await Task.CompletedTask;
+    }
 
-        public async Task PreviousSongAsync()
-        {
-            await ChangeSong(!_isBeginList, _currentSongIndex - 1);
-        }
+    private void RandomSongShuffle()
+    {
+        _isRandom = !_isRandom;
+        StateHasChanged();
+    }
 
-        public async Task NextSongAsync()
-        {
-            await ChangeSong(!_isEndList, _currentSongIndex + 1);
-        }
+    private void MusicListDisplayShuffle()
+    {
+        _isMusicListDisplay = !_isMusicListDisplay;
+        StateHasChanged();
+    }
 
-        private async Task ChangeSong(bool canChange, int newSongIndex)
-        {
-            if (_isRandom)
-            {
-                await RandomSong();
-            }
+    private async Task OnSelectedSong(SongModel song)
+    {
+        _currentSong = song;
 
-            else if (canChange)
-            {
-                _currentSongIndex = newSongIndex;
-                _currentSong = _songs.ElementAt(_currentSongIndex);
-            }
-            await Task.CompletedTask;
-        }
+        _currentSongIndex = _songs.ToList().IndexOf(song);
 
-        private void RandomSongShuffle()
-        {
-            _isRandom = !_isRandom;
-            StateHasChanged();
-        }
-
-        private void MusicListDisplayShuffle()
-        {
-            _isMusicListDisplay = !_isMusicListDisplay;
-            StateHasChanged();
-        }
-
-        private async Task OnSelectedSong(SongModel song)
-        {
-            _currentSong = song;
-
-            _currentSongIndex = _songs.ToList().IndexOf(song);
-
-            await _playerComponent.ReloadMusic();
-            _isMusicListDisplay = false;
-        }
+        await _playerComponent.ReloadMusic();
+        _isMusicListDisplay = false;
     }
 }
