@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 1515
 RUN apt update && apt dist-upgrade -y
@@ -6,7 +6,7 @@ RUN apt install -y python3-pip
 RUN pip3 install --upgrade yt-dlp
 RUN apt install -y ffmpeg
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY ["./MusicPlayerApplication.csproj", "MusicPlayerApplication/"]
 WORKDIR "/src/MusicPlayerApplication"
