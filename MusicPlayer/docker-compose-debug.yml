@@ -1,7 +1,7 @@
 version: "2.1"
 services:
   music-player:
-    image: music_player:2.2.12
+    image: music_player:2.2.13
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -18,7 +18,7 @@ services:
       Song__Path: /Musics
       YoutubeDl__MusicPath: /app/wwwroot/Musics
       YoutubeDl__Proxy: https://cors-anywhere.herokuapp.com/
-      ApplicationVersion: 2.2.12
+      ApplicationVersion: 2.2.13
 
     volumes:
       - /home/baka/Musique:/app/wwwroot/Musics
