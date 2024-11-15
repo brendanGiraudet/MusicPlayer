@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MusicPlayerApplication.Pages.Player;
+namespace MusicPlayerApplication.Components.Pages.Player;
 
 public partial class Player
 {

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 
-namespace MusicPlayerApplication.Shared;
+namespace MusicPlayerApplication.Components.Layout;
 
 public partial class NavMenu{
     [Inject] public IConfiguration Configuration { get; set; }
