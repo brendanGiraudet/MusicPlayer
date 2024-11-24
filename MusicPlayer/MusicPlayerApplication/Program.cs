@@ -79,4 +79,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-// TODO finir la migration vers .Net 8 en terme de fichier blazor etc
