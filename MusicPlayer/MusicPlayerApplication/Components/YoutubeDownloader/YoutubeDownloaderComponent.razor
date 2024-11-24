@@ -2,13 +2,11 @@
 
 <RadzenRow>
     <RadzenColumn>
-        <RadzenTextBox @bind-Value=@ViewModel.Model.Url Placeholder="Url" />
+        <RadzenTextBox @bind-Value=@ViewModel.Model.Url Placeholder="Url" Style="width:100%;" />
     </RadzenColumn>
 
-    <RadzenColumn>
-        <RadzenButton Click="@( async (args) => await ViewModel.DownloadMusicAsync())"
-                      Icon="download"
-                      ButtonStyle="ButtonStyle.Primary"
-                      Disabled="string.IsNullOrEmpty(ViewModel.Model.Url)" />
+    <RadzenColumn Size="2">
+        <RadzenButton Click="@( async (args) => await ViewModel.DownloadMusicAsync())" Icon="download"
+            ButtonStyle="ButtonStyle.Primary" Disabled="string.IsNullOrEmpty(ViewModel.Model.Url)" />
     </RadzenColumn>
 </RadzenRow>

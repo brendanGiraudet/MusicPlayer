@@ -3,9 +3,16 @@
     --background-color: #202020;
     --text-color: #ffff;
     --border-color: gray;
-    --activ-color: rgba(255,255,255,0.25);
+    --activ-color: rgba(255, 255, 255, 0.25);
     --selected-color: goldenrod;
     /* CUSTOM VARIABLE RADZEN */
     --rz-primary: #202020;
     --rz-secondary: #ffff;
+    --rz-sidebar-background-color: var(--rz-primary);
+    --rz-header-color: var(--rz-secondary);
+    --rz-header-background-color: var(--rz-primary);
+    --rz-footer-color: var(--rz-secondary);
+    --rz-footer-background-color: var(--rz-primary);
+    --rz-sidebar-toggle-color: var(--rz-secondary);
+    --rz-panel-menu-item-background-color: var(--rz-primary);
 }

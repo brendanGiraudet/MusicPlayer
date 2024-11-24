@@ -5,14 +5,16 @@ namespace MusicPlayerApplication.Services.ModalService
 {
     public class LoaderService : ILoaderService
     {
-        public event Func<Task> ToogleLoaderInvoked;
+        public event Func<Task>? ToogleLoaderInvoked;
         public async Task ShowAsync()
         {
-            await ToogleLoaderInvoked.Invoke();
+            if(ToogleLoaderInvoked is not null)
+                await ToogleLoaderInvoked.Invoke();
         }
         public async Task HideAsync()
         {
-            await ToogleLoaderInvoked.Invoke();
+            if(ToogleLoaderInvoked is not null)
+                await ToogleLoaderInvoked.Invoke();
         }
     }
 }
