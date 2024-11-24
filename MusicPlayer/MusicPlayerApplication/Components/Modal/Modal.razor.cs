@@ -12,10 +12,6 @@ namespace MusicPlayerApplication.Components.Modal
         public string Title { get; set; }
         public string Message { get; set; }
 
-        protected override void OnInitialized()
-        {
-            ModalService.ShowInvoked += ShowModal;
-        }
 
         private async Task ShowModal(string title, string message)
         {

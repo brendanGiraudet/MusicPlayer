@@ -1,14 +1,13 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Radzen;
 
 namespace MusicPlayerApplication.Services.ModalService
 {
-    public class ModalService : IModalService
+    public class ModalService(DialogService _dialogService) : IModalService
     {
-        public event Func<string, string, Task> ShowInvoked;
         public async Task ShowAsync(string title, string message)
         {
-            await ShowInvoked.Invoke(title, message);
+            _dialogService.Alert(message, title);
         }
     }
 }

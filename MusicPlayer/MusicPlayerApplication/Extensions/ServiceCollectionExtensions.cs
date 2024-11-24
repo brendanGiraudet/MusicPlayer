@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MusicPlayerApplication.Data;
 using MusicPlayerApplication.Services;
 using MusicPlayerApplication.Services.LogService;
 using MusicPlayerApplication.Services.ModalService;
@@ -28,8 +27,7 @@ namespace MusicPlayerApplication.Extensions
             services.AddTransient<IYoutubeDlService, YoutubeDlService>();
             services.AddTransient<IShellService, ShellService>();
             services.AddTransient<ISongService, SongService>();
-            services.AddSingleton<WeatherForecastService>();
-            services.AddSingleton<IModalService, ModalService>();
+            services.AddTransient<IModalService, ModalService>();
             services.AddSingleton<ILoaderService, LoaderService>();
             services.AddSingleton<ILogService, LogService>();
         }
