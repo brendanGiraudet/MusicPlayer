@@ -1,28 +1,30 @@
-﻿window.player = {
-    play: function (playerId) {
-        var player = document.getElementById(playerId);
-        player.play();
-    },
-    pause: function (playerId) {
-        var player = document.getElementById(playerId);
-        player.pause();
-    },
-    stop: function (playerId) {
-        var player = document.getElementById(playerId);
-        player.pause();
-        player.currentTime = 0;
-    },
-    change: function (playerId, source) {
-        var player = document.getElementById(playerId);
-        player.src = source;
-    },
-    updateCurrentTime: function (playerId, currentTime) {
-        var player = document.getElementById(playerId);
-        player.currentTime = currentTime;
-    }
+﻿export function play(playerId) {
+    var player = document.getElementById(playerId);
+    player.play();
 }
 
-window.CustomEventHandler = function (playerId, eventName, payload) {
+export function pause(playerId) {
+    var player = document.getElementById(playerId);
+    player.pause();
+}
+
+export function stop(playerId) {
+    var player = document.getElementById(playerId);
+    player.pause();
+    player.currentTime = 0;
+}
+
+export function change(playerId, source) {
+    var player = document.getElementById(playerId);
+    player.src = source;
+}
+
+export function updateCurrentTime(playerId, currentTime) {
+    var player = document.getElementById(playerId);
+    player.currentTime = currentTime;
+}
+
+export function CustomEventHandler(playerId, eventName, payload) {
     var player = document.getElementById(playerId);
     if (!(player && eventName)) {
         return false

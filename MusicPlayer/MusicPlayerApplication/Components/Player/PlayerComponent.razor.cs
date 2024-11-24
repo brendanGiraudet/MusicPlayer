@@ -20,6 +20,8 @@ public partial class PlayerComponent
     [Parameter] public SongModel CurrentSong { get; set; }
     [Parameter] public bool IsDisplay { get; set; }
 
+    private IJSObjectReference? module;
+
     private string CssDisplay => !IsDisplay ? "hidden" : string.Empty;
 
     private readonly JsonSerializerOptions serializationOptions = new JsonSerializerOptions { IgnoreNullValues = true, PropertyNameCaseInsensitive = true };
@@ -79,24 +81,24 @@ public partial class PlayerComponent
     private async Task Play()
     {
         _isPlaying = true;
-        await JSRuntime.InvokeAsync<string>("player.play", Id);
+        await module.InvokeAsync<string>("play", Id);
     }
 
     private async Task Pause()
     {
         _isPlaying = false;
-        await JSRuntime.InvokeAsync<string>("player.pause", Id);
+        await module.InvokeAsync<string>("pause", Id);
     }
 
     private async Task Stop()
     {
         _isPlaying = false;
-        await JSRuntime.InvokeAsync<string>("player.stop", Id);
+        await module.InvokeAsync<string>("stop", Id);
     }
 
     private async Task ChangeSource(string sourceFile)
     {
-        await JSRuntime.InvokeAsync<string>("player.change", Id, sourceFile);
+        await module.InvokeAsync<string>("change", Id, sourceFile);
     }
 
     private void TimeUpdate(AudioState audioState)
@@ -130,6 +132,9 @@ public partial class PlayerComponent
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
+            module = await JSRuntime.InvokeAsync<IJSObjectReference>("import",
+                "./Components/Player/PlayerComponent.razor.js");
+
             await ConfigureEvents();
         }
     }
@@ -142,7 +147,7 @@ public partial class PlayerComponent
 
     private async Task Implement(AudioEvents eventName)
     {
-        await JSRuntime.InvokeVoidAsync("window.CustomEventHandler", Id, eventName.ToString().ToLower(), AudioState.GetPayload());
+        await module.InvokeVoidAsync("CustomEventHandler", Id, eventName.ToString().ToLower(), AudioState.GetPayload());
     }
 
     private async Task OnChange(ChangeEventArgs args)
@@ -184,6 +189,6 @@ public partial class PlayerComponent
     private void UpdateCurrentTime(double expectedTime)
     {
         _currentTime = expectedTime;
-        JSRuntime.InvokeAsync<string>("player.updateCurrentTime", Id, expectedTime);
+        module.InvokeAsync<string>("updateCurrentTime", Id, expectedTime);
     }
 }
