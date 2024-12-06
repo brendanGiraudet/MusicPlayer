@@ -80,11 +80,20 @@ namespace MusicPlayerApplication.Services.SongService
 
                 foreach (var songFile in songFiles)
                 {
-                    var songInfo = File.ReadAllText($"{ChangeFilenameExtension(songFile.FullName, _infoFileExtension)}");
+                    var songInfoFilename = $"{ChangeFilenameExtension(songFile.FullName, _infoFileExtension)}";
 
-                    SongModel song = GetSongModel(songFile, songInfo);
+                    if(File.Exists(songInfoFilename))
+                    {
+                        var songInfo = File.ReadAllText(songInfoFilename);
 
-                    response.Content.Add(song);
+                        SongModel song = GetSongModel(songFile, songInfo);
+
+                        response.Content.Add(song);
+                    }
+                    else
+                    {
+                        _logService.LogWarning($"Fichier de nom {songFile.FullName}, Fichier d'info {songInfoFilename} n'existe pas");
+                    }
                 }
 
                 response.HasError = false;
