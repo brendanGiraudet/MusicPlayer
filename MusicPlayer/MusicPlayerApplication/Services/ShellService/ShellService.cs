@@ -1,7 +1,6 @@
-﻿using Microsoft.Extensions.Options;
-using MusicPlayerApplication.Enumerations;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MusicPlayerApplication.Models;
-using MusicPlayerApplication.Services.LogService;
 using MusicPlayerApplication.Settings;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -10,9 +9,10 @@ namespace MusicPlayerApplication.Services.ShellService
 {
     public class ShellService : IShellService
     {
-        readonly ShellSettings _shellSettings;
-        readonly ILogService _logService;
-        public ShellService(IOptions<ShellSettings> shellSettingsOptions, ILogService logService)
+        private readonly ShellSettings _shellSettings;
+        private readonly ILogger<ShellService> _logService;
+
+        public ShellService(IOptions<ShellSettings> shellSettingsOptions, ILogger<ShellService> logService)
         {
             _shellSettings = shellSettingsOptions.Value;
             _logService = logService;
@@ -26,7 +26,8 @@ namespace MusicPlayerApplication.Services.ShellService
             };
 
             var escapedArgs = cmd.Replace("\"", "\\\"");
-            System.Console.WriteLine($"command => {escapedArgs}");
+
+            _logService.LogInformation($"command => {escapedArgs}");
 
             using var process = new Process()
             {
@@ -46,8 +47,11 @@ namespace MusicPlayerApplication.Services.ShellService
                 if (!isStarted)
                 {
                     var errorMessage = "Process not started !";
-                    await _logService.Log(LogLevel.Errors.ToString(), errorMessage);
+                    
+                    _logService.LogError(errorMessage);
+                    
                     response.ErrorMessage = errorMessage;
+                    
                     return response;
                 }
 
@@ -56,15 +60,17 @@ namespace MusicPlayerApplication.Services.ShellService
 
                 response.HasError = false;
                 var message = $"The process {process.StartInfo.FileName} was executed successfully";
-                await _logService.Log(LogLevel.Informations.ToString(), message);
+                
+                _logService.LogInformation(message);
 
                 return response;
             }
             catch (System.Exception ex)
             {
-                await _logService.Log(LogLevel.Errors.ToString(), ex.Message);
-                System.Console.WriteLine(ex.StackTrace);
+                _logService.LogInformation(ex.Message);
+
                 response.ErrorMessage = ex.Message;
+
                 return response;
             }
         }

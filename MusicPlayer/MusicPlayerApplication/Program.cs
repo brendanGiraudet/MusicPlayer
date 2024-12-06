@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using MusicPlayerApplication.Extensions;
 using Radzen;
 using Fluxor;
-using MusicPlayerApplication;
 using MusicPlayerApplication.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,6 +39,9 @@ builder.Services.AddFluxor(options =>
     options.ScanAssemblies(typeof(Program).Assembly);
     options.UseReduxDevTools();
 });
+
+// Add Custom Log
+builder.Logging.AddCustomLogger();
 
 var app = builder.Build();
 

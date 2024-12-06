@@ -1,7 +1,10 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Configuration;
 using MusicPlayerApplication.Services;
-using MusicPlayerApplication.Services.LogService;
+using MusicPlayerApplication.Services.CustomLogger;
 using MusicPlayerApplication.Services.ModalService;
 using MusicPlayerApplication.Services.ShellService;
 using MusicPlayerApplication.Services.SongService;
@@ -29,7 +32,6 @@ namespace MusicPlayerApplication.Extensions
             services.AddTransient<ISongService, SongService>();
             services.AddTransient<IModalService, ModalService>();
             services.AddSingleton<ILoaderService, LoaderService>();
-            services.AddSingleton<ILogService, LogService>();
         }
 
         public static void AddHttpClients(this IServiceCollection services)
@@ -42,6 +44,21 @@ namespace MusicPlayerApplication.Extensions
             services.AddTransient<IYoutubeDlViewModel, YoutubeDlViewModel>();
             services.AddTransient<IPlayerViewModel, PlayerViewModel>();
             services.AddTransient<ISongManagerViewModel, SongManagerViewModel>();
+        }
+
+        public static ILoggingBuilder AddCustomLogger(this ILoggingBuilder builder)
+        {
+            builder.ClearProviders();
+
+            builder.AddConfiguration();
+
+            builder.Services.TryAddEnumerable(
+                ServiceDescriptor.Singleton<ILoggerProvider, CustomLoggerProvider>());
+
+            LoggerProviderOptions.RegisterProviderOptions
+                <CustomLoggerSettings, CustomLoggerProvider>(builder.Services);
+
+            return builder;
         }
     }
 }

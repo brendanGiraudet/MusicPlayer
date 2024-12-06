@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using MusicPlayerApplication.Components.Player;
 using MusicPlayerApplication.Models;
 using MusicPlayerApplication.Services.ModalService;
@@ -14,6 +15,7 @@ public partial class Player
 {
     [Inject] public ISongService _songService { get; set; }
     [Inject] public IModalService _modalService { get; set; }
+    [Inject] public ILogger<Player> Logger { get; set; }
     private HashSet<SongModel> _songs { get; set; } = new HashSet<SongModel>();
     private SongModel _currentSong { get; set; }
     private bool _isEndList => _songs.Count() == (_currentSongIndex + 1);
@@ -35,7 +37,10 @@ public partial class Player
 
         if (getSongsResponse.HasError)
         {
-            await _modalService.ShowAsync("Erreur lors du chargement des musiques", getSongsResponse.ErrorMessage);
+            var message = "Erreur lors du chargement des musiques";
+            await _modalService.ShowAsync(message, getSongsResponse.ErrorMessage);
+            
+            Logger.LogError(message);
         }
         else
         {

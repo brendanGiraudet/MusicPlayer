@@ -1,7 +1,6 @@
-﻿using Microsoft.Extensions.Options;
-using MusicPlayerApplication.Enumerations;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MusicPlayerApplication.Models;
-using MusicPlayerApplication.Services.LogService;
 using MusicPlayerApplication.Settings;
 using System;
 using System.Collections.Generic;
@@ -15,12 +14,13 @@ namespace MusicPlayerApplication.Services.SongService
     {
         private YoutubeDlSettings _youtubeDlSettings;
         private SongSettings _songSettings;
-        private ILogService _logService;
+        private readonly ILogger<SongService> _logService;
         private string[] _enabledMusicFileExtensions = { "wav", "mp3", "opus", "best", "aac", "flac", "m4a", "vorbis", "webm" };
         private string[] _enabledImageFileExtensions = { ".jpg", ".webp" };
         private string _infoFileExtension = ".info.json";
+
         public SongService(IOptions<YoutubeDlSettings> youtubeDlSettings,
-            IOptions<SongSettings> songSettings, ILogService logService)
+            IOptions<SongSettings> songSettings, ILogger<SongService> logService)
         {
             _youtubeDlSettings = youtubeDlSettings.Value;
             _songSettings = songSettings.Value;
@@ -49,12 +49,12 @@ namespace MusicPlayerApplication.Services.SongService
                 response.HasError = false;
 
                 var message = $"{songFileName} was deleted with successfully";
-                _logService.Log(LogLevel.Informations.ToString(), message);
+                _logService.LogInformation(message);
             }
             catch (Exception ex)
             {
                 response.ErrorMessage = ex.Message;
-                _logService.Log(LogLevel.Errors.ToString(), ex.Message);
+                _logService.LogError(ex.Message);
             }
 
             return Task.FromResult(response);
@@ -94,7 +94,7 @@ namespace MusicPlayerApplication.Services.SongService
             catch (Exception ex)
             {
                 response.ErrorMessage = ex.Message;
-                _logService.Log(LogLevel.Errors.ToString(), ex.Message);
+                _logService.LogError(ex.Message);
             }
 
             return Task.FromResult(response);
