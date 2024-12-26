@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Fluxor;
 using MusicPlayerApplication.Models;
 
@@ -12,6 +13,7 @@ public class MusicsState
     public bool IsLoading { get; }
     public bool IsRandom { get; }
     public bool IsPlaying { get; }
+    public int CurrentSongIndex { get; }
 
     private MusicsState() : base()
     {
@@ -19,6 +21,7 @@ public class MusicsState
         IsLoading = false;
         IsRandom = false;
         IsPlaying = false;
+        CurrentSongIndex = 0;
     }
 
     public MusicsState(
@@ -27,12 +30,17 @@ public class MusicsState
         bool? isLoading = null,
         SongModel? currentSong = null,
         bool? isRandom = null,
-        bool? isPlaying = null)
+        bool? isPlaying = null,
+        int? currentSongIndex = null)
     {
         Songs = songs ?? currentState?.Songs ?? [];
         IsLoading = isLoading ?? currentState?.IsLoading ?? false;
         CurrentSong = currentSong ?? currentState?.CurrentSong ?? null;
         IsRandom = isRandom ?? currentState?.IsRandom ?? false;
         IsPlaying = isPlaying ?? currentState?.IsPlaying ?? false;
+        CurrentSongIndex = currentSongIndex ?? currentState?.CurrentSongIndex ?? 0;
     }
+
+    public bool IsFirstSong() => CurrentSongIndex == 0;
+    public bool IsLastSong() => Songs.Count() == (CurrentSongIndex + 1);
 }

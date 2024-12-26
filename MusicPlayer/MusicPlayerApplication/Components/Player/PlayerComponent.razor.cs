@@ -1,10 +1,10 @@
 ﻿using Fluxor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using MusicPlayerApplication.Models;
 using MusicPlayerApplication.Stores;
 using MusicPlayerApplication.Stores.Actions;
 using System;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -15,16 +15,10 @@ public partial class PlayerComponent
     [Inject] public IJSRuntime JSRuntime { get; set; }
     [Inject] public IState<MusicsState> MusicsState { get; set; }
     [Inject] public IDispatcher Dispatcher { get; set; }
-    [Parameter] public bool IsEndList { get; set; }
-    [Parameter] public bool IsBeginList { get; set; }
-    [Parameter] public EventCallback OnNextClickCallback { get; set; }
-    [Parameter] public EventCallback OnPreviousClickCallback { get; set; }
     [Parameter] public EventCallback OnShowMusicListClickCallback { get; set; }
     [Parameter] public bool IsDisplay { get; set; }
 
     private IJSObjectReference? module;
-
-    private string CssDisplay => !IsDisplay ? "hidden" : string.Empty;
 
     private readonly JsonSerializerOptions serializationOptions = new JsonSerializerOptions { IgnoreNullValues = true, PropertyNameCaseInsensitive = true };
 
@@ -42,31 +36,47 @@ public partial class PlayerComponent
     public string RandomClass => MusicsState.Value.IsRandom ? string.Empty : "no-random";
 
     public string DisabledNextButtonClass => HasNextButtonDisabled ? "disabled" : string.Empty;
-    private bool HasNextButtonDisabled => IsEndList && !MusicsState.Value.IsRandom;
+    private bool HasNextButtonDisabled => MusicsState.Value.IsLastSong() && !MusicsState.Value.IsRandom;
 
     public string DisabledPreviousButtonClass => HasPreviousButtonDisabled ? "disabled" : string.Empty;
-    private bool HasPreviousButtonDisabled => IsBeginList && !MusicsState.Value.IsRandom;
+    private bool HasPreviousButtonDisabled => MusicsState.Value.IsFirstSong() && !MusicsState.Value.IsRandom;
 
     private Task OnClickPlayPauseButton() => MusicsState.Value.IsPlaying ? Pause() : Play();
 
     private async Task OnClickNextButton()
     {
-        await OnMusicChange(OnNextClickCallback, !HasNextButtonDisabled);
+        ChangeSong(!HasNextButtonDisabled, MusicsState.Value.CurrentSongIndex + 1);
+    }
+
+    private void ChangeSong(bool canChange, int newSongIndex)
+    {
+        if (MusicsState.Value.IsRandom)
+        {
+            RandomSong();
+        }
+
+        else if (canChange)
+        {
+            Dispatcher.Dispatch(new SetCurrentSongIndexAction(newSongIndex));
+            Dispatcher.Dispatch(new SetCurrentSongAction(MusicsState.Value.Songs.ElementAt(newSongIndex)));
+        }
+
+        ReloadMusic();
+    }
+
+    private void RandomSong()
+    {
+        var random = new Random();
+        var index = random.Next(0, MusicsState.Value.Songs.Count() - 1);
+        Dispatcher.Dispatch(new SetCurrentSongIndexAction(index));
+
+        var song = MusicsState.Value.Songs.ElementAt(index);
+        Dispatcher.Dispatch(new SetCurrentSongAction(song));
     }
 
     private async Task OnClickPreviousButton()
     {
-        await OnMusicChange(OnPreviousClickCallback, !HasPreviousButtonDisabled);
-    }
-
-    private async Task OnMusicChange(EventCallback callback, bool canChangeMusic)
-    {
-        if (canChangeMusic)
-        {
-            if (callback.HasDelegate) await callback.InvokeAsync();
-
-            await ReloadMusic();
-        }
+        ChangeSong(!HasPreviousButtonDisabled, MusicsState.Value.CurrentSongIndex - 1);
     }
 
     public async Task ReloadMusic()

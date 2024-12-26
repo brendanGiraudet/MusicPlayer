@@ -2,11 +2,7 @@
 
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
-<PlayerComponent OnNextClickCallback="@(async () => await NextSongAsync())"
-                 OnPreviousClickCallback="@(async () => await PreviousSongAsync())" 
-                 IsBeginList="@_isBeginList"
-                 IsEndList="@_isEndList"
-                 @ref="_playerComponent"  
+<PlayerComponent @ref="_playerComponent"  
                  OnShowMusicListClickCallback="@(() => MusicListDisplayShuffle())" 
                  IsDisplay="@(!_isMusicListDisplay)" />
 
