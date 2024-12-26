@@ -8,7 +8,7 @@
                         class="w-100"/>
     </RadzenRow>
 
-    @foreach (var song in FilteredSongs)
+    @foreach (var song in MusicsState.Value.FilteredSongs)
     {
         <RadzenRow AlignItems="AlignItems.Center" 
                    @onclick="@(async () => {await OnClickSongLine(song);})"

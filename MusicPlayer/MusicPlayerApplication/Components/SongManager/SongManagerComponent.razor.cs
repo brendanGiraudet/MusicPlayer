@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Fluxor;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MusicPlayerApplication.Models;
+using MusicPlayerApplication.Stores;
+using MusicPlayerApplication.Stores.Actions;
 using MusicPlayerApplication.ViewModels.SongManagerViewModel;
 using System;
 using System.Collections.Generic;
@@ -11,24 +14,24 @@ namespace MusicPlayerApplication.Components.SongManager
 {
     public partial class SongManagerComponent
     {
+        [Inject] public IState<MusicsState> MusicsState { get; set; }
         [Inject] public ISongManagerViewModel ViewModel { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
+        [Inject] public IDispatcher Dispatcher { get; set; }
 
         private IEnumerable<SongModel> FilteredSongs { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            await ViewModel.LoadSongsAsync();
+            base.OnInitialized();
 
-            await base.OnInitializedAsync();
-
-            await ApplyFilter();
+            if (MusicsState.Value.Songs.Count() == 0)
+                Dispatcher.Dispatch(new GetSongsAction());
         }
 
         private async void Remove(string fileName, string title)
         {
-            await ViewModel.RemoveAsync(fileName, title);
-            StateHasChanged();
+            Dispatcher.Dispatch(new RemoveSongAction(fileName, title));
         }
 
         private async Task DownloadSong(string filePath)
@@ -45,26 +48,7 @@ namespace MusicPlayerApplication.Components.SongManager
 
         private async Task ApplyFilter(string filter = null)
         {
-            if (filter == null)
-            {
-                FilteredSongs = ViewModel.Songs;
-                return;
-            }
-
-            IEnumerable<SongModel> songs = Array.Empty<SongModel>();
-
-            foreach (var song in ViewModel.Songs)
-            {
-                if(song.Title.ToLowerInvariant().Contains(filter.ToLowerInvariant()) 
-                    || song.Artist.ToLowerInvariant().Contains(filter.ToLowerInvariant()))
-                {
-                    songs = songs.Append(song);
-                }
-            }
-
-            FilteredSongs = songs;
-
-            await Task.CompletedTask;
+            Dispatcher.Dispatch(new SearchSongAction(filter));
         }
     }
 }

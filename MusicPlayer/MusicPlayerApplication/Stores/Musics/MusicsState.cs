@@ -15,6 +15,7 @@ public class MusicsState
     public bool IsPlaying { get; }
     public int CurrentSongIndex { get; }
     public bool ShowMusicList { get; }
+    public IEnumerable<SongModel> FilteredSongs { get; }
 
     private MusicsState() : base()
     {
@@ -24,6 +25,7 @@ public class MusicsState
         IsPlaying = false;
         CurrentSongIndex = 0;
         ShowMusicList = false;
+        FilteredSongs = [];
     }
 
     public MusicsState(
@@ -34,7 +36,8 @@ public class MusicsState
         bool? isRandom = null,
         bool? isPlaying = null,
         int? currentSongIndex = null,
-        bool? showMusicList = null)
+        bool? showMusicList = null,
+        IEnumerable<SongModel>? filteredSongs = null)
     {
         Songs = songs ?? currentState?.Songs ?? [];
         IsLoading = isLoading ?? currentState?.IsLoading ?? false;
@@ -43,6 +46,7 @@ public class MusicsState
         IsPlaying = isPlaying ?? currentState?.IsPlaying ?? false;
         CurrentSongIndex = currentSongIndex ?? currentState?.CurrentSongIndex ?? 0;
         ShowMusicList = showMusicList ?? currentState?.ShowMusicList ?? false;
+        FilteredSongs = filteredSongs ?? currentState?.FilteredSongs ?? [];
     }
 
     public bool IsFirstSong() => CurrentSongIndex == 0;

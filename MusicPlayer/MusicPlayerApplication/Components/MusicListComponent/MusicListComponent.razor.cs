@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Components;
 using MusicPlayerApplication.Models;
 using MusicPlayerApplication.Stores;
 using MusicPlayerApplication.Stores.Actions;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MusicPlayerApplication.Components.MusicListComponent
@@ -36,21 +34,7 @@ namespace MusicPlayerApplication.Components.MusicListComponent
 
         private async Task ApplyFilter(string filter)
         {
-            if (filter == null)
-            {
-                FilteredSongs = MusicsState.Value.Songs;
-                return;
-            }
-
-            var songs = MusicsState.Value.Songs.Where(s => (s.Title != null && s.Title.ToLowerInvariant().Contains(filter.ToLowerInvariant())) || (s.Artist != null && s.Artist.ToLowerInvariant().Contains(filter.ToLowerInvariant())));
-            FilteredSongs = songs.Any() ? songs : Array.Empty<SongModel>();
-            await Task.CompletedTask;
-        }
-
-        protected override void OnInitialized()
-        {
-            base.OnInitialized();
-            FilteredSongs = MusicsState.Value.Songs;
+            Dispatcher.Dispatch(new SearchSongAction(filter));
         }
 
         private string GetColorTextStyle(string title)

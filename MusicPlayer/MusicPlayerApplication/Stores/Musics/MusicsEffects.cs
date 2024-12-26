@@ -29,4 +29,14 @@ public class MusicsEffects
 
         dispatcher.Dispatch(new GetSongsResultAction(getSongsResponse.Content));
     }
+
+
+    [EffectMethod]
+    public async Task HandleRemoveSongAction(RemoveSongAction action, IDispatcher dispatcher)
+    {
+        var result = await _songService.RemoveByNameAsync(action.Filename);
+        await _modalService.ShowAsync("Confirmation", $"La musique {action.Title}({action.Filename}) à bien été supprimée");
+        
+        dispatcher.Dispatch(new RemoveSongResultAction(!result.HasError, action.Filename));
+    }
 }

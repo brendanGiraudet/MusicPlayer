@@ -1,11 +1,17 @@
-﻿<RadzenCard class="rz-my-12 rz-mx-auto"
-            Style="max-width: 45rem">
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+<Loader IsDisplay="@(MusicsState.Value.IsLoading)" />
+
+<RadzenCard class="rz-my-12 rz-mx-auto"
+            Style="max-width: 45rem"
+            Visible="@(!MusicsState.Value.IsLoading)">
+
     <RadzenRow class="rz-p-2">
         <RadzenTextBox @oninput="@OnFilterChanged"
                        class="w-100" />
     </RadzenRow>
 
-    @foreach (var song in ViewModel.Songs)
+    @foreach (var song in MusicsState.Value.FilteredSongs)
     {
         <RadzenRow AlignItems="AlignItems.Center"
                    class="rz-p-2">
