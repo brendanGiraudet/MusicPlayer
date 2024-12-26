@@ -1,6 +1,6 @@
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
-using MusicPlayerApplication.Services.LogService;
 using MusicPlayerApplication.Services.ShellService;
 using MusicPlayerApplication.Settings;
 using System.Threading.Tasks;
@@ -14,15 +14,11 @@ namespace MusicPlayer.UnitTest
 
         IOptions<ShellSettings> _shellSettingsOptions;
 
-        ILogService DefaultLogService
+        ILogger<ShellService> DefaultLogService
         {
             get
             {
-                var mock = new Mock<ILogService>();
-
-                mock.Setup(s => s.Log(It.IsAny<string>(), It.IsAny<string>()))
-                    .Returns(Task.FromResult(true))
-                    .Verifiable();
+                var mock = new Mock<ILogger<ShellService>>();
 
                 return mock.Object;
             }

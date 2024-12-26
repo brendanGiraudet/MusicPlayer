@@ -60,46 +60,49 @@ namespace MusicPlayerApplication.Services.SongService
             return Task.FromResult(response);
         }
 
-        Task<ResponseModel<HashSet<SongModel>>> ISongService.GetSongsAsync()
+        public async Task<ResponseModel<HashSet<SongModel>>> GetSongsAsync()
         {
             var response = new ResponseModel<HashSet<SongModel>>
             {
                 Content = new(),
                 HasError = true
             };
+
             try
             {
                 var dirInfo = new DirectoryInfo(_youtubeDlSettings.MusicPath);
 
-                var songFiles = new List<FileInfo>();
+                // Récupération des fichiers en une seule passe
+                var songFiles = _enabledMusicFileExtensions
+                    .SelectMany(ext => dirInfo.GetFiles($"*.{ext}", SearchOption.TopDirectoryOnly))
+                    .ToList();
 
-                foreach (var enableMusicFileExtension in _enabledMusicFileExtensions)
+                // Traitement parallèle des fichiers
+                var tasks = songFiles.Select(async songFile =>
                 {
-                    songFiles.AddRange(dirInfo.GetFiles($"*.{enableMusicFileExtension}"));
-                }
-
-                foreach (var songFile in songFiles)
-                {
-                    var songInfoFilename = $"{ChangeFilenameExtension(songFile.FullName, _infoFileExtension)}";
+                    var songInfoFilename = ChangeFilenameExtension(songFile.FullName, _infoFileExtension);
 
                     if (File.Exists(songInfoFilename))
                     {
-                        var songInfo = File.ReadAllText(songInfoFilename);
-
-                        SongModel? song = GetSongModel(songFile, songInfo);
-
-                        if (song is not null)
-                            response.Content.Add(song);
+                        var songInfo = await File.ReadAllTextAsync(songInfoFilename); // Lecture asynchrone
+                        return GetSongModel(songFile, songInfo); // Génère le modèle
                     }
                     else
                     {
-                        _logService.LogWarning($"Fichier de nom {songFile.FullName}, Fichier d'info {songInfoFilename} n'existe pas");
+                        return null; // Ignore si le fichier info n'existe pas
                     }
-                }
+                });
+
+                // Attente des résultats
+                var songs = await Task.WhenAll(tasks);
+
+                // Filtrer les résultats valides
+                response.Content = songs
+                    .Where(song => song is not null)
+                    .OrderByDescending(song => song!.CreationDate)
+                    .ToHashSet()!;
 
                 response.HasError = false;
-
-                response.Content = response.Content.OrderByDescending(c => c.CreationDate).ToHashSet();
             }
             catch (Exception ex)
             {
@@ -107,8 +110,9 @@ namespace MusicPlayerApplication.Services.SongService
                 _logService.LogError(ex.Message);
             }
 
-            return Task.FromResult(response);
+            return response;
         }
+
 
         private SongModel? GetSongModel(FileInfo songFile, string songInfo)
         {

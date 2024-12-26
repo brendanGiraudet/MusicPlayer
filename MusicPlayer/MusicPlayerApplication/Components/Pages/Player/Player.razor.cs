@@ -21,6 +21,7 @@ public partial class Player
         base.OnInitialized();
 
         Dispatcher.Dispatch(new GetSongsAction());
+        Dispatcher.Dispatch(new SetShowMusicListAction(false));
     }
 
     private async Task OnSelectedSong(SongModel song)
@@ -28,7 +29,7 @@ public partial class Player
         Dispatcher.Dispatch(new SetCurrentSongIndexAction(MusicsState.Value.Songs.ToList().IndexOf(song)));
 
         await _playerComponent.ReloadMusic();
-        
+
         Dispatcher.Dispatch(new SetShowMusicListAction(false));
     }
 }

@@ -1,7 +1,7 @@
 using Bogus;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
-using MusicPlayerApplication.Services.LogService;
 using MusicPlayerApplication.Services.SongService;
 using MusicPlayerApplication.Settings;
 using System.Linq;
@@ -16,19 +16,16 @@ namespace MusicPlayer.UnitTest
      
         IOptions<SongSettings> _songSettingsOptions;
         
-        ILogService DefaultLogService
+        ILogger<SongService> DefaultLogService
         {
             get
             {
-                var mock = new Mock<ILogService>();
-
-                mock.Setup(s => s.Log(It.IsAny<string>(), It.IsAny<string>()))
-                    .Returns(Task.FromResult(true))
-                    .Verifiable();
+                var mock = new Mock<ILogger<SongService>>();
 
                 return mock.Object;
             }
         }
+        
         ISongService CreateSongService() => new SongService(_youtubeDlSettingsOptions, _songSettingsOptions, DefaultLogService);
 
         public SongServiceUnitTest(IOptions<YoutubeDlSettings> youtubeDlSettingsOptions, IOptions<SongSettings> songSettingsOptions)
