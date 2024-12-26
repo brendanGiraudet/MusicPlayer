@@ -15,7 +15,6 @@ public partial class PlayerComponent
     [Inject] public IJSRuntime JSRuntime { get; set; }
     [Inject] public IState<MusicsState> MusicsState { get; set; }
     [Inject] public IDispatcher Dispatcher { get; set; }
-    [Parameter] public EventCallback OnShowMusicListClickCallback { get; set; }
     [Parameter] public bool IsDisplay { get; set; }
 
     private IJSObjectReference? module;
@@ -194,7 +193,7 @@ public partial class PlayerComponent
 
     private async Task OnShowMusicListClick()
     {
-        if (OnShowMusicListClickCallback.HasDelegate) await OnShowMusicListClickCallback.InvokeAsync();
+        Dispatcher.Dispatch(new SetShowMusicListAction(true));
     }
 
     private void UpdateCurrentTime(double expectedTime)

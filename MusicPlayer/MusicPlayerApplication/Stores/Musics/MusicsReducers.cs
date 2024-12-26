@@ -33,4 +33,9 @@ public static class MusicsReducers
     [ReducerMethod]
     public static MusicsState ReduceSetCurrentSongIndexAction(MusicsState state, SetCurrentSongIndexAction action) => new MusicsState(currentState: state, currentSongIndex: action.CurrentSongIndex);
     #endregion
+    
+    #region SetShowMusicListAction
+    [ReducerMethod]
+    public static MusicsState ReduceSetShowMusicListAction(MusicsState state, SetShowMusicListAction action) => new MusicsState(currentState: state, showMusicList: action.ShowMusicList);
+    #endregion
 }

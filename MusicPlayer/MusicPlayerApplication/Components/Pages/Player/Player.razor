@@ -2,9 +2,8 @@
 
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
-<PlayerComponent @ref="_playerComponent"  
-                 OnShowMusicListClickCallback="@(() => MusicListDisplayShuffle())" 
-                 IsDisplay="@(!_isMusicListDisplay)" />
+<PlayerComponent @ref="_playerComponent"
+                 IsDisplay="@(!MusicsState.Value.ShowMusicList)" />
 
 <MusicListComponent OnClickCallback="@( async (song) => { await OnSelectedSong(song); })" 
-                    IsDisplay="@_isMusicListDisplay" />
+                    IsDisplay="@MusicsState.Value.ShowMusicList" />

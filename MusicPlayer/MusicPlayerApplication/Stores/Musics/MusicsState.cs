@@ -14,6 +14,7 @@ public class MusicsState
     public bool IsRandom { get; }
     public bool IsPlaying { get; }
     public int CurrentSongIndex { get; }
+    public bool ShowMusicList { get; }
 
     private MusicsState() : base()
     {
@@ -22,6 +23,7 @@ public class MusicsState
         IsRandom = false;
         IsPlaying = false;
         CurrentSongIndex = 0;
+        ShowMusicList = false;
     }
 
     public MusicsState(
@@ -31,7 +33,8 @@ public class MusicsState
         SongModel? currentSong = null,
         bool? isRandom = null,
         bool? isPlaying = null,
-        int? currentSongIndex = null)
+        int? currentSongIndex = null,
+        bool? showMusicList = null)
     {
         Songs = songs ?? currentState?.Songs ?? [];
         IsLoading = isLoading ?? currentState?.IsLoading ?? false;
@@ -39,6 +42,7 @@ public class MusicsState
         IsRandom = isRandom ?? currentState?.IsRandom ?? false;
         IsPlaying = isPlaying ?? currentState?.IsPlaying ?? false;
         CurrentSongIndex = currentSongIndex ?? currentState?.CurrentSongIndex ?? 0;
+        ShowMusicList = showMusicList ?? currentState?.ShowMusicList ?? false;
     }
 
     public bool IsFirstSong() => CurrentSongIndex == 0;
