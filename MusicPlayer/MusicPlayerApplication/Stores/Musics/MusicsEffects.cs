@@ -23,12 +23,10 @@ public class MusicsEffects
         {
             var message = "Erreur lors du chargement des musiques";
             await _modalService.ShowAsync(message, getSongsResponse.ErrorMessage);
-            
+
             logger.LogError(message);
         }
-        else
-        {
-            dispatcher.Dispatch(new GetSongsResultAction(getSongsResponse.Content));
-        }
+
+        dispatcher.Dispatch(new GetSongsResultAction(getSongsResponse.Content));
     }
 }

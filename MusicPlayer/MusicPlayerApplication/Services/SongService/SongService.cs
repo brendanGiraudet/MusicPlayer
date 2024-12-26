@@ -64,7 +64,7 @@ namespace MusicPlayerApplication.Services.SongService
         {
             var response = new ResponseModel<HashSet<SongModel>>
             {
-                Content = new(),
+                Content = [],
                 HasError = true
             };
 

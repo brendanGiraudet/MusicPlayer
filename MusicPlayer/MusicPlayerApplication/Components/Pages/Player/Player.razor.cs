@@ -20,7 +20,8 @@ public partial class Player
     {
         base.OnInitialized();
 
-        Dispatcher.Dispatch(new GetSongsAction());
+        if(MusicsState.Value.Songs.Count() == 0)
+            Dispatcher.Dispatch(new GetSongsAction());
         Dispatcher.Dispatch(new SetShowMusicListAction(false));
     }
 
