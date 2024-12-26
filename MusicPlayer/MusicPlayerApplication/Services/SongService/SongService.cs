@@ -82,13 +82,14 @@ namespace MusicPlayerApplication.Services.SongService
                 {
                     var songInfoFilename = $"{ChangeFilenameExtension(songFile.FullName, _infoFileExtension)}";
 
-                    if(File.Exists(songInfoFilename))
+                    if (File.Exists(songInfoFilename))
                     {
                         var songInfo = File.ReadAllText(songInfoFilename);
 
-                        SongModel song = GetSongModel(songFile, songInfo);
+                        SongModel? song = GetSongModel(songFile, songInfo);
 
-                        response.Content.Add(song);
+                        if (song is not null)
+                            response.Content.Add(song);
                     }
                     else
                     {
@@ -109,19 +110,30 @@ namespace MusicPlayerApplication.Services.SongService
             return Task.FromResult(response);
         }
 
-        private SongModel GetSongModel(FileInfo songFile, string songInfo)
+        private SongModel? GetSongModel(FileInfo songFile, string songInfo)
         {
-            var song = System.Text.Json.JsonSerializer.Deserialize<SongModel>(songInfo);
+            if (string.IsNullOrEmpty(songInfo)) return null;
 
-            song.Path = $"{_songSettings.Path}/{songFile.Name}";
+            try
+            {
+                var song = System.Text.Json.JsonSerializer.Deserialize<SongModel>(songInfo);
 
-            song.ImagePath = GetImagePath(songFile.Name);
+                song.Path = $"{_songSettings.Path}/{songFile.Name}";
 
-            song.FileName = GetFileNameWithoutExtension(songFile.Name);
+                song.ImagePath = GetImagePath(songFile.Name);
 
-            song.CreationDate = songFile.CreationTime;
+                song.FileName = GetFileNameWithoutExtension(songFile.Name);
 
-            return song;
+                song.CreationDate = songFile.CreationTime;
+
+                return song;
+            }
+            catch (System.Exception ex)
+            {
+                _logService.LogError($"{nameof(GetSongModel)} ({songInfo}) : {ex.Message}");
+
+                return null;
+            }
         }
 
         private string GetImagePath(string songName)

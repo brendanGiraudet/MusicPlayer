@@ -1,9 +1,12 @@
+using Fluxor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using MusicPlayerApplication.Components.Player;
 using MusicPlayerApplication.Models;
 using MusicPlayerApplication.Services.ModalService;
 using MusicPlayerApplication.Services.SongService;
+using MusicPlayerApplication.Stores;
+using MusicPlayerApplication.Stores.Actions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,44 +19,28 @@ public partial class Player
     [Inject] public ISongService _songService { get; set; }
     [Inject] public IModalService _modalService { get; set; }
     [Inject] public ILogger<Player> Logger { get; set; }
-    private HashSet<SongModel> _songs { get; set; } = new HashSet<SongModel>();
+    [Inject] public IDispatcher Dispatcher { get; set; }
+    [Inject] public IState<MusicsState> MusicsState { get; set; }
     private SongModel _currentSong { get; set; }
-    private bool _isEndList => _songs.Count() == (_currentSongIndex + 1);
+    private bool _isEndList => MusicsState.Value.Songs.Count() == (_currentSongIndex + 1);
     private bool _isBeginList => 0 == _currentSongIndex;
     private int _currentSongIndex { get; set; } = 0;
     private bool _isRandom = false;
     private bool _isMusicListDisplay = false;
     private PlayerComponent _playerComponent;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await LoadSongsAsync();
-        await base.OnInitializedAsync();
-    }
+        base.OnInitialized();
 
-    public async Task LoadSongsAsync()
-    {
-        var getSongsResponse = await _songService.GetSongsAsync();
-
-        if (getSongsResponse.HasError)
-        {
-            var message = "Erreur lors du chargement des musiques";
-            await _modalService.ShowAsync(message, getSongsResponse.ErrorMessage);
-            
-            Logger.LogError(message);
-        }
-        else
-        {
-            _songs = getSongsResponse.Content;
-            _currentSong = getSongsResponse.Content.FirstOrDefault();
-        }
+        Dispatcher.Dispatch(new GetSongsAction());
     }
 
     private async Task RandomSong()
     {
         var random = new Random();
-        _currentSongIndex = random.Next(0, _songs.Count() - 1);
-        _currentSong = _songs.ElementAt(_currentSongIndex);
+        _currentSongIndex = random.Next(0, MusicsState.Value.Songs.Count() - 1);
+        _currentSong = MusicsState.Value.Songs.ElementAt(_currentSongIndex);
         await Task.CompletedTask;
     }
 
@@ -77,15 +64,9 @@ public partial class Player
         else if (canChange)
         {
             _currentSongIndex = newSongIndex;
-            _currentSong = _songs.ElementAt(_currentSongIndex);
+            _currentSong = MusicsState.Value.Songs.ElementAt(_currentSongIndex);
         }
         await Task.CompletedTask;
-    }
-
-    private void RandomSongShuffle()
-    {
-        _isRandom = !_isRandom;
-        StateHasChanged();
     }
 
     private void MusicListDisplayShuffle()
@@ -96,9 +77,7 @@ public partial class Player
 
     private async Task OnSelectedSong(SongModel song)
     {
-        _currentSong = song;
-
-        _currentSongIndex = _songs.ToList().IndexOf(song);
+        _currentSongIndex = MusicsState.Value.Songs.ToList().IndexOf(song);
 
         await _playerComponent.ReloadMusic();
         _isMusicListDisplay = false;

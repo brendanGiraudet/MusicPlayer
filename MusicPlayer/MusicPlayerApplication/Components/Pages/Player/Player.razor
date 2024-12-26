@@ -1,8 +1,14 @@
 ﻿@page "/player"
 
-<PlayerComponent CurrentSong="@_currentSong" OnNextClickCallback="@(async () => await NextSongAsync())"
-    OnPreviousClickCallback="@(async () => await PreviousSongAsync())" IsBeginList="@_isBeginList"
-    IsEndList="@_isEndList" IsRandom="@_isRandom" OnRandomClickCallback="@(() => RandomSongShuffle())" @ref="_playerComponent"  OnShowMusicListClickCallback="@(() => MusicListDisplayShuffle())" IsDisplay="@(!_isMusicListDisplay)" />
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
-<MusicListComponent Songs="@_songs" CurrentSong="@_currentSong"
-OnClickCallback="@( async (song) => { await OnSelectedSong(song); })" IsDisplay="@_isMusicListDisplay" />
+<PlayerComponent OnNextClickCallback="@(async () => await NextSongAsync())"
+                 OnPreviousClickCallback="@(async () => await PreviousSongAsync())" 
+                 IsBeginList="@_isBeginList"
+                 IsEndList="@_isEndList"
+                 @ref="_playerComponent"  
+                 OnShowMusicListClickCallback="@(() => MusicListDisplayShuffle())" 
+                 IsDisplay="@(!_isMusicListDisplay)" />
+
+<MusicListComponent OnClickCallback="@( async (song) => { await OnSelectedSong(song); })" 
+                    IsDisplay="@_isMusicListDisplay" />

@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Fluxor;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MusicPlayerApplication.Models;
+using MusicPlayerApplication.Stores;
+using MusicPlayerApplication.Stores.Actions;
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -10,14 +13,13 @@ namespace MusicPlayerApplication.Components.Player;
 public partial class PlayerComponent
 {
     [Inject] public IJSRuntime JSRuntime { get; set; }
+    [Inject] public IState<MusicsState> MusicsState { get; set; }
+    [Inject] public IDispatcher Dispatcher { get; set; }
     [Parameter] public bool IsEndList { get; set; }
     [Parameter] public bool IsBeginList { get; set; }
-    [Parameter] public bool IsRandom { get; set; }
     [Parameter] public EventCallback OnNextClickCallback { get; set; }
     [Parameter] public EventCallback OnPreviousClickCallback { get; set; }
-    [Parameter] public EventCallback OnRandomClickCallback { get; set; }
     [Parameter] public EventCallback OnShowMusicListClickCallback { get; set; }
-    [Parameter] public SongModel CurrentSong { get; set; }
     [Parameter] public bool IsDisplay { get; set; }
 
     private IJSObjectReference? module;
@@ -38,13 +40,13 @@ public partial class PlayerComponent
 
     public string Id { get; set; } = "audioPlayer";
 
-    public string RandomClass => IsRandom ? string.Empty : "no-random";
+    public string RandomClass => MusicsState.Value.IsRandom ? string.Empty : "no-random";
 
     public string DisabledNextButtonClass => HasNextButtonDisabled ? "disabled" : string.Empty;
-    private bool HasNextButtonDisabled => IsEndList && !IsRandom;
+    private bool HasNextButtonDisabled => IsEndList && !MusicsState.Value.IsRandom;
 
     public string DisabledPreviousButtonClass => HasPreviousButtonDisabled ? "disabled" : string.Empty;
-    private bool HasPreviousButtonDisabled => IsBeginList && !IsRandom;
+    private bool HasPreviousButtonDisabled => IsBeginList && !MusicsState.Value.IsRandom;
 
     private Task OnClickPlayPauseButton() => _isPlaying ? Pause() : Play();
 
@@ -71,7 +73,7 @@ public partial class PlayerComponent
     public async Task ReloadMusic()
     {
         await Stop();
-        await ChangeSource(CurrentSong.Path);
+        await ChangeSource(MusicsState.Value.CurrentSong.Path);
 
         StateHasChanged();
 
@@ -178,7 +180,7 @@ public partial class PlayerComponent
 
     private async Task OnRandomClick()
     {
-        if (OnRandomClickCallback.HasDelegate) await OnRandomClickCallback.InvokeAsync();
+        Dispatcher.Dispatch(new SetIsRandomAction(!MusicsState.Value.IsRandom));
     }
 
     private async Task OnShowMusicListClick()

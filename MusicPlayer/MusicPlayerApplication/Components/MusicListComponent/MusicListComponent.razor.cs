@@ -1,5 +1,8 @@
+using Fluxor;
 using Microsoft.AspNetCore.Components;
 using MusicPlayerApplication.Models;
+using MusicPlayerApplication.Stores;
+using MusicPlayerApplication.Stores.Actions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +12,18 @@ namespace MusicPlayerApplication.Components.MusicListComponent
 {
     public partial class MusicListComponent
     {
-        [Parameter] public IEnumerable<SongModel> Songs { get; set; }
-        [Parameter] public SongModel CurrentSong { get; set; }
+        [Inject] public IState<MusicsState> MusicsState { get; set; }
+        [Inject] public IDispatcher Dispatcher { get; set; }
         [Parameter] public EventCallback<SongModel> OnClickCallback { get; set; }
         [Parameter] public bool IsDisplay { get; set; }
 
         private IEnumerable<SongModel> FilteredSongs { get; set; }
-        private bool IsCurrentSong(string title) => CurrentSong.Title == title;
+        private bool IsCurrentSong(string title) => MusicsState.Value.CurrentSong.Title == title;
 
         private async Task OnClickSongLine(SongModel song)
         {
+            Dispatcher.Dispatch(new SetCurrentSongAction(song));
+            
             if (OnClickCallback.HasDelegate) await OnClickCallback.InvokeAsync(song);
         }
 
@@ -33,11 +38,11 @@ namespace MusicPlayerApplication.Components.MusicListComponent
         {
             if (filter == null)
             {
-                FilteredSongs = Songs;
+                FilteredSongs = MusicsState.Value.Songs;
                 return;
             }
 
-            var songs = Songs.Where(s => (s.Title != null && s.Title.ToLowerInvariant().Contains(filter.ToLowerInvariant())) || (s.Artist != null && s.Artist.ToLowerInvariant().Contains(filter.ToLowerInvariant())));
+            var songs = MusicsState.Value.Songs.Where(s => (s.Title != null && s.Title.ToLowerInvariant().Contains(filter.ToLowerInvariant())) || (s.Artist != null && s.Artist.ToLowerInvariant().Contains(filter.ToLowerInvariant())));
             FilteredSongs = songs.Any() ? songs : Array.Empty<SongModel>();
             await Task.CompletedTask;
         }
@@ -45,7 +50,7 @@ namespace MusicPlayerApplication.Components.MusicListComponent
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            FilteredSongs = Songs;
+            FilteredSongs = MusicsState.Value.Songs;
         }
 
         private string GetColorTextStyle(string title)
