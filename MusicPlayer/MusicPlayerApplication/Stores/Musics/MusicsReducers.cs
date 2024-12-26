@@ -23,4 +23,9 @@ public static class MusicsReducers
     [ReducerMethod]
     public static MusicsState ReduceSetIsRandomAction(MusicsState state, SetIsRandomAction action) => new MusicsState(currentState: state, isRandom: action.IsRandom);
     #endregion
+    
+    #region SetIsPlayingAction
+    [ReducerMethod]
+    public static MusicsState ReduceSetIsPlayingAction(MusicsState state, SetIsPlayingAction action) => new MusicsState(currentState: state, isPlaying: action.IsPlaying);
+    #endregion
 }

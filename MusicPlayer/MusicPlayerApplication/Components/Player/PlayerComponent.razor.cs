@@ -35,8 +35,7 @@ public partial class PlayerComponent
     public decimal DurationAsDecimal => Convert.ToDecimal(Duration);
     public double Duration { get; set; } = 1;
 
-    public string IconPlayer => _isPlaying ? "pause" : "play_arrow";
-    private bool _isPlaying = false;
+    public string IconPlayer => MusicsState.Value.IsPlaying ? "pause" : "play_arrow";
 
     public string Id { get; set; } = "audioPlayer";
 
@@ -48,7 +47,7 @@ public partial class PlayerComponent
     public string DisabledPreviousButtonClass => HasPreviousButtonDisabled ? "disabled" : string.Empty;
     private bool HasPreviousButtonDisabled => IsBeginList && !MusicsState.Value.IsRandom;
 
-    private Task OnClickPlayPauseButton() => _isPlaying ? Pause() : Play();
+    private Task OnClickPlayPauseButton() => MusicsState.Value.IsPlaying ? Pause() : Play();
 
     private async Task OnClickNextButton()
     {
@@ -82,19 +81,19 @@ public partial class PlayerComponent
 
     private async Task Play()
     {
-        _isPlaying = true;
+        Dispatcher.Dispatch(new SetIsPlayingAction(true));
         await module.InvokeAsync<string>("play", Id);
     }
 
     private async Task Pause()
     {
-        _isPlaying = false;
+        Dispatcher.Dispatch(new SetIsPlayingAction(false));
         await module.InvokeAsync<string>("pause", Id);
     }
 
     private async Task Stop()
     {
-        _isPlaying = false;
+        Dispatcher.Dispatch(new SetIsPlayingAction(false));
         await module.InvokeAsync<string>("stop", Id);
     }
 

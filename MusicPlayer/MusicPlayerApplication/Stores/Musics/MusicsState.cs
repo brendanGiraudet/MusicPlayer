@@ -11,12 +11,14 @@ public class MusicsState
     public SongModel CurrentSong { get; }
     public bool IsLoading { get; }
     public bool IsRandom { get; }
+    public bool IsPlaying { get; }
 
     private MusicsState() : base()
     {
         Songs = [];
         IsLoading = false;
         IsRandom = false;
+        IsPlaying = false;
     }
 
     public MusicsState(
@@ -24,11 +26,13 @@ public class MusicsState
         IEnumerable<SongModel>? songs = null,
         bool? isLoading = null,
         SongModel? currentSong = null,
-        bool? isRandom = null)
+        bool? isRandom = null,
+        bool? isPlaying = null)
     {
         Songs = songs ?? currentState?.Songs ?? [];
         IsLoading = isLoading ?? currentState?.IsLoading ?? false;
         CurrentSong = currentSong ?? currentState?.CurrentSong ?? null;
         IsRandom = isRandom ?? currentState?.IsRandom ?? false;
+        IsPlaying = isPlaying ?? currentState?.IsPlaying ?? false;
     }
 }
