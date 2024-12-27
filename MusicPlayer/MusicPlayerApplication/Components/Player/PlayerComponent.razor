@@ -1,6 +1,7 @@
 ﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+@using MusicPlayerApplication.Extensions;
 
-<audio id="@Id" @onchange="@OnChange">
+<audio id="@Id">
     <source preload="true" src="@MusicsState.Value.CurrentSong?.Path" type="audio/ogg; codecs=opus">
 </audio>
 
@@ -13,16 +14,16 @@
 
             <RadzenRow JustifyContent="JustifyContent.SpaceBetween" class="w-100 rz-p-2" Style="width:100%;">
                 <RadzenColumn Size="2">
-                    <RadzenText Text="@CurrentTimeAsTime" TextStyle="TextStyle.Overline" />
+                    <RadzenText Text="@MusicsState.Value.CurrentTime.AsTextTime()" TextStyle="TextStyle.Overline" />
                 </RadzenColumn>
 
                 <RadzenColumn Size="8">
-                    <RadzenSlider TValue="double" Value="@_currentTime" ValueChanged="@UpdateCurrentTime"
-                        id="songProgressbar" class="w-100" Max="@DurationAsDecimal" Style="height:.75rem;width:100%;" />
+                    <RadzenSlider TValue="double" Value="@MusicsState.Value.CurrentTime" ValueChanged="@UpdateCurrentTime"
+                        id="songProgressbar" class="w-100" Max="@MusicsState.Value.Duration.AsDecimal()" Style="height:.75rem;width:100%;" />
                 </RadzenColumn>
 
                 <RadzenColumn Size="2">
-                    <RadzenText Text="@DurationAsTime" TextStyle="TextStyle.Overline" />
+                    <RadzenText Text="@MusicsState.Value.Duration.AsTextTime()" TextStyle="TextStyle.Overline" />
                 </RadzenColumn>
 
             </RadzenRow>

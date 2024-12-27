@@ -68,4 +68,14 @@ public static class MusicsReducers
         return new MusicsState(currentState: state, filteredSongs: filteredSongs);
     }
     #endregion
+
+    #region SetCurrentTimeAction
+    [ReducerMethod]
+    public static MusicsState ReduceSetCurrentTimeAction(MusicsState state, SetCurrentTimeAction action) => new MusicsState(currentState: state, currentTime: action.CurrentTime);
+    #endregion
+    
+    #region SetDurationAction
+    [ReducerMethod]
+    public static MusicsState ReduceSetDurationAction(MusicsState state, SetDurationAction action) => new MusicsState(currentState: state, duration: action.Duration);
+    #endregion
 }

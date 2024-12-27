@@ -19,91 +19,72 @@ public partial class PlayerComponent
 
     private IJSObjectReference? module;
 
-    private readonly JsonSerializerOptions serializationOptions = new JsonSerializerOptions { IgnoreNullValues = true, PropertyNameCaseInsensitive = true };
-
-    public string CurrentTimeAsTime => ConvertToTime(_currentTime);
-    private double _currentTime = 0;
-
-    public string DurationAsTime => ConvertToTime(Duration);
-    public decimal DurationAsDecimal => Convert.ToDecimal(Duration);
-    public double Duration { get; set; } = 1;
-
     public string IconPlayer => MusicsState.Value.IsPlaying ? "pause" : "play_arrow";
 
     public string Id { get; set; } = "audioPlayer";
 
-    public string RandomClass => MusicsState.Value.IsRandom ? string.Empty : "no-random";
-
-    public string DisabledNextButtonClass => HasNextButtonDisabled ? "disabled" : string.Empty;
     private bool HasNextButtonDisabled => MusicsState.Value.IsLastSong() && !MusicsState.Value.IsRandom;
 
-    public string DisabledPreviousButtonClass => HasPreviousButtonDisabled ? "disabled" : string.Empty;
     private bool HasPreviousButtonDisabled => MusicsState.Value.IsFirstSong() && !MusicsState.Value.IsRandom;
 
     private Task OnClickPlayPauseButton() => MusicsState.Value.IsPlaying ? Pause() : Play();
 
     private async Task OnClickNextButton()
     {
-        ChangeSong(!HasNextButtonDisabled, MusicsState.Value.CurrentSongIndex + 1);
-    }
-
-    private void ChangeSong(bool canChange, int newSongIndex)
-    {
-        if (MusicsState.Value.IsRandom)
+        var nextSong = MusicsState.Value.GetNextSong();
+        if (nextSong != null)
         {
-            RandomSong();
+            Dispatcher.Dispatch(new SetCurrentSongAction(nextSong));
+            Dispatcher.Dispatch(new SetCurrentSongIndexAction(MusicsState.Value.Songs.ToList().IndexOf(nextSong)));
+            await ReloadMusic();
         }
-
-        else if (canChange)
-        {
-            Dispatcher.Dispatch(new SetCurrentSongIndexAction(newSongIndex));
-            Dispatcher.Dispatch(new SetCurrentSongAction(MusicsState.Value.Songs.ElementAt(newSongIndex)));
-        }
-
-        ReloadMusic();
-    }
-
-    private void RandomSong()
-    {
-        var random = new Random();
-        var index = random.Next(0, MusicsState.Value.Songs.Count() - 1);
-        Dispatcher.Dispatch(new SetCurrentSongIndexAction(index));
-
-        var song = MusicsState.Value.Songs.ElementAt(index);
-        Dispatcher.Dispatch(new SetCurrentSongAction(song));
     }
 
     private async Task OnClickPreviousButton()
     {
-        ChangeSong(!HasPreviousButtonDisabled, MusicsState.Value.CurrentSongIndex - 1);
+        var previousSong = MusicsState.Value.GetPreviousSong();
+        if (previousSong != null)
+        {
+            Dispatcher.Dispatch(new SetCurrentSongAction(previousSong));
+            Dispatcher.Dispatch(new SetCurrentSongIndexAction(MusicsState.Value.Songs.ToList().IndexOf(previousSong)));
+            await ReloadMusic();
+        }
     }
 
     public async Task ReloadMusic()
     {
         await Stop();
-        await ChangeSource(MusicsState.Value.CurrentSong.Path);
 
-        StateHasChanged();
+        await ChangeSource(MusicsState.Value.CurrentSong.Path);
 
         await Play();
     }
 
     private async Task Play()
     {
-        Dispatcher.Dispatch(new SetIsPlayingAction(true));
-        await module.InvokeAsync<string>("play", Id);
+        if (!MusicsState.Value.IsPlaying)
+        {
+            Dispatcher.Dispatch(new SetIsPlayingAction(true));
+            await module.InvokeAsync<string>("play", Id);
+        }
     }
 
     private async Task Pause()
     {
-        Dispatcher.Dispatch(new SetIsPlayingAction(false));
-        await module.InvokeAsync<string>("pause", Id);
+        if (MusicsState.Value.IsPlaying)
+        {
+            Dispatcher.Dispatch(new SetIsPlayingAction(false));
+            await module.InvokeAsync<string>("pause", Id);
+        }
     }
 
     private async Task Stop()
     {
-        Dispatcher.Dispatch(new SetIsPlayingAction(false));
-        await module.InvokeAsync<string>("stop", Id);
+        if (MusicsState.Value.IsPlaying)
+        {
+            Dispatcher.Dispatch(new SetIsPlayingAction(false));
+            await module.InvokeAsync<string>("stop", Id);
+        }
     }
 
     private async Task ChangeSource(string sourceFile)
@@ -111,30 +92,18 @@ public partial class PlayerComponent
         await module.InvokeAsync<string>("change", Id, sourceFile);
     }
 
-    private void TimeUpdate(AudioState audioState)
+    // Gestion des événements JS
+    [JSInvokable]
+    public void OnTimeUpdate(double currentTime, double duration)
     {
-        _currentTime = Math.Round(audioState.CurrentTime);
-        Duration = audioState.Duration > 0 ? Math.Round(audioState.Duration) : 1;
+        Dispatcher.Dispatch(new SetCurrentTimeAction(Math.Round(currentTime)));
+        Dispatcher.Dispatch(new SetDurationAction(Math.Round(duration)));
     }
 
-    private async Task Ended()
+    [JSInvokable]
+    public async Task OnAudioEnded()
     {
         await OnClickNextButton();
-        await Play();
-    }
-
-    private string ConvertToTime(double secondsNumber)
-    {
-        var sec_num = Math.Round(secondsNumber);
-        var hours = Math.Floor(sec_num / 3600);
-        var minutes = Math.Floor((sec_num - (hours * 3600)) / 60);
-        var seconds = sec_num - (hours * 3600) - (minutes * 60);
-
-        string stringHours = hours.ToString().PadLeft(2, '0');
-        string stringMinutes = minutes.ToString().PadLeft(2, '0');
-        string stringSeconds = seconds.ToString().PadLeft(2, '0');
-
-        return $"{stringHours}:{stringMinutes}:{stringSeconds}";
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -145,44 +114,9 @@ public partial class PlayerComponent
             module = await JSRuntime.InvokeAsync<IJSObjectReference>("import",
                 "./Components/Player/PlayerComponent.razor.js");
 
-            await ConfigureEvents();
-        }
-    }
+            var componentRef = DotNetObjectReference.Create(this);
 
-    private async Task ConfigureEvents()
-    {
-        await Implement(AudioEvents.TimeUpdate);
-        await Implement(AudioEvents.Ended);
-    }
-
-    private async Task Implement(AudioEvents eventName)
-    {
-        await module.InvokeVoidAsync("CustomEventHandler", Id, eventName.ToString().ToLower(), AudioState.GetPayload());
-    }
-
-    private async Task OnChange(ChangeEventArgs args)
-    {
-        var ThisEvent = args?.Value?.ToString();
-        try
-        {
-            var videoData = JsonSerializer.Deserialize<AudioEventData>(ThisEvent, serializationOptions);
-            switch (videoData.EventName)
-            {
-                case AudioEvents.TimeUpdate:
-                    TimeUpdate(videoData.State);
-                    break;
-                case AudioEvents.Ended:
-                    await Ended();
-                    break;
-                default:
-                    Console.WriteLine($"{ThisEvent} was not implemented");
-                    break;
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Failed to convert the JSON: {ThisEvent}");
-            Console.WriteLine($"Due to: {ex.Message}");
+            await module.InvokeVoidAsync("configureAudio", Id, componentRef, nameof(OnTimeUpdate), nameof(OnAudioEnded));
         }
     }
 
@@ -198,7 +132,8 @@ public partial class PlayerComponent
 
     private void UpdateCurrentTime(double expectedTime)
     {
-        _currentTime = expectedTime;
+        Dispatcher.Dispatch(new SetCurrentTimeAction(expectedTime));
+
         module.InvokeAsync<string>("updateCurrentTime", Id, expectedTime);
     }
 }

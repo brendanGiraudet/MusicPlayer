@@ -6,32 +6,12 @@
 export function pause(playerId) {
     var player = document.getElementById(playerId);
 
-    var promise = player.play();
-
-    if(promise !== undefined)
-    {
-        promise.then(_ => {
-            player.pause();
-        })
-        .catch(error => {
-            console.log('error' + error);
-        });
-    }
+    player.pause();
 }
 
 export function stop(playerId) {
     var player = document.getElementById(playerId);
-    var promise = player.play();
-
-    if(promise !== undefined)
-    {
-        promise.then(_ => {
-            player.pause();
-        })
-        .catch(error => {
-            console.log('error' + error);
-        });
-    }
+    player.pause();
 
     player.currentTime = 0;
 }
@@ -46,54 +26,28 @@ export function updateCurrentTime(playerId, currentTime) {
     player.currentTime = currentTime;
 }
 
-export function CustomEventHandler(playerId, eventName, payload) {
+// Configuration des événements audio principaux
+export function configureAudio(playerId, dotNetInstance, timeUpdateCallback, endedCallback) {
     var player = document.getElementById(playerId);
-    if (!(player && eventName)) {
-        return false
-    }
-    if (!player.hasOwnProperty('customEvent')) {
-        player['customEvent'] = function (eventName, payload) {
 
-            payload.currentTime = 4;
-            this['value'] = getJSON(this, eventName, payload)
+    // Met à jour le temps actuel et la durée via un callback Blazor
+    player.addEventListener("timeupdate", () => {
 
-            var event
-            if (typeof (Event) === 'function') {
-                event = new Event('change')
-            } else {
-                event = document.createEvent('Event')
-                event.initEvent('change', true, true)
-            }
+        var currentTime = 0;
+        if (player.currentTime > 0)
+            currentTime = player.currentTime;
 
-            this.dispatchEvent(event)
-        }
-    }
+        var duration = 1;
+        if (player.duration > 0)
+            duration = player.duration;
 
-    player.addEventListener(eventName, function () { player.customEvent(eventName, payload) });
+        if (timeUpdateCallback !== undefined)
+            dotNetInstance.invokeMethodAsync(timeUpdateCallback, currentTime, duration);
+    });
 
-    // Craft a bespoke json string to serve as a payload for the event
-    function getJSON(el, eventName, payload) {
-
-        if (payload && payload.length > 0) {
-            // this syntax copies just the properties we request from the source element
-            // IE 11 compatible
-            let data = {};
-            for (var obj in payload) {
-                var item = payload[obj];
-                if (el[item]) {
-                    data[item] = el[item]
-                }
-            }
-
-            // this stringify overload eliminates undefined/null/empty values
-            return JSON.stringify(
-                { name: eventName, state: data }
-                , function (k, v) { return (v === undefined || v == null || v.length === 0) ? undefined : v }
-            )
-        } else {
-            return JSON.stringify(
-                { name: eventName }
-            )
-        }
-    }
+    // Notifie Blazor lorsque la chanson est terminée
+    player.addEventListener("ended", () => {
+        if (endedCallback !== undefined)
+            dotNetInstance.invokeMethodAsync(endedCallback);
+    });
 }

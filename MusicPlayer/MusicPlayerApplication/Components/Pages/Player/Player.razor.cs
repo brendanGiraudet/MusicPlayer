@@ -22,6 +22,7 @@ public partial class Player
 
         if(MusicsState.Value.Songs.Count() == 0)
             Dispatcher.Dispatch(new GetSongsAction());
+            
         Dispatcher.Dispatch(new SetShowMusicListAction(false));
     }
 
