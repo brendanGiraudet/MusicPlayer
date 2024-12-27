@@ -128,8 +128,6 @@ namespace MusicPlayerApplication.Services.SongService
                 var songInfo = await File.ReadAllTextAsync(filename);
 
                 song = System.Text.Json.JsonSerializer.Deserialize<SongModel>(songInfo);
-
-                return song;
             }
             catch (System.Exception ex)
             {
