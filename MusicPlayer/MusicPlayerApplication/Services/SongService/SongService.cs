@@ -84,8 +84,7 @@ namespace MusicPlayerApplication.Services.SongService
 
                     if (File.Exists(songInfoFilename))
                     {
-                        var songInfo = await File.ReadAllTextAsync(songInfoFilename); // Lecture asynchrone
-                        return GetSongModel(songFile, songInfo); // Génère le modèle
+                        return await GetSongModelAsync(songFile, songInfoFilename); // Génère le modèle
                     }
                     else
                     {
@@ -114,12 +113,14 @@ namespace MusicPlayerApplication.Services.SongService
         }
 
 
-        private SongModel? GetSongModel(FileInfo songFile, string songInfo)
+        private async Task<SongModel?> GetSongModelAsync(FileInfo songFile, string filename)
         {
-            if (string.IsNullOrEmpty(songInfo)) return null;
+            if (string.IsNullOrEmpty(filename)) return null;
 
             try
             {
+                var songInfo = await File.ReadAllTextAsync(filename);
+
                 var song = System.Text.Json.JsonSerializer.Deserialize<SongModel>(songInfo);
 
                 song.Path = $"{_songSettings.Path}/{songFile.Name}";
@@ -134,7 +135,7 @@ namespace MusicPlayerApplication.Services.SongService
             }
             catch (System.Exception ex)
             {
-                _logService.LogError($"{nameof(GetSongModel)} ({songInfo}) : {ex.Message}");
+                _logService.LogError($"{nameof(GetSongModelAsync)} ({filename}) : {ex.Message}");
 
                 return null;
             }

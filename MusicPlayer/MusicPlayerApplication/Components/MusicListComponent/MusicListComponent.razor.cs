@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Components;
 using MusicPlayerApplication.Models;
 using MusicPlayerApplication.Stores;
 using MusicPlayerApplication.Stores.Actions;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MusicPlayerApplication.Components.MusicListComponent
@@ -15,7 +14,6 @@ namespace MusicPlayerApplication.Components.MusicListComponent
         [Parameter] public EventCallback<SongModel> OnClickCallback { get; set; }
         [Parameter] public bool IsDisplay { get; set; }
 
-        private IEnumerable<SongModel> FilteredSongs { get; set; }
         private bool IsCurrentSong(string title) => MusicsState.Value.CurrentSong.Title == title;
 
         private async Task OnClickSongLine(SongModel song)

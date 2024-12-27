@@ -1,12 +1,10 @@
 ﻿using Fluxor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using MusicPlayerApplication.Models;
 using MusicPlayerApplication.Stores;
 using MusicPlayerApplication.Stores.Actions;
 using MusicPlayerApplication.ViewModels.SongManagerViewModel;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,8 +16,6 @@ namespace MusicPlayerApplication.Components.SongManager
         [Inject] public ISongManagerViewModel ViewModel { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public IDispatcher Dispatcher { get; set; }
-
-        private IEnumerable<SongModel> FilteredSongs { get; set; }
 
         protected override void OnInitialized()
         {
