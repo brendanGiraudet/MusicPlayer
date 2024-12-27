@@ -1,7 +1,6 @@
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
-<RadzenCard class="rz-my-12 rz-mx-auto"
-            Style="max-width: 45rem"
+<RadzenCard Style="max-width: 45rem; max-height:32rem;overflow:auto;"
             Visible="@IsDisplay">
     <RadzenRow class="rz-p-2">
         <RadzenTextBox @oninput="@OnFilterChanged"

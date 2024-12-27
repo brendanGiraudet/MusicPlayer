@@ -6,7 +6,7 @@ public static class DoubleExtensions
 {
     public static string AsTextTime(this double time)
     {
-        if(time < 1) return time.ToString();
+        if(time < 1) return $"00:00:00";
         
         var sec_num = Math.Round(time);
         var hours = Math.Floor(sec_num / 3600);
