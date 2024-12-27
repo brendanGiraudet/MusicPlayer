@@ -5,12 +5,34 @@
 
 export function pause(playerId) {
     var player = document.getElementById(playerId);
-    player.pause();
+
+    var promise = player.play();
+
+    if(promise !== undefined)
+    {
+        promise.then(_ => {
+            player.pause();
+        })
+        .catch(error => {
+            console.log('error' + error);
+        });
+    }
 }
 
 export function stop(playerId) {
     var player = document.getElementById(playerId);
-    player.pause();
+    var promise = player.play();
+
+    if(promise !== undefined)
+    {
+        promise.then(_ => {
+            player.pause();
+        })
+        .catch(error => {
+            console.log('error' + error);
+        });
+    }
+
     player.currentTime = 0;
 }
 

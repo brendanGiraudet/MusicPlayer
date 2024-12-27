@@ -1,7 +1,7 @@
 ﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
 <audio id="@Id" @onchange="@OnChange">
-    <source src="@MusicsState.Value.CurrentSong?.Path" type="audio/ogg; codecs=opus">
+    <source preload="true" src="@MusicsState.Value.CurrentSong?.Path" type="audio/ogg; codecs=opus">
 </audio>
 
 <RadzenCard class="rz-my-12 rz-mx-auto" Style="max-width: 45rem" Visible="@IsDisplay">
