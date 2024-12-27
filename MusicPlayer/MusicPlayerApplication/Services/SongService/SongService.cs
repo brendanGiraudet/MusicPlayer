@@ -117,28 +117,34 @@ namespace MusicPlayerApplication.Services.SongService
         {
             if (string.IsNullOrEmpty(filename)) return null;
 
+            SongModel song = new()
+            {
+                Title = "Non défini",
+                Artist = "Non défini"
+            };
+
             try
             {
                 var songInfo = await File.ReadAllTextAsync(filename);
 
-                var song = System.Text.Json.JsonSerializer.Deserialize<SongModel>(songInfo);
-
-                song.Path = $"{_songSettings.Path}/{songFile.Name}";
-
-                song.ImagePath = GetImagePath(songFile.Name);
-
-                song.FileName = GetFileNameWithoutExtension(songFile.Name);
-
-                song.CreationDate = songFile.CreationTime;
+                song = System.Text.Json.JsonSerializer.Deserialize<SongModel>(songInfo);
 
                 return song;
             }
             catch (System.Exception ex)
             {
                 _logService.LogError($"{nameof(GetSongModelAsync)} ({filename}) : {ex.Message}");
-
-                return null;
             }
+
+            song.Path = $"{_songSettings.Path}/{songFile.Name}";
+
+            song.ImagePath = GetImagePath(songFile.Name);
+
+            song.FileName = GetFileNameWithoutExtension(songFile.Name);
+
+            song.CreationDate = songFile.CreationTime;
+
+            return song;
         }
 
         private string GetImagePath(string songName)
