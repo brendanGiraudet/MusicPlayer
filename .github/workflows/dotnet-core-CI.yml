@@ -26,7 +26,7 @@ jobs:
       with: 
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-        registry: $Registry 
+        registry: docker-registry.brendan-giraudet.com 
 
     - name: Publish Docker image
-      run: docker push $Registry/$DockerImageName
+      run: docker push docker-registry.brendan-giraudet.com/$DockerImageName
