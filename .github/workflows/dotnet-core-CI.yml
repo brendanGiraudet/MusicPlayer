@@ -11,7 +11,7 @@ jobs:
     env:
       Repo: /home/runner/work/MusicPlayer/MusicPlayer/MusicPlayer/
       DockerImageName: bakayarusama/music_player:${{  github.ref_name }}
-      Registry: docker-registry.brendan-giraudet.com
+      Registry: docker-registry-local.brendan-giraudet.com
 
     steps:
     - name: Checkout source code
@@ -26,7 +26,7 @@ jobs:
       with: 
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-        registry: docker-registry.brendan-giraudet.com 
+        registry: docker-registry-local.brendan-giraudet.com 
 
     - name: Publish Docker image
-      run: docker push docker-registry.brendan-giraudet.com/$DockerImageName
+      run: docker push docker-registry-local.brendan-giraudet.com/$DockerImageName
