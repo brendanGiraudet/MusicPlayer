@@ -1,7 +1,7 @@
 version: "2.1"
 services:
   music-player:
-    image: docker-registry.brendan-giraudet.com/music_player:2.2.31
+    image: docker-registry.brendan-giraudet.com/music_player:2.2.32
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -18,7 +18,7 @@ services:
       Song__Path: /Musics
       YoutubeDl__MusicPath: /app/wwwroot/Musics
       YoutubeDl__Proxy: https://cors-anywhere.herokuapp.com/
-      ApplicationVersion: 2.2.31
+      ApplicationVersion: 2.2.32
 
       Log__Url: "https://ms-logs-local.brendan-giraudet.com"
       
