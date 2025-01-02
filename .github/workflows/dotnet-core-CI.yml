@@ -10,8 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       Repo: /home/runner/work/MusicPlayer/MusicPlayer/MusicPlayer/
-      DockerImageName: bakayarusama/music_player:${{  github.ref_name }}
-      Registry: docker-registry-local.brendan-giraudet.com
+      DockerImageName: docker-registry-local.brendan-giraudet.com/music_player:${{  github.ref_name }}
 
     steps:
     - name: Checkout source code
@@ -29,4 +28,4 @@ jobs:
         registry: docker-registry-local.brendan-giraudet.com 
 
     - name: Publish Docker image
-      run: docker push docker-registry-local.brendan-giraudet.com/$DockerImageName
+      run: docker push $DockerImageName
